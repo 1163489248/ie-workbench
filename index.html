@@ -3,398 +3,62 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>IE工程师知识学习工作台</title>
+<title>学习工作台导航</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#0f1525;--card:#1a2138;--card-hover:#222b48;
-  --border:#2a3556;--text:#e2e8f0;--text-dim:#94a3b8;
-  --accent:#38bdf8;--accent2:#818cf8;--warm:#fbbf24;
-  --green:#34d399;--red:#f87171;--pink:#f472b6;
-  --tag-bg:#1e293b;
-}
-body{font-family:'Segoe UI','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
-
-/* Header */
-.header{background:linear-gradient(135deg,#0f1525,#1a2138);border-bottom:1px solid var(--border);padding:16px 20px;position:sticky;top:0;z-index:100}
-.header-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:12px}
-.header-title{font-size:20px;font-weight:700;display:flex;align-items:center;gap:8px}
-.header-title .icon{font-size:26px}
-.header-date{font-size:13px;color:var(--text-dim)}
-.search-wrap{position:relative;flex:1;min-width:200px;max-width:500px}
-.search-wrap input{width:100%;padding:10px 14px 10px 38px;background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;outline:none;transition:border .2s}
-.search-wrap input:focus{border-color:var(--accent)}
-.search-wrap .si{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-dim);font-size:16px}
-
-/* Nav */
-.nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:4px}
-.nav-btn{padding:7px 16px;background:var(--card);border:1px solid var(--border);border-radius:20px;color:var(--text-dim);font-size:13px;cursor:pointer;transition:all .2s;white-space:nowrap}
-.nav-btn:hover{color:var(--text);border-color:var(--accent)}
-.nav-btn.active{background:var(--accent);color:#0f1525;border-color:var(--accent);font-weight:600}
-
-/* Daily Learn */
-.daily-box{background:linear-gradient(135deg,#1a2138,#222b48);border:1px solid var(--accent);border-radius:12px;padding:16px 20px;margin-bottom:16px;position:relative;overflow:hidden}
-.daily-box::before{content:'';position:absolute;top:-20px;right:-20px;width:120px;height:120px;background:radial-gradient(circle,rgba(56,189,248,.1),transparent);border-radius:50%}
-.daily-label{font-size:12px;color:var(--warm);font-weight:600;margin-bottom:6px;display:flex;align-items:center;gap:6px}
-.daily-title{font-size:17px;font-weight:700;margin-bottom:6px;color:var(--accent)}
-.daily-content{font-size:14px;color:var(--text-dim);line-height:1.7}
-.daily-content b{color:var(--text)}
-.daily-formula{background:rgba(56,189,248,.08);border-left:3px solid var(--accent);padding:8px 12px;margin-top:8px;border-radius:0 6px 6px 0;font-family:'Courier New',monospace;font-size:14px;color:var(--accent)}
-.daily-nav{display:flex;gap:8px;margin-top:10px}
-.daily-nav button{padding:4px 12px;background:var(--tag-bg);border:1px solid var(--border);border-radius:6px;color:var(--text-dim);font-size:12px;cursor:pointer;transition:all .2s}
-.daily-nav button:hover{color:var(--accent);border-color:var(--accent)}
-
-/* Content */
-.content{max-width:1100px;margin:0 auto;padding:0 16px 40px}
-.section-title{font-size:16px;font-weight:700;margin:20px 0 12px;display:flex;align-items:center;gap:8px;color:var(--accent2)}
-.section-title .count{font-size:12px;color:var(--text-dim);font-weight:400;background:var(--tag-bg);padding:2px 8px;border-radius:10px}
-
-/* Cards Grid */
-.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;transition:all .2s;cursor:pointer}
-.card:hover{background:var(--card-hover);border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.3)}
-.card-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
-.card-abbr{font-size:18px;font-weight:700;color:var(--accent)}
-.card-full{font-size:12px;color:var(--text-dim);font-style:italic}
-.card-tag{font-size:11px;padding:2px 8px;border-radius:10px;white-space:nowrap}
-.tag-设备{background:rgba(52,211,153,.15);color:var(--green)}
-.tag-精益{background:rgba(129,140,248,.15);color:var(--accent2)}
-.tag-质量{background:rgba(251,191,36,.15);color:var(--warm)}
-.tag-生产{background:rgba(56,189,248,.15);color:var(--accent)}
-.tag-方法{background:rgba(244,114,182,.15);color:var(--pink)}
-.tag-通用{background:rgba(148,163,184,.15);color:var(--text-dim)}
-.tag-管理{background:rgba(129,140,248,.15);color:var(--accent2)}
-.tag-沟通{background:rgba(251,191,36,.15);color:var(--warm)}
-.tag-思维{background:rgba(52,211,153,.15);color:var(--green)}
-.tag-时间{background:rgba(56,189,248,.15);color:var(--accent)}
-.card-cn{font-size:14px;font-weight:600;margin-bottom:4px}
-.card-desc{font-size:13px;color:var(--text-dim);line-height:1.6}
-.card-formula{background:rgba(56,189,248,.06);border-left:3px solid var(--accent2);padding:6px 10px;margin-top:8px;border-radius:0 6px 6px 0;font-family:'Courier New',monospace;font-size:13px;color:var(--accent2)}
-.card-example{font-size:12px;color:var(--green);margin-top:4px}
-
-/* Theory Cards */
-.theory-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;transition:all .2s}
-.theory-card:hover{background:var(--card-hover);border-color:var(--accent2)}
-.theory-card h3{font-size:15px;color:var(--accent2);margin-bottom:8px;display:flex;align-items:center;gap:6px}
-.theory-card .t-desc{font-size:13px;color:var(--text-dim);margin-bottom:8px}
-.theory-card ul{list-style:none;padding-left:0}
-.theory-card li{font-size:13px;color:var(--text);padding:3px 0 3px 16px;position:relative}
-.theory-card li::before{content:'▸';position:absolute;left:0;color:var(--accent)}
-
-/* Soft Skill Cards */
-.soft-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;transition:all .2s}
-.soft-card:hover{background:var(--card-hover);border-color:var(--warm)}
-.soft-card h3{font-size:15px;color:var(--warm);margin-bottom:8px}
-.soft-card .s-desc{font-size:13px;color:var(--text-dim);margin-bottom:8px}
-.soft-tips{display:flex;flex-wrap:wrap;gap:6px}
-.soft-tip{font-size:12px;background:var(--tag-bg);border:1px solid var(--border);padding:3px 10px;border-radius:6px;color:var(--text-dim)}
-
-/* No Result */
-.no-result{text-align:center;padding:40px;color:var(--text-dim);font-size:15px}
-
-/* Responsive */
-@media(max-width:680px){
-  .card-grid{grid-template-columns:1fr}
-  .header-title{font-size:17px}
-  .daily-title{font-size:15px}
-}
+body{font-family:'Segoe UI','Microsoft YaHei',sans-serif;background:#0f1525;color:#e2e8f0;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+h1{font-size:24px;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.subtitle{font-size:14px;color:#94a3b8;margin-bottom:30px}
+.cards{display:flex;flex-direction:column;gap:16px;width:100%;max-width:420px}
+.card{display:block;text-decoration:none;background:linear-gradient(135deg,#1a2138,#222b48);border:1px solid #2a3556;border-radius:14px;padding:20px;transition:all .25s;cursor:pointer}
+.card:hover{transform:translateY(-3px);border-color:#38bdf8;box-shadow:0 8px 24px rgba(56,189,248,.15)}
+.card:active{transform:translateY(-1px)}
+.card-head{display:flex;align-items:center;gap:14px;margin-bottom:8px}
+.card-icon{font-size:32px;width:50px;height:50px;display:flex;align-items:center;justify-content:center;border-radius:12px;flex-shrink:0}
+.icon-1{background:rgba(56,189,248,.15)}
+.icon-2{background:rgba(129,140,248,.15)}
+.icon-3{background:rgba(251,191,36,.15)}
+.card-title{font-size:17px;font-weight:700;color:#e2e8f0}
+.card-arrow{margin-left:auto;color:#475569;font-size:20px;transition:color .2s}
+.card:hover .card-arrow{color:#38bdf8}
+.card-desc{font-size:13px;color:#94a3b8;line-height:1.6}
+.card-tags{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.tag{font-size:11px;padding:2px 10px;border-radius:10px;background:#1e293b;color:#64748b}
+.footer{margin-top:30px;font-size:12px;color:#475569}
 </style>
 </head>
 <body>
-
-<div class="header">
-  <div class="header-top">
-    <div class="header-title"><span class="icon">⚙️</span>IE工程师知识学习工作台</div>
-    <div class="search-wrap">
-      <span class="si">🔍</span>
-      <input type="search" id="searchBox" placeholder="搜索缩写、术语、公式…">
-    </div>
-    <div class="header-date" id="todayDate"></div>
-  </div>
-  <div class="nav" id="navBar">
-    <button class="nav-btn active" data-cat="all">📚 全部</button>
-    <button class="nav-btn" data-cat="abbr">🔤 IE缩写库</button>
-    <button class="nav-btn" data-cat="formula">📐 公式手册</button>
-    <button class="nav-btn" data-cat="theory">🎓 基础理论</button>
-    <button class="nav-btn" data-cat="soft">🤝 软技能</button>
-  </div>
+<h1>📚 学习工作台</h1>
+<p class="subtitle">点击卡片进入对应工作台</p>
+<div class="cards">
+<a class="card" href="ie-knowledge.html">
+<div class="card-head">
+<div class="card-icon icon-1">⚙️</div>
+<div class="card-title">IE工程师知识学习</div>
+<div class="card-arrow">›</div>
 </div>
-
-<div class="content">
-  <div class="daily-box" id="dailyBox"></div>
-  <div id="mainContent"></div>
+<div class="card-desc">IE高频缩写库、公式手册、基础理论、软技能、每日一学</div>
+<div class="card-tags"><span class="tag">40+缩写</span><span class="tag">15个公式</span><span class="tag">12个理论</span><span class="tag">10个软技能</span></div>
+</a>
+<a class="card" href="岗位简历匹配工作台.html">
+<div class="card-head">
+<div class="card-icon icon-2">💼</div>
+<div class="card-title">岗位简历匹配工作台</div>
+<div class="card-arrow">›</div>
 </div>
-
-<script>
-// ============ 知识库 ============
-const ABBR = [
-  {abbr:"OEE",full:"Overall Equipment Effectiveness",cn:"设备综合效率",cat:"设备",desc:"衡量设备在计划运行时间内实际发挥了多少有效产出的综合指标，是TPM核心指标。",formula:"OEE = 可用率 × 性能率 × 良品率",example:"可用率90%×性能率95%×良品率99% = 84.6%"},
-  {abbr:"CT",full:"Cycle Time",cn:"周期时间",cat:"设备",desc:"完成一个工序循环所需的时间，从开始到下一次开始的时间间隔。",formula:"CT = 单个循环完成时间",example:"机器每45秒产出一个零件，CT=45s"},
-  {abbr:"TT",full:"Takt Time",cn:"节拍时间",cat:"生产",desc:"根据客户需求速率计算的生产节奏，是流水线设计的基准。",formula:"TT = 可用工作时间 / 客户需求量",example:"480min/日 ÷ 480件/日 = 1min/件"},
-  {abbr:"WIP",full:"Work In Process",cn:"在制品",cat:"生产",desc:"生产过程中正在加工或等待加工的半成品，过多WIP掩盖问题。",formula:"WIP = 吞吐率 × 流转时间（利特尔法则）",example:"10件/小时 × 3小时 = 30件"},
-  {abbr:"SOP",full:"Standard Operating Procedure",cn:"标准作业指导书",cn2:"标准操作程序",cat:"方法",desc:"以文件形式描述的标准操作步骤，确保作业一致性，是IE基础工具。",formula:"无",example:"装配工序SOP包含工步图+时间+注意事项"},
-  {abbr:"JIT",full:"Just In Time",cn:"准时制生产",cat:"精益",desc:"在需要的时候按需要的量生产所需的产品，消除库存浪费。丰田生产方式核心。",formula:"无",example:"按订单拉动生产，不做过量库存"},
-  {abbr:"TPM",full:"Total Productive Maintenance",cn:"全员生产维护",cat:"设备",desc:"通过全员参与的设备维护活动，追求设备零故障、零不良。",formula:"无",example:"操作工日常点检+维修工定期保养"},
-  {abbr:"SMED",full:"Single Minute Exchange of Die",cn:"快速换模法",cat:"精益",desc:"将换模时间压缩到10分钟以内的方法，区分内部作业与外部作业是核心。",formula:"换模时间 = 内部作业时间（停机时）",example:"模具预热在机外完成=外部作业"},
-  {abbr:"VSM",full:"Value Stream Mapping",cn:"价值流图",cat:"精益",desc:"可视化从原材料到交付客户的全部物流和信息流，识别浪费。",formula:"增值比 = 增值时间 / 总前置时间 × 100%",example:"总前置时间20天，增值时间2小时→增值比0.4%"},
-  {abbr:"ECRS",full:"Eliminate-Combine-Rearrange-Simplify",cn:"取消-合并-重排-简化",cat:"方法",desc:"IE四大原则，用于方法改善和动作优化，优先取消不必要的作业。",formula:"无",example:"取消多余搬运→合并检验工序→重排工位顺序→简化操作动作"},
-  {abbr:"PDCA",full:"Plan-Do-Check-Act",cn:"戴明环/持续改进循环",cat:"管理",desc:"计划-执行-检查-处理的持续改进循环，是所有改善活动的基本框架。",formula:"无",example:"制定改善方案→试运行→验证效果→标准化推广"},
-  {abbr:"5S",full:"Seiri-Seiton-Seiso-Seiketsu-Shitsuke",cn:"整理-整顿-清扫-清洁-素养",cat:"精益",desc:"现场管理基础方法，从整理物品到养成习惯的五步法。",formula:"无",example:"整理：区分要与不要；整顿：定位定量"},
-  {abbr:"BOM",full:"Bill of Materials",cn:"物料清单",cat:"生产",desc:"产品所需全部零部件及数量的清单，是MRP/ERP系统的基础数据。",formula:"无",example:"成品A由2个B+1个C组成→BOM: B×2, C×1"},
-  {abbr:"ERP",full:"Enterprise Resource Planning",cn:"企业资源计划",cat:"管理",desc:"整合企业各业务环节的信息化系统，实现资源优化配置。",formula:"无",example:"SAP、用友、金蝶等系统"},
-  {abbr:"MRP",full:"Material Requirements Planning",cn:"物料需求计划",cat:"生产",desc:"根据主生产计划和BOM，计算各层级物料的需求量和需求时间。",formula:"净需求 = 毛需求 - 可用库存 + 安全库存",example:"订单需100件，库存30件→净需求70件"},
-  {abbr:"KPI",full:"Key Performance Indicator",cn:"关键绩效指标",cat:"管理",desc:"衡量组织或个人绩效达成情况的核心量化指标。",formula:"无",example:"稼动率≥85%、人均产量≥500件/班"},
-  {abbr:"Kaizen",full:"改善（日语）",cn:"持续改善",cat:"精益",desc:"丰田生产方式核心理念，强调全员参与、小步快跑的持续改进。",formula:"无",example:"每日改善提案、月度改善发表会"},
-  {abbr:"Kanban",full:"看板（日语）",cn:"拉动式生产信号",cat:"精益",desc:"用卡片或容器作为生产/搬运指令的拉动系统工具，控制WIP。",formula:"看板数量 = (日需求×前置时间×安全系数) / 容器容量",example:"日需100件，前置2天，安全0.2，容器10件→(100×2×1.2)/10=24张"},
-  {abbr:"Poka-Yoke",full:"防错法（日语）",cn:"防呆/防错",cat:"质量",desc:"通过设计使得错误无法发生或一旦发生立即被发现。",formula:"无",example:"USB接口防反插设计、缺件传感器报警"},
-  {abbr:"MTM",full:"Methods-Time Measurement",cn:"方法时间测量法",cat:"方法",desc:"预定动作时间系统，将基本动作赋以标准时间值，用于设定标准工时。",formula:"标准时间 = Σ(基本动作时间) × 评比 × 宽放",example:"伸手30cm=MTM值10.1TMU"},
-  {abbr:"MOD",full:"Modular Arrangement of Predetermined Time Standard",cn:"模特排时法",cat:"方法",desc:"以手指动作(2.5cm)为1MOD的基本动作时间系统，简化版MTM。",formula:"1 MOD = 0.129秒（普通速度）",example:"伸手抓取=3MOD，移动放置=4MOD"},
-  {abbr:"SPC",full:"Statistical Process Control",cn:"统计过程控制",cat:"质量",desc:"用控制图等统计方法监控过程稳定性，区分普通原因和特殊原因变异。",formula:"控制限 = 均值 ± 3σ",example:"UCL=μ+3σ, LCL=μ-3σ"},
-  {abbr:"CPK",full:"Process Capability Index",cn:"过程能力指数",cat:"质量",desc:"衡量过程在满足规格要求方面的能力，考虑偏移情况。",formula:"CPK = min[(USL-μ),(μ-LSL)] / (3σ)",example:"USL=10.5, LSL=9.5, μ=10.1, σ=0.1→CPK=1.33"},
-  {abbr:"DMAIC",full:"Define-Measure-Analyze-Improve-Control",cn:"六西格玛改进五步法",cat:"质量",desc:"六西格玛项目标准流程：定义-测量-分析-改进-控制。",formula:"无",example:"定义缺陷→测量现状→分析根因→改进方案→控制标准化"},
-  {abbr:"FMEA",full:"Failure Mode and Effects Analysis",cn:"失效模式与影响分析",cat:"质量",desc:"系统分析潜在失效模式及其影响，评估风险优先数。",formula:"RPN = 严重度(S) × 发生度(O) × 探测度(D)",example:"S=8, O=4, D=3 → RPN=96（需改善）"},
-  {abbr:"TOC",full:"Theory of Constraints",cn:"约束理论",cat:"管理",desc:"通过识别和突破系统瓶颈来提升整体产出的管理哲学。",formula:"产出 = 通过瓶颈的最大速率",example:"瓶颈工序10件/h→全厂产出≤10件/h"},
-  {abbr:"FIFO",full:"First In First Out",cn:"先进先出",cat:"生产",desc:"物料按入库顺序出库，防止积压和过期。",formula:"无",example:"仓库通道设计为单向，先入库先出库"},
-  {abbr:"ANDON",full:"安灯（日语）",cn:"安灯系统/呼叫系统",cat:"设备",desc:"生产现场异常呼叫与可视化管理系统，任何人都可拉绳停线。",formula:"无",example:"发现异常→拉安灯→班长响应→2分钟未解决停线"},
-  {abbr:"Gemba",full:"现场（日语）",cn:"现场现物",cat:"精益",desc:"强调到生产现场观察实际情况，基于事实做决策。",formula:"无",example:"现场现物现实的三现主义"},
-  {abbr:"Jidoka",full:"自働化（日语）",cn:"智能自动化/带人字旁的自动化",cat:"精益",desc:"设备异常时自动停机，将人的智能赋予机器，实现品质内建。",formula:"无",example:"断线传感器检测到断线→自动停机→安灯报警"},
-  {abbr:"Heijunka",full:"平准化（日语）",cn:"生产平准化",cat:"精益",desc:"将不同产品品种和数量均匀分配到各时间段，减少波动。",formula:"无",example:"ABC三种产品按A-B-C-A-B-C顺序均衡生产"},
-  {abbr:"Muda",full:"浪费（日语）",cn:"七大浪费",cat:"精益",desc:"不增加价值的活动：过量生产、等待、搬运、加工、库存、动作、不良。",formula:"无",example:"过量生产=制造过多；等待=人等机器"},
-  {abbr:"QCO",full:"Quick Changeover",cn:"快速切换",cat:"精益",desc:"SMED的扩展应用，不仅模具切换，包括产品换型、工装调整等。",formula:"切换时间 = 内部切换时间（停机）",example:"换产品型号时停机时间从40min降至8min"},
-  {abbr:"PPH",full:"Parts Per Hour",cn:"每小时产量",cat:"生产",desc:"衡量生产效率的常用指标，人均或机均每小时产出。",formula:"PPH = 总产量 / (人数 × 工作小时)",example:"800件 / (2人×8h) = 50 PPH/人"},
-  {abbr:"UPPH",full:"Units Per Person Hour",cn:"人均时产",cat:"生产",desc:"单位人时的产出量，是劳动效率的核心指标。",formula:"UPPH = 总产量 / 总人工工时",example:"1000件 / 16工时 = 62.5 UPPH"},
-  {abbr:"FPY",full:"First Pass Yield",cn:"直通率/一次合格率",cat:"质量",desc:"产品第一次通过检验的合格率，不包含返工返修。",formula:"FPY = 一次合格数 / 投入总数 × 100%",example:"投入1000件，一次合格950件→FPY=95%"},
-  {abbr:"DTD",full:"Dock to Dock",cn:"入库到出库时间",cat:"精益",desc:"从原材料入库到成品出库的总时间，衡量物流效率。",formula:"DTD = 原材料库存天数 + 生产周期 + 成品库存天数",example:"原料3天+生产2天+成品5天=DTD 10天"},
-  {abbr:"WBS",full:"Work Breakdown Structure",cn:"工作分解结构",cat:"管理",desc:"将项目逐层分解为可管理的工作包，用于项目计划和控制。",formula:"无",example:"新产品导入项目→设计/试产/量产三大模块→各模块细分任务"},
-  {abbr:"ROI",full:"Return on Investment",cn:"投资回报率",cat:"管理",desc:"投资收益与投资成本的比率，用于评估改善方案的经济性。",formula:"ROI = (收益 - 投资成本) / 投资成本 × 100%",example:"投入10万，年节约15万→ROI=(15-10)/10=50%"},
-  {abbr:"PMP",full:"Project Management Professional",cn:"项目管理专业人士",cat:"管理",desc:"国际认证的项目管理知识体系，包含五大过程组和十大知识领域。",formula:"无",example:"启动→规划→执行→监控→收尾"},
-];
-
-const FORMULA = [
-  {name:"OEE设备综合效率",cat:"设备",formula:"OEE = 可用率 × 性能率 × 良品率",desc:"其中：可用率=实际运行时间/计划运行时间；性能率=理论产出/实际产出；良品率=合格品/总产出。",example:"运行时间420min/计划480min=87.5%；性能率=920/1000=92%；良品率=910/920=98.9%→OEE=79.7%"},
-  {name:"节拍时间TT",cat:"生产",formula:"TT = 可用工作时间 / 客户需求量",desc:"可用时间需扣除计划停机（休息、保养等）。节拍是客户需求的节奏。",example:"每班480min-30min休息=450min可用；需求450件→TT=1min/件"},
-  {name:"线平衡率",cat:"方法",formula:"平衡率 = Σ各工序时间 / (工位数 × 最大工序时间) × 100%",desc:"衡量流水线各工位时间均衡程度，越高说明等待浪费越少。",example:"5工位，各工序时间30/35/28/40/32秒→Σ=165，最大40→平衡率=165/(5×40)=82.5%"},
-  {name:"平衡损失率",cat:"方法",formula:"平衡损失率 = 1 - 平衡率",desc:"瓶颈工序决定了线体产能，非瓶颈工序的时间差就是损失。",example:"平衡率82.5%→损失率=17.5%"},
-  {name:"标准工时",cat:"时间",formula:"标准工时 = 观测时间 × 评比系数 × (1 + 宽放率)",desc:"评比系数根据操作者速度评定（正常速度=1.0）；宽放含私事、疲劳、延迟宽放。",example:"观测60s×评比0.95×(1+15%)=65.55s"},
-  {name:"稼动率",cat:"设备",formula:"稼动率 = 实际运行时间 / 计划工作时间 × 100%",desc:"反映设备或人员的实际利用程度。",example:"实际运行7h/计划8.5h→稼动率=82.4%"},
-  {name:"CPK过程能力指数",cat:"质量",formula:"CPK = min[(USL-μ),(μ-LSL)] / (3σ)",desc:"USL=规格上限，LSL=规格下限，μ=过程均值，σ=标准差。CPK≥1.33为可接受。",example:"USL=10.5, LSL=9.5, μ=10.1, σ=0.1→CPK=min[4,2]/0.3=min[13.3,6.7]=6.7（注意实际σ更小时CPK更高）"},
-  {name:"RPN风险优先数",cat:"质量",formula:"RPN = 严重度(S) × 发生度(O) × 探测度(D)",desc:"S/O/D各取1-10分，RPN>100需采取改善措施。",example:"S=9(安全风险), O=3(偶尔), D=4(可能漏检)→RPN=108→需改善"},
-  {name:"人均产能UPPH",cat:"生产",formula:"UPPH = 合格品总量 / 总人工工时",desc:"衡量劳动生产率的核心指标。",example:"班产800件合格品，2人8小时→UPPH=800/16=50"},
-  {name:"利特尔法则",cat:"生产",formula:"WIP = 吞吐率(TH) × 流转时间(CT)",desc:"描述在制品数量、产出速率和流转时间三者关系，是精益生产理论基础。",example:"产出10件/h，流转3h→WIP=30件"},
-  {name:"库存周转率",cat:"管理",formula:"库存周转率 = 销售成本(COGS) / 平均库存",desc:"衡量库存管理效率，越高说明资金周转越快。",example:"年销售成本1200万，平均库存200万→周转率=6次/年"},
-  {name:"投资回收期",cat:"管理",formula:"回收期 = 投资额 / 年节约额",desc:"评估改善方案投资经济性的简单方法。",example:"设备改造投入20万，年节约6万→回收期=3.3年"},
-  {name:"效率提升率",cat:"方法",formula:"提升率 = (改善前工时 - 改善后工时) / 改善前工时 × 100%",desc:"衡量改善效果的标准计算方式。",example:"改善前60s→改善后48s→提升率=(60-48)/60=20%"},
-  {name:"设备故障停机率",cat:"设备",formula:"故障停机率 = 故障停机时间 / (天数 × 24h × 设备台数) × 100%",desc:"衡量设备可靠性的综合指标。",example:"月故障累计120h，30天×24h×50台=36000h→停机率=0.33%"},
-  {name:"宽放率构成",cat:"时间",formula:"宽放率 = 私事宽放(5%) + 疲劳宽放(5-10%) + 延迟宽放(3-5%)",desc:"标准工时的重要组成部分，需根据作业环境调整。",example:"站立作业+重物→疲劳宽放取10%→总宽放=5%+10%+3%=18%"},
-];
-
-const THEORY = [
-  {name:"方法研究",desc:"IE核心方法论，通过系统分析现有或拟定的工作方法，寻求更经济有效的方法。",points:["程序分析：从宏观流程入手，分析产品/零件的工序流程","作业分析：研究人与机器的配合关系（人机作业分析）","动作分析：细分到基本动作单元，运用动作经济原则优化","分析工具：工艺程序图、流程程序图、人机操作图、双手操作图"]},
-  {name:"作业测定",desc:"运用科学方法确定合格工人按标准作业完成工作所需的时间。",points:["秒表时间研究：现场观测记录，经评比和宽放得出标准工时","预定动作时间法(PTS)：MTM/MOD法，不需现场观测","标准资料法：利用积累的标准数据类推估算","工作抽样：通过随机观测统计各活动状态比例"]},
-  {name:"IE七大手法",desc:"日本IE协会总结的七种经典改善分析手法，是IE工程师的必备工具箱。",points:["1. 防错法(Poka-Yoke)：消除人为错误","2. 动作改善法：基于动作经济原则","3. 流程法：分析作业流程，用ECRS优化","4. 五五法(5×5W1H)：通过提问发现改善点","5. 人机法：优化人机配合","6. 双手法：研究双手作业平衡","7. 抽查法(工作抽样)：统计工时和活动分布"]},
-  {name:"动作经济原则",desc:"由吉尔布雷斯提出，遵循人体工学减少疲劳提高效率的22条原则。",points:["人体运用类：双手同时开始同时结束、动作对称反向","作业场所类：物料工具定点定量、利用重力送料","工具设备类：尽量合并工具、利用夹具定位"]},
-  {name:"线平衡分析",desc:"将工序时间分配到各工位，使各工位时间尽可能接近节拍时间。",points:["步骤1：绘制工序先后顺序图","步骤2：测定各工序标准时间","步骤3：计算理论最少工位数=ΣCT/TT","步骤4：分配工序到工位，遵循约束条件","步骤5：计算平衡率和损失率","改善方向：消除瓶颈、拆分/合并工序、并行作业"]},
-  {name:"5S与目视化管理",desc:"现场管理基础，通过5S活动实现现场的可视化和标准化。",points:["整理(Seiri)：区分要与不要，清理不需要的","整顿(Seiton)：定位定量定容，30秒内找到","清扫(Seiso)：清扫即点检，发现异常","清洁(Seiketsu)：标准化制度化，维持成果","素养(Shitsuke)：养成习惯，遵守规则","目视化：任何人3秒内能判断正常/异常"]},
-  {name:"精益生产体系",desc:"丰田生产方式(TPS)的精髓，以消除浪费为核心，追求持续改善。",points:["两大支柱：准时制(JIT) + 自働化(Jidoka)","JIT三要素：节拍时间、连续流、拉动系统","消除七大浪费：过量生产、等待、搬运、加工、库存、动作、不良","改善(Kaizen)：全员参与的持续改进文化","价值流分析(VSM)：从客户视角识别增值活动"]},
-  {name:"六西格玛",desc:"以数据驱动的质量改进方法论，追求百万分之3.4的缺陷率。",points:["DMAIC流程：定义-测量-分析-改进-控制","统计工具：SPC控制图、假设检验、DOE试验设计","关键概念：变异、过程能力、正态分布","绿带/黑带认证体系","与精益融合→精益六西格玛"]},
-  {name:"设施布置与物流分析",desc:"合理规划工厂布局和物流路线，减少搬运浪费。",points:["布置类型：产品原则布置、工艺原则布置、固定布置","SLP法(系统布置规划)：Muther提出的系统化布局方法","物流分析：从至表、物流强度分析","动线设计：U型线、直线型、蛇形线","目标：最短物流距离、最小交叉迂回"]},
-  {name:"人因工程",desc:"研究人-机器-环境系统的优化匹配，提高效率保障安全。",points:["人体测量学：作业台面高度、伸手可达范围","作业环境：照度、噪声、温湿度","劳动强度：RHR(相对心率)评价","疲劳研究：静态肌肉疲劳、精神疲劳","显示器与控制器设计"]},
-  {name:"生产计划与控制",desc:"协调生产资源，在正确的时间生产正确的产品。",points:["主生产计划(MPS)：确定最终产品的产出计划","物料需求计划(MRP)：基于BOM分解物料需求","产能计划：粗能力计划(RCCP)、能力需求计划(CRP)","车间控制：派工、调度、进度跟踪","APS高级排程：考虑约束的优化排产"]},
-  {name:"工作研究应用流程",desc:"IE工程师开展改善项目的标准流程框架。",points:["1. 选择研究对象：瓶颈工序/高成本工序","2. 现状调查：记录现有方法（流程图/录像）","3. 严格分析：5W1H提问+ECRS原则","4. 设计新方法：制定改善方案","5. 评审验证：试运行+数据对比","6. 标准化：修订SOP+培训推广","7. 持续监控：定期复盘迭代"]},
-];
-
-const SOFT = [
-  {name:"向上沟通",desc:"向领导汇报工作时，结论先行、数据说话、方案备选。",tips:["结论先行：先说结果再说过程","数据说话：用数据代替'大概''差不多'","方案备选：给2-3个方案+推荐+理由","预期管理：主动同步进度，不报喜不报忧","时间意识：控制汇报时长，抓重点说"]},
-  {name:"跨部门协作",desc:"IE改善往往涉及生产、品质、设备多部门，需建立协作机制。",tips:["明确共同目标：找到各方利益交汇点","换位思考：理解对方KPI和难处","用数据说服：改善方案附带收益测算","定期沟通机制：周会/站会同步进展","书面留痕：会议纪要+行动项追踪"]},
-  {name:"现场沟通技巧",desc:"IE工程师常在车间一线，与一线员工沟通是基本功。",tips:["尊重一线经验：先肯定再建议","用对方语言：少用术语，多用比喻","示范引导：亲自演示标准动作","倾听反馈：一线最了解实际问题","表扬公开化、批评私下化"]},
-  {name:"改善提案撰写",desc:"将改善方案转化为可审批、可执行的提案文档。",tips:["问题量化：现状数据+损失金额","方案可行：技术方案+实施步骤","收益测算：节约工时/材料/能耗→金额","投入明细：设备/工装/培训成本","风险评估：潜在问题+应对措施","实施计划：甘特图+责任人+时间节点"]},
-  {name:"数据分析与汇报",desc:"IE的核心能力之一，将数据转化为决策依据。",tips:["明确分析目的：回答什么问题","选择合适图表：趋势用折线、对比用柱状、占比用饼图","一图一结论：每张图配一句话核心发现","突出异常：标红高亮关键数据","行动建议：数据→结论→建议三步走"]},
-  {name:"培训与指导",desc:"IE工程师需将标准方法推广到一线，培训能力不可或缺。",tips:["讲做练评四步法：讲解→演示→练习→点评","分层次培训：新员工/老员工/班组长内容不同","操作口诀化：将SOP编成顺口溜","考核验证：实操考核+笔试","持续跟进：培训后1周/1月复查"]},
-  {name:"时间管理",desc:"IE工程师同时推进多个项目，时间管理至关重要。",tips:["四象限法：按重要紧急分类，优先重要不紧急","番茄工作法：25分钟专注+5分钟休息","每日三件事：列出当天最重要的3项任务","批量处理：同类任务集中处理","定期复盘：每周回顾时间分配"]},
-  {name:"冲突管理",desc:"改善推行中难免遇到阻力，需妥善处理冲突。",tips:["对事不对人：聚焦问题本身","先处理情绪再处理问题","寻找共赢方案：让各方都有获得感","适度妥协：抓核心利益，放次要条款","必要时升级：超出自身权限及时上报"]},
-  {name:"会议管理",desc:"高效会议是IE项目管理的基础。",tips:["会前发议程：明确议题+时间分配","准时开始结束：不等人","每人发言限时：防止跑题","结论行动项：谁做什么何时完成","会后纪要：24小时内发出"]},
-  {name:"项目管理",desc:"IE改善项目本质上是一个个小型项目，需掌握项目管理方法。",tips:["WBS分解：将项目拆成可管理的工作包","关键路径法：识别决定项目周期的关键工序","里程碑管理：设置阶段性检查点","风险预案：提前识别风险制定Plan B","收尾复盘：总结经验教训形成知识库"]},
-];
-
-// ============ 每日一学 ============
-const DAILY = [
-  {title:"OEE的三个乘数",content:"OEE = <b>可用率</b> × <b>性能率</b> × <b>良品率</b>。可用率关注设备是否在运行，性能率关注运行速度是否达标，良品率关注产出的产品是否合格。三者相乘才是真实的设备效率。世界级标准≥85%。",formula:"OEE = 可用率 × 性能率 × 良品率"},
-  {title:"节拍时间 vs 周期时间",content:"<b>节拍时间(TT)</b>是客户需求的速率：可用时间÷需求量。<b>周期时间(CT)</b>是实际完成一个循环的时间。理想状态下 CT ≤ TT。当 CT > TT 时，产能不能满足需求，需要改善瓶颈。",formula:"TT = 可用工作时间 / 客户需求量"},
-  {title:"ECRS四大原则",content:"改善作业时的优先顺序：<b>取消(E)</b>→<b>合并(C)</b>→<b>重排(R)</b>→<b>简化(S)</b>。第一步永远是问'能不能不做'，其次才考虑合并和重排，最后才是简化。取消是最高效的改善。",formula:"E > C > R > S"},
-  {title:"七大浪费识别",content:"过量生产（做得太多太早）、等待（人等机器/机器等人）、搬运（不必要的移动）、加工（过度的加工要求）、库存（掩盖问题的库存）、动作（不必要的身体动作）、不良（返工返修）。过量生产是万恶之源。",formula:"浪费 = 不增值活动"},
-  {title:"SMED核心思想",content:"快速换模的核心是区分<b>内部作业</b>（停机才能做）和<b>外部作业</b>（不停机也能做），然后将内部作业转化为外部作业。比如模具预热、工具准备都可以在停机前完成。",formula:"换模时间↓ = 内部作业时间↓"},
-  {title:"利特尔法则",content:"<b>WIP = 吞吐率 × 流转时间</b>。这个公式说明：在产出速率不变的情况下，减少在制品就能缩短流转时间。这就是精益生产追求'单件流'的数学基础。",formula:"WIP = TH × CT"},
-  {title:"标准工时构成",content:"标准工时 = <b>观测时间</b> × <b>评比系数</b> × <1 + <b>宽放率</b>)。评比系数修正操作者速度差异（正常=1.0）；宽放率含私事(5%)+疲劳(5-10%)+延迟(3-5%)，确保工时公平可行。",formula:"ST = OT × R × (1+A)"},
-  {title:"CPK与过程能力",content:"CPK衡量过程能否满足规格要求。CPK≥1.33为可接受，≥1.67为优秀。它考虑了过程均值偏移的影响，比CP（仅考虑分散度）更严格。六西格玛水平对应CPK≥2.0。",formula:"CPK = min[(USL-μ),(μ-LSL)] / (3σ)"},
-  {title:"5W1H提问法",content:"对每个工序/动作连续追问：<b>What</b>做什么？<b>Why</b>为什么做？<b>Where</b>在哪做？<b>When</b>何时做？<b>Who</b>谁来做？<b>How</b>怎么做？配合ECRS原则，是发现改善点的利器。",formula:"5W1H → ECRS"},
-  {title:"线平衡改善方向",content:"当平衡率低于85%时需要改善。方法：①拆分瓶颈工序到其他工位；②增加瓶颈工位人手/设备；③改善瓶颈工序作业方法；④合并时间短的相邻工序。目标：各工位时间趋近节拍。",formula:"平衡率 = ΣCT / (N × CT_max)"},
-  {title:"看板数量计算",content:"看板系统的核心公式：<b>看板数量 = (日需求 × 前置时间 × 安全系数) / 容器容量</b>。安全系数取决于需求波动和供应稳定性，通常1.0-1.5。看板过多=库存浪费，过少=缺料风险。",formula:"K = (D × L × α) / C"},
-  {title:"FMEA风险优先",content:"对每个潜在失效模式评估三个维度：严重度(S)、发生度(O)、探测度(D)，各1-10分。<b>RPN = S × O × D</b>。RPN>100需优先改善，改善时优先降低发生度和提高探测能力。",formula:"RPN = S × O × D"},
-  {title:"Poka-Yoke防错三原理",content:"①<b>接触式</b>：通过形状/尺寸识别（如USB防反插）；②<b>固定值式</b>：必须完成规定数量才能进入下一步；③<b>动作步骤式</b>：必须按顺序操作才能完成。防错优于检验。",formula:"防错 > 检验"},
-  {title:"价值流图分析",content:"VSM画出从原材料到客户的全流程，标注每个环节的CT、换模时间、良率、WIP等数据。<b>增值比 = 增值时间 / 总前置时间</b>。通常<5%，大量时间花在等待和搬运上。",formula:"增值比 = 增值时间 / 总前置时间"},
-  {title:"TOC五步聚焦法",content:"①找出瓶颈；②挖掘瓶颈潜能；③让非瓶颈配合瓶颈；④突破瓶颈；⑤回到第一步找新瓶颈。系统产出由瓶颈决定，非瓶颈的改善不会增加产出。",formula:"产出 ≤ 瓶颈速率"},
-  {title:"MOD法基础",content:"模特排时法以手指移动2.5cm为1MOD（0.129秒）。基本动作：移动(M1-M5)、抓取(G0-G3)、放置(P0-P5)等。比秒表法更客观，不需要现场观测，适合新产品工时预估。",formula:"1 MOD = 0.129s"},
-  {title:"宽放率设定",content:"标准工时中的宽放不是随意加的。私事宽放5%（上厕所喝水）；疲劳宽放视作业强度5-20%（重体力取高值）；延迟宽放3-5%（物料等待、设备调整）。总宽放一般13-25%。",formula:"宽放 = 私事 + 疲劳 + 延迟"},
-  {title:"甘特图与关键路径",content:"项目管理中，<b>关键路径</b>是耗时最长的任务链，决定了项目最短工期。非关键路径有浮动时间。IE改善项目要重点关注关键路径上的任务，缩短它们才能缩短总工期。",formula:"项目工期 = 关键路径长度"},
-  {title:"5S是改善起点",content:"5S不是大扫除，而是管理基础。通过整理减少障碍物→整顿减少寻找时间→清扫发现异常→清洁标准化→素养养成习惯。5S做不好的现场，IE改善方案也难以落地。",formula:"5S → 标准化 → 改善"},
-  {title:"动作经济22原则精要",content:"①双手同时动作且反向对称；②动作距离最短；③减少动作等级（手指>手腕>前臂>上臂）；④利用重力/惯性/弹力；⑤物料工具定点定量；⑥利用夹具/导轨定位。核心：省力省时省空间。",formula:"减少动作等级 = 降低疲劳"},
-];
-
-// ============ 渲染 ============
-const catNames = {abbr:"IE缩写库",formula:"公式手册",theory:"基础理论",soft:"软技能"};
-let currentCat = 'all';
-let searchTerm = '';
-
-function renderAbbr(list){
-  return list.map(a=>`
-    <div class="card">
-      <div class="card-head">
-        <div>
-          <div class="card-abbr">${a.abbr}</div>
-          <div class="card-full">${a.full}</div>
-        </div>
-        <span class="card-tag tag-${a.cat}">${a.cat}</span>
-      </div>
-      <div class="card-cn">${a.cn}</div>
-      <div class="card-desc">${a.desc}</div>
-      ${a.formula!=="无"?`<div class="card-formula">${a.formula}</div>`:''}
-      ${a.example?`<div class="card-example">💡 ${a.example}</div>`:''}
-    </div>
-  `).join('');
-}
-
-function renderFormula(list){
-  return list.map(f=>`
-    <div class="card">
-      <div class="card-head">
-        <div class="card-abbr" style="font-size:15px">${f.name}</div>
-        <span class="card-tag tag-${f.cat}">${f.cat}</span>
-      </div>
-      <div class="card-formula">${f.formula}</div>
-      <div class="card-desc">${f.desc}</div>
-      <div class="card-example">💡 ${f.example}</div>
-    </div>
-  `).join('');
-}
-
-function renderTheory(list){
-  return list.map(t=>`
-    <div class="theory-card">
-      <h3>🎓 ${t.name}</h3>
-      <div class="t-desc">${t.desc}</div>
-      <ul>${t.points.map(p=>`<li>${p}</li>`).join('')}</ul>
-    </div>
-  `).join('');
-}
-
-function renderSoft(list){
-  return list.map(s=>`
-    <div class="soft-card">
-      <h3>🤝 ${s.name}</h3>
-      <div class="s-desc">${s.desc}</div>
-      <div class="soft-tips">${s.tips.map(t=>`<span class="soft-tip">${t}</span>`).join('')}</div>
-    </div>
-  `).join('');
-}
-
-function filterData(){
-  const s = searchTerm.toLowerCase();
-  const match = (text)=> !s || text.toLowerCase().includes(s);
-  let html = '';
-  
-  const showAbbr = currentCat==='all'||currentCat==='abbr';
-  const showFormula = currentCat==='all'||currentCat==='formula';
-  const showTheory = currentCat==='all'||currentCat==='theory';
-  const showSoft = currentCat==='all'||currentCat==='soft';
-
-  if(showAbbr){
-    const list = ABBR.filter(a=>match(a.abbr)||match(a.full)||match(a.cn)||match(a.desc)||match(a.cat));
-    if(list.length){
-      html += `<div class="section-title">🔤 IE缩写库 <span class="count">${list.length}条</span></div>`;
-      html += `<div class="card-grid">${renderAbbr(list)}</div>`;
-    }
-  }
-  if(showFormula){
-    const list = FORMULA.filter(f=>match(f.name)||match(f.formula)||match(f.desc)||match(f.cat));
-    if(list.length){
-      html += `<div class="section-title">📐 公式手册 <span class="count">${list.length}条</span></div>`;
-      html += `<div class="card-grid">${renderFormula(list)}</div>`;
-    }
-  }
-  if(showTheory){
-    const list = THEORY.filter(t=>match(t.name)||match(t.desc)||t.points.some(p=>match(p)));
-    if(list.length){
-      html += `<div class="section-title">🎓 基础理论 <span class="count">${list.length}条</span></div>`;
-      html += `<div class="card-grid" style="grid-template-columns:repeat(auto-fill,minmax(380px,1fr))">${renderTheory(list)}</div>`;
-    }
-  }
-  if(showSoft){
-    const list = SOFT.filter(s=>match(s.name)||match(s.desc)||s.tips.some(t=>match(t)));
-    if(list.length){
-      html += `<div class="section-title">🤝 软技能 <span class="count">${list.length}条</span></div>`;
-      html += `<div class="card-grid" style="grid-template-columns:repeat(auto-fill,minmax(380px,1fr))">${renderSoft(list)}</div>`;
-    }
-  }
-  if(!html) html = '<div class="no-result">😕 没有找到匹配的内容，试试其他关键词？</div>';
-  document.getElementById('mainContent').innerHTML = html;
-}
-
-// 每日一学
-let dailyIdx = 0;
-function getDailyIdx(){
-  const start = new Date(2024,0,1);
-  const today = new Date();
-  const days = Math.floor((today-start)/(86400000));
-  return days % DAILY.length;
-}
-function renderDaily(idx){
-  const d = DAILY[idx];
-  document.getElementById('dailyBox').innerHTML = `
-    <div class="daily-label">📖 每日一学 · 第${idx+1}期 / 共${DAILY.length}期</div>
-    <div class="daily-title">${d.title}</div>
-    <div class="daily-content">${d.content}</div>
-    ${d.formula?`<div class="daily-formula">${d.formula}</div>`:''}
-    <div class="daily-nav">
-      <button onclick="dailyNav(-1)">◀ 上一期</button>
-      <button onclick="dailyNav(1)">下一期 ▶</button>
-      <button onclick="dailyNav(0)">🔄 今日推荐</button>
-    </div>
-  `;
-}
-function dailyNav(dir){
-  if(dir===0) dailyIdx = getDailyIdx();
-  else dailyIdx = (dailyIdx + dir + DAILY.length) % DAILY.length;
-  renderDaily(dailyIdx);
-  document.getElementById('dailyBox').scrollIntoView({behavior:'smooth',block:'nearest'});
-}
-
-// 日期
-function showDate(){
-  const d = new Date();
-  const w = ['日','一','二','三','四','五','六'][d.getDay()];
-  document.getElementById('todayDate').textContent = 
-    `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日 星期${w}`;
-}
-
-// 事件绑定
-document.querySelectorAll('.nav-btn').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    currentCat = btn.dataset.cat;
-    filterData();
-  });
-});
-document.getElementById('searchBox').addEventListener('input',e=>{
-  searchTerm = e.target.value.trim();
-  filterData();
-});
-
-// 初始化
-showDate();
-dailyIdx = getDailyIdx();
-renderDaily(dailyIdx);
-filterData();
-</script>
+<div class="card-desc">BOSS直聘岗位分析与简历匹配，求职利器</div>
+<div class="card-tags"><span class="tag">岗位匹配</span><span class="tag">简历分析</span></div>
+</a>
+<a class="card" href="广东省考公备考指南.html">
+<div class="card-head">
+<div class="card-icon icon-3">📝</div>
+<div class="card-title">广东省考公备考指南</div>
+<div class="card-arrow">›</div>
+</div>
+<div class="card-desc">广东省公务员考试备考资料与学习指南</div>
+<div class="card-tags"><span class="tag">考公备考</span><span class="tag">学习指南</span></div>
+</a>
+</div>
+<p class="footer">⭐ 可添加到手机书签/主屏幕，随时访问</p>
 </body>
 </html>
