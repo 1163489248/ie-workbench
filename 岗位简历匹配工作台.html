@@ -1,0 +1,1815 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>岗位-简历匹配工作台</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#0d1117;--card:#161b22;--border:#30363d;--border-light:#21262d;
+--text:#e6edf3;--text2:#8b949e;--text3:#6e7681;
+--blue:#58a6ff;--blue-bg:rgba(88,166,255,0.12);
+--green:#3fb950;--green-bg:rgba(63,185,80,0.12);
+--yellow:#d29922;--yellow-bg:rgba(210,153,34,0.12);
+--red:#f85149;--red-bg:rgba(248,81,73,0.12);
+--purple:#bc8cff;--purple-bg:rgba(188,140,255,0.12);
+--input-bg:#0d1117;--radius:8px;
+}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,"Microsoft YaHei","微软雅黑",sans-serif;font-size:14px;line-height:1.6}
+/* Nav */
+.nav{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.nav-brand{font-size:15px;font-weight:700;color:var(--blue);white-space:nowrap}
+.nav-links{display:flex;gap:4px;flex:1;flex-wrap:wrap}
+.nav-link{padding:4px 10px;border-radius:6px;color:var(--text2);cursor:pointer;font-size:12px;transition:all .15s;white-space:nowrap}
+.nav-link:hover{background:var(--border);color:var(--text)}
+.nav-actions{display:flex;gap:6px}
+/* Buttons */
+.btn{padding:5px 12px;border-radius:6px;border:1px solid var(--border);background:var(--border-light);color:var(--text);cursor:pointer;font-size:12px;transition:all .15s;font-family:inherit;white-space:nowrap}
+.btn:hover{border-color:var(--blue);color:var(--blue)}
+.btn-primary{background:#1f6feb;border-color:#1f6feb;color:#fff}
+.btn-primary:hover{background:#388bfd;border-color:#388bfd;color:#fff}
+.btn-success{background:#238636;border-color:#238636;color:#fff}
+.btn-success:hover{background:#2ea043;border-color:#2ea043;color:#fff}
+.btn-warn{background:#9e6a03;border-color:#9e6a03;color:#fff}
+.btn-warn:hover{background:#bb8009;border-color:#bb8009;color:#fff}
+.btn-sm{padding:3px 8px;font-size:11px}
+/* Container */
+.container{max-width:960px;margin:0 auto;padding:20px 16px 80px}
+/* Section */
+.section{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:20px}
+.sec-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.sec-num{width:28px;height:28px;border-radius:6px;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.sec-title{font-size:16px;font-weight:600}
+.sec-desc{color:var(--text3);font-size:12px;margin-left:auto}
+/* Fields */
+.fg{margin-bottom:14px}
+.fl{display:block;font-size:12px;color:var(--text2);margin-bottom:5px;font-weight:500}
+.fl .req{color:var(--red)}
+.input,.textarea,.select{width:100%;background:var(--input-bg);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-size:13px;font-family:inherit;transition:border-color .15s}
+.input:focus,.textarea:focus,.select:focus{outline:none;border-color:var(--blue)}
+.textarea{resize:vertical;min-height:80px;line-height:1.6}
+.textarea-lg{min-height:140px}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.fr4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+/* Tags */
+.tag-wrap{display:flex;flex-wrap:wrap;gap:5px;padding:7px;background:var(--input-bg);border:1px solid var(--border);border-radius:6px;min-height:38px;align-items:flex-start;align-content:flex-start}
+.tag{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:10px;font-size:11px;background:var(--border-light);border:1px solid var(--border);white-space:nowrap}
+.tag .cnt{color:var(--text3);font-size:10px}
+.tag .x{cursor:pointer;opacity:.5;margin-left:2px;font-size:13px;line-height:1}
+.tag .x:hover{opacity:1;color:var(--red)}
+.tag-hit{background:var(--green-bg);border-color:rgba(63,185,80,0.4);color:var(--green)}
+.tag-miss{background:var(--red-bg);border-color:rgba(248,81,73,0.4);color:var(--red)}
+.tag-partial{background:var(--yellow-bg);border-color:rgba(210,153,34,0.4);color:var(--yellow)}
+.tag-blue{background:var(--blue-bg);border-color:rgba(88,166,255,0.4);color:var(--blue)}
+.tag-purple{background:var(--purple-bg);border-color:rgba(188,140,255,0.4);color:var(--purple)}
+.tag-add{display:inline-flex;align-items:center;gap:4px}
+.tag-add input{background:transparent;border:none;color:var(--text);font-size:12px;outline:none;width:100px;font-family:inherit}
+/* Entry block */
+.entry{background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px}
+.entry-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.entry-head .label{font-size:12px;color:var(--text2);font-weight:500}
+/* Match results */
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.score-box{text-align:center;padding:16px;background:var(--input-bg);border:1px solid var(--border);border-radius:8px}
+.score-big{font-size:42px;font-weight:800;line-height:1}
+.score-unit{font-size:16px;color:var(--text2)}
+.score-cap{color:var(--text2);font-size:12px;margin-top:4px}
+.score-bar{height:8px;background:var(--border-light);border-radius:4px;overflow:hidden;margin-top:10px}
+.score-bar-fill{height:100%;border-radius:4px;transition:width .6s ease}
+.match-list{background:var(--input-bg);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.match-list-head{padding:8px 12px;background:var(--border-light);font-size:12px;color:var(--text2);font-weight:600;border-bottom:1px solid var(--border)}
+.match-row{display:flex;align-items:center;gap:8px;padding:7px 12px;border-bottom:1px solid var(--border-light);font-size:13px}
+.match-row:last-child{border-bottom:none}
+.match-icon{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;cursor:pointer}
+.mi-ok{background:var(--green-bg);color:var(--green)}
+.mi-no{background:var(--red-bg);color:var(--red)}
+.mi-half{background:var(--yellow-bg);color:var(--yellow)}
+.match-text{flex:1}
+.match-text .kw{color:var(--text)}
+.match-text .miss{color:var(--red)}
+.match-text .hit{color:var(--green)}
+/* Output */
+.out-block{margin-bottom:14px}
+.out-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.out-label{font-size:12px;color:var(--text2);font-weight:500}
+.copy-btn{padding:3px 10px;font-size:11px;background:var(--border-light);border:1px solid var(--border);border-radius:4px;color:var(--text2);cursor:pointer;transition:all .15s}
+.copy-btn:hover{color:var(--blue);border-color:var(--blue)}
+.copy-btn.copied{color:var(--green);border-color:var(--green)}
+/* Collapsible */
+.collapsible{overflow:hidden;transition:max-height .3s ease}
+.collapsible.collapsed{max-height:0!important;overflow:hidden}
+.toggle{cursor:pointer;color:var(--text2);font-size:12px;display:inline-flex;align-items:center;gap:4px}
+.toggle:hover{color:var(--blue)}
+/* Hint */
+.hint{background:var(--blue-bg);border:1px solid rgba(88,166,255,0.2);border-radius:6px;padding:10px 14px;font-size:12px;color:var(--text2);margin-bottom:14px;line-height:1.7}
+.hint b{color:var(--blue)}
+/* Gap items */
+.gap-list{background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:10px}
+.gap-item{padding:6px 10px;border-bottom:1px solid var(--border-light);font-size:13px;display:flex;align-items:flex-start;gap:6px}
+.gap-item:last-child{border-bottom:none}
+.gap-icon{flex-shrink:0;font-weight:700}
+/* Empty state */
+.empty{text-align:center;padding:20px;color:var(--text3);font-size:13px}
+/* Toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--green);color:#fff;padding:8px 20px;border-radius:8px;font-size:13px;z-index:200;transition:transform .3s ease;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+/* Modal */
+.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.show{display:flex}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;max-width:620px;width:100%;max-height:80vh;overflow-y:auto}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.modal-title{font-size:15px;font-weight:600}
+.modal-close{cursor:pointer;color:var(--text2);font-size:22px;background:none;border:none;padding:0 4px;line-height:1}
+.modal-close:hover{color:var(--red)}
+.parse-result{margin-top:12px;padding:10px;border-radius:6px;background:var(--green-bg);border:1px solid rgba(63,185,80,0.3);font-size:12px;color:var(--green);display:none}
+.parse-result.show{display:block}
+/* Upload */
+.upload-zone{border:2px dashed var(--border);border-radius:10px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:14px;position:relative}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--blue);background:var(--blue-bg)}
+.upload-zone .up-icon{font-size:28px;margin-bottom:6px}
+.upload-zone .up-title{font-size:14px;font-weight:500;color:var(--text)}
+.upload-zone .up-hint{font-size:12px;color:var(--text3);margin-top:4px}
+.upload-zone .up-status{font-size:12px;color:var(--green);margin-top:6px;display:none}
+.upload-zone .up-status.show{display:block}
+.upload-zone input[type=file]{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer}
+/* Responsive */
+@media(max-width:640px){
+.fr2,.fr3,.fr4{grid-template-columns:1fr}
+.match-grid{grid-template-columns:1fr}
+.nav-links{display:none}
+.container{padding:12px 8px 60px}
+.section{padding:14px}
+}
+</style>
+</head>
+<body>
+
+<!-- ========== NAV ========== -->
+<nav class="nav">
+  <span class="nav-brand">📋 岗位-简历匹配工作台</span>
+  <div class="nav-links">
+    <span class="nav-link" onclick="scrollToSec('m1')">① 岗位采集</span>
+    <span class="nav-link" onclick="scrollToSec('m2')">② 需求分析</span>
+    <span class="nav-link" onclick="scrollToSec('m3')">③ 简历录入</span>
+    <span class="nav-link" onclick="scrollToSec('m4')">④ 匹配度</span>
+    <span class="nav-link" onclick="scrollToSec('m5')">⑤ 优化输出</span>
+  </div>
+  <div class="nav-actions">
+    <button class="btn btn-sm" onclick="exportData()">📤 导出</button>
+    <button class="btn btn-sm" onclick="document.getElementById('importFile').click()">📥 导入</button>
+    <button class="btn btn-sm btn-warn" onclick="clearAll()">🗑 清空</button>
+    <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+  </div>
+</nav>
+
+<div class="container">
+
+<!-- ========== 使用说明 ========== -->
+<div class="section" style="padding:14px 20px">
+  <div class="toggle" onclick="toggleCollapse('guide',this)">
+    <span>💡 使用说明（点击展开/收起）</span>
+  </div>
+  <div id="guide" class="collapsible collapsed" style="max-height:0">
+    <div class="hint" style="margin-top:10px;margin-bottom:0">
+      <b>工作流程：</b><br>
+      ① 复制粘贴 BOSS 岗位的 JD（职责+要求）→ 点击「提取关键词」<br>
+      ② 查看 AI 自动拆解的能力要求/关键词 → 手动补充调整<br>
+      ③ 录入你的简历信息（工作经历、项目、技能）<br>
+      ④ 点击「开始匹配分析」→ 自动计算匹配度、命中关键词、缺失项<br>
+      ⑤ 在优化输出区改写简历段落 → 一键复制投递<br><br>
+      <b>数据自动保存</b>到浏览器本地，刷新不丢失。「导出」可保存 JSON 文件用于备份不同岗位。
+    </div>
+  </div>
+</div>
+
+<!-- ========== MODULE 1: 岗位信息采集 ========== -->
+<div class="section" id="m1">
+  <div class="sec-header">
+    <div class="sec-num">1</div>
+    <div class="sec-title">岗位信息采集区</div>
+    <div class="sec-desc">把 BOSS 岗位扒干净</div>
+    <button class="btn btn-sm" onclick="clearModule(1)" style="flex-shrink:0;font-size:11px;color:var(--text3)">🗑 清空</button>
+  </div>
+  <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+    <button class="btn btn-primary" onclick="openPasteModal()">📋 粘贴原始 JD</button>
+    <button class="btn" onclick="smartParse()">🤖 智能解析 JD</button>
+    <span style="font-size:12px;color:var(--text3);align-self:center">粘贴全文→自动拆分字段；或分别填好职责/要求后点智能解析</span>
+  </div>
+  <div class="fr2">
+    <div class="fg"><label class="fl">公司名称</label><input class="input" data-k="job.company" placeholder="如：字节跳动"></div>
+    <div class="fg"><label class="fl">所属行业</label><input class="input" data-k="job.industry" placeholder="如：互联网/电商"></div>
+  </div>
+  <div class="fr4">
+    <div class="fg"><label class="fl">岗位名称</label><input class="input" data-k="job.position" placeholder="如：产品经理"></div>
+    <div class="fg"><label class="fl">岗位级别</label><input class="input" data-k="job.level" placeholder="如：中级/高级"></div>
+    <div class="fg"><label class="fl">薪资范围</label><input class="input" data-k="job.salary" placeholder="如：15-25K"></div>
+    <div class="fg"><label class="fl">工作地点</label><input class="input" data-k="job.location" placeholder="如：深圳南山"></div>
+  </div>
+  <div class="fg">
+    <label class="fl">岗位职责（复制粘贴）</label>
+    <textarea class="textarea textarea-lg" data-k="job.duties" placeholder="粘贴 BOSS 岗位的「岗位职责」全文..."></textarea>
+  </div>
+  <div class="fg">
+    <label class="fl">任职要求（复制粘贴）</label>
+    <textarea class="textarea textarea-lg" data-k="job.requirements" placeholder="粘贴 BOSS 岗位的「任职要求」全文..."></textarea>
+  </div>
+  <div class="fg">
+    <label class="fl">岗位偏好关键词</label>
+    <input class="input" data-k="job.preferences" placeholder="如：抗压、沟通、数据驱动、执行、管理（逗号分隔）">
+  </div>
+  <div class="fg">
+    <label class="fl">JD 核心关键词（自动提取 + 可手动增删）</label>
+    <div class="tag-wrap" id="jobKeywords">
+      <div class="tag tag-add"><span>＋</span><input id="kwInput" placeholder="手动添加关键词" onkeydown="if(event.key==='Enter'){addKeyword('job',this.value);this.value='';event.preventDefault()}"></div>
+    </div>
+    <div style="margin-top:8px;display:flex;gap:6px">
+      <button class="btn btn-primary btn-sm" onclick="extractKeywords()">🔍 一键提取关键词</button>
+      <button class="btn btn-sm" onclick="clearKeywords()">清空关键词</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== MODULE 2: 岗位需求深度分析 ========== -->
+<div class="section" id="m2">
+  <div class="sec-header">
+    <div class="sec-num">2</div>
+    <div class="sec-title">岗位需求深度分析</div>
+    <div class="sec-desc">把模糊 JD 变成可对标清单</div>
+    <button class="btn btn-sm" onclick="clearModule(2)" style="flex-shrink:0;font-size:11px;color:var(--text3)">🗑 清空</button>
+  </div>
+  <div class="hint">
+    点击上方「一键提取关键词」后，本模块自动填充。可手动编辑每项内容。
+  </div>
+  <div class="fg">
+    <label class="fl">岗位核心能力要求（3-5 条）</label>
+    <div id="coreAbilities">
+      <input class="input" style="margin-bottom:6px" data-k="analysis.coreAbilities.0" placeholder="如：独立负责产品从0到1的规划与落地">
+      <input class="input" style="margin-bottom:6px" data-k="analysis.coreAbilities.1" placeholder="如：数据驱动决策，具备AB测试经验">
+      <input class="input" style="margin-bottom:6px" data-k="analysis.coreAbilities.2" placeholder="如：跨部门协作推进项目">
+    </div>
+  </div>
+  <div class="fg">
+    <label class="fl">必备技能（硬技能）</label>
+    <div class="tag-wrap" id="hardSkills">
+      <div class="tag tag-add"><span>＋</span><input placeholder="添加硬技能" onkeydown="if(event.key==='Enter'){addKeyword('hard',this.value);this.value='';event.preventDefault()}"></div>
+    </div>
+  </div>
+  <div class="fg">
+    <label class="fl">加分技能（软技能 / 经验）</label>
+    <div class="tag-wrap" id="softSkills">
+      <div class="tag tag-add"><span>＋</span><input placeholder="添加加分技能" onkeydown="if(event.key==='Enter'){addKeyword('soft',this.value);this.value='';event.preventDefault()}"></div>
+    </div>
+  </div>
+  <div class="fg">
+    <label class="fl">高频关键词（简历必须命中）</label>
+    <div class="tag-wrap" id="highFreqKw">
+      <span class="empty" style="padding:4px">提取后自动显示</span>
+    </div>
+  </div>
+  <div class="fg">
+    <label class="fl">岗位隐藏要求（如项目经验/行业经验/成果导向）</label>
+    <div id="hiddenReqs">
+      <input class="input" style="margin-bottom:6px" data-k="analysis.hiddenReqs.0" placeholder="如：有电商行业经验优先">
+      <input class="input" style="margin-bottom:6px" data-k="analysis.hiddenReqs.1" placeholder="如：有带团队经验">
+      <input class="input" data-k="analysis.hiddenReqs.2" placeholder="如：有从0到1项目经验">
+    </div>
+  </div>
+</div>
+
+<!-- ========== MODULE 3: 简历信息录入 ========== -->
+<div class="section" id="m3">
+  <div class="sec-header">
+    <div class="sec-num">3</div>
+    <div class="sec-title">个人简历信息录入区</div>
+    <div class="sec-desc">把经历变成可匹配素材库</div>
+    <button class="btn btn-sm" onclick="clearModule(3)" style="flex-shrink:0;font-size:11px;color:var(--text3)">🗑 清空</button>
+  </div>
+  <!-- Upload zone -->
+  <div class="upload-zone" id="uploadZone" onclick="document.getElementById('resumeFile').click()" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="event.preventDefault();this.classList.remove('dragover');if(event.dataTransfer.files[0])processResumeFile(event.dataTransfer.files[0])">
+    <div class="up-icon">📎</div>
+    <div class="up-title">点击上传简历文件 或拖拽到此处</div>
+    <div class="up-hint">支持 TXT / DOCX / PDF / MD 格式，自动识别提取文本</div>
+    <div class="up-status" id="uploadStatus"></div>
+    <input type="file" id="resumeFile" accept=".txt,.docx,.doc,.pdf,.md" onchange="handleResumeFile(event)">
+  </div>
+  <div style="font-size:12px;color:var(--text3);margin-bottom:14px;padding:8px 12px;background:var(--blue-bg);border-radius:6px;border:1px solid rgba(88,166,255,0.15)">
+    💡 <b style="color:var(--blue)">微信上传：</b>也可直接将简历文件发到微信对话，AI 解析后返回文本，粘贴到下方「简历全文」即可
+  </div>
+  <div class="fr2">
+    <div class="fg"><label class="fl">姓名</label><input class="input" data-k="resume.name" placeholder="你的姓名"></div>
+    <div class="fg"><label class="fl">工作年限</label><input class="input" data-k="resume.years" placeholder="如：5年"></div>
+  </div>
+  <div class="fr3">
+    <div class="fg"><label class="fl">电话</label><input class="input" data-k="resume.phone" placeholder="手机号"></div>
+    <div class="fg"><label class="fl">邮箱</label><input class="input" data-k="resume.email" placeholder="邮箱"></div>
+    <div class="fg"><label class="fl">学历/专业</label><input class="input" data-k="resume.education" placeholder="如：本科/机械工程"></div>
+  </div>
+  <div class="fg">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
+      <label class="fl" style="margin-bottom:0">简历全文（可粘贴完整简历，用于关键词匹配）</label>
+      <button class="btn btn-sm btn-primary" onclick="parseResumeInfo()">🤖 智能解析简历</button>
+    </div>
+    <textarea class="textarea textarea-lg" data-k="resume.fullText" placeholder="粘贴你的完整简历文本，或上传文件后自动填充。系统将自动与岗位关键词匹配..."></textarea>
+  </div>
+  <div class="fg">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <label class="fl" style="margin-bottom:0">工作经历</label>
+      <button class="btn btn-sm" onclick="addWorkEntry()">＋ 添加工作经历</button>
+    </div>
+    <div id="workEntries"></div>
+  </div>
+  <div class="fg">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <label class="fl" style="margin-bottom:0">项目经历</label>
+      <button class="btn btn-sm" onclick="addProjEntry()">＋ 添加项目经历</button>
+    </div>
+    <div id="projEntries"></div>
+  </div>
+  <div class="fg">
+    <label class="fl">技能清单</label>
+    <div class="tag-wrap" id="resumeSkills">
+      <div class="tag tag-add"><span>＋</span><input placeholder="添加技能" onkeydown="if(event.key==='Enter'){addKeyword('skill',this.value);this.value='';event.preventDefault()}"></div>
+    </div>
+  </div>
+  <div class="fg">
+    <label class="fl">优势亮点（3 条）</label>
+    <input class="input" style="margin-bottom:6px" data-k="resume.highlights.0" placeholder="如：5年供应链数字化经验">
+    <input class="input" style="margin-bottom:6px" data-k="resume.highlights.1" placeholder="如：主导过ERP系统从0到1实施">
+    <input class="input" data-k="resume.highlights.2" placeholder="如：带领10人团队完成库存周转率提升30%">
+  </div>
+</div>
+
+<!-- ========== MODULE 4: 匹配度分析 ========== -->
+<div class="section" id="m4">
+  <div class="sec-header">
+    <div class="sec-num">4</div>
+    <div class="sec-title">简历-岗位匹配度分析</div>
+    <div class="sec-desc">一眼看到差在哪</div>
+    <button class="btn btn-sm" onclick="clearModule(4)" style="flex-shrink:0;font-size:11px;color:var(--text3)">🗑 清空</button>
+  </div>
+  <div style="margin-bottom:14px">
+    <button class="btn btn-primary" onclick="runMatch()">🎯 开始匹配分析</button>
+    <span style="margin-left:8px;font-size:12px;color:var(--text3)">点击后自动计算匹配度、关键词命中、缺失项</span>
+  </div>
+  <!-- Score -->
+  <div class="match-grid" style="margin-bottom:16px">
+    <div class="score-box">
+      <div><span class="score-big" id="totalScore">--</span><span class="score-unit">/100</span></div>
+      <div class="score-cap">匹配度总分</div>
+      <div class="score-bar"><div class="score-bar-fill" id="totalBar" style="width:0;background:var(--text3)"></div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="score-box" style="padding:10px">
+        <div><span style="font-size:24px;font-weight:700" id="kwScore">--</span><span class="score-unit">%</span></div>
+        <div class="score-cap">关键词命中</div>
+      </div>
+      <div class="score-box" style="padding:10px">
+        <div><span style="font-size:24px;font-weight:700" id="hsScore">--</span><span class="score-unit">%</span></div>
+        <div class="score-cap">硬技能匹配</div>
+      </div>
+      <div class="score-box" style="padding:10px">
+        <div><span style="font-size:24px;font-weight:700" id="expScore">--</span><span class="score-unit">%</span></div>
+        <div class="score-cap">经验匹配</div>
+      </div>
+      <div class="score-box" style="padding:10px">
+        <div><span style="font-size:24px;font-weight:700" id="advScore">--</span><span class="score-unit">%</span></div>
+        <div class="score-cap">优势匹配</div>
+      </div>
+    </div>
+  </div>
+  <!-- Match details -->
+  <div class="match-grid">
+    <div>
+      <div class="match-list">
+        <div class="match-list-head">硬技能匹配（点击图标切换状态）</div>
+        <div id="hardMatchList"><div class="empty">点击「开始匹配分析」</div></div>
+      </div>
+      <div class="match-list" style="margin-top:12px">
+        <div class="match-list-head">关键词命中明细</div>
+        <div id="kwMatchList"><div class="empty">点击「开始匹配分析」</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="match-list" style="margin-bottom:12px">
+        <div class="match-list-head">经验匹配</div>
+        <div style="padding:10px">
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+            <span style="font-size:13px;color:var(--text2)">行业经验：</span>
+            <div class="match-icon mi-half" id="expIndustry" onclick="cycleMatch('expIndustry',3)" title="点击切换">半</div>
+            <span style="font-size:12px;color:var(--text3)" id="expIndustryTxt">部分匹配</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+            <span style="font-size:13px;color:var(--text2)">岗位年限：</span>
+            <div class="match-icon mi-half" id="expYears" onclick="cycleMatch('expYears',3)" title="点击切换">半</div>
+            <span style="font-size:12px;color:var(--text3)" id="expYearsTxt">部分匹配</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <span style="font-size:13px;color:var(--text2)">项目规模：</span>
+            <div class="match-icon mi-half" id="expScale" onclick="cycleMatch('expScale',3)" title="点击切换">半</div>
+            <span style="font-size:12px;color:var(--text3)" id="expScaleTxt">部分匹配</span>
+          </div>
+        </div>
+      </div>
+      <div class="match-list" style="margin-bottom:12px">
+        <div class="match-list-head">优势匹配</div>
+        <div style="padding:10px">
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+            <span style="font-size:13px;color:var(--text2)">亮点贴合度：</span>
+            <div class="match-icon mi-half" id="advFit" onclick="cycleMatch('advFit',3)" title="点击切换">半</div>
+            <span style="font-size:12px;color:var(--text3)" id="advFitTxt">部分匹配</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <span style="font-size:13px;color:var(--text2)">差异化优势：</span>
+            <div class="match-icon mi-half" id="advDiff" onclick="cycleMatch('advDiff',3)" title="点击切换">半</div>
+            <span style="font-size:12px;color:var(--text3)" id="advDiffTxt">部分匹配</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Gap analysis -->
+  <div class="match-grid" style="margin-top:12px">
+    <div>
+      <div class="match-list">
+        <div class="match-list-head" style="color:var(--red)">❌ 缺失项（岗位要但你没写）</div>
+        <div id="missingList" class="gap-list"><div class="empty">点击「开始匹配分析」</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="match-list">
+        <div class="match-list-head" style="color:var(--yellow)">⚠️ 冗余项（你写了但岗位不需要）</div>
+        <div id="redundantList" class="gap-list"><div class="empty">点击「开始匹配分析」</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== MODULE 5: 简历优化输出 ========== -->
+<div class="section" id="m5">
+  <div class="sec-header">
+    <div class="sec-num">5</div>
+    <div class="sec-title">简历优化输出区</div>
+    <div class="sec-desc">直接复制去投岗</div>
+    <button class="btn btn-sm" onclick="clearModule(5)" style="flex-shrink:0;font-size:11px;color:var(--text3)">🗑 清空</button>
+  </div>
+  <div class="hint">
+    根据匹配分析结果，在此改写各模块。每段可独立复制，也可点击下方「生成优化后的简历」一键生成，或点击底部「生成最终版」合并导出。
+  </div>
+  <div style="margin:12px 0 16px;text-align:center">
+    <button class="btn btn-primary" style="padding:10px 28px;font-size:14px" onclick="generateOptimized()">🤖 生成优化后的简历</button>
+    <span style="display:block;margin-top:6px;font-size:11px;color:var(--text3)">基于岗位关键词匹配结果，自动改写个人简介/工作经历/项目经历/技能排序</span>
+  </div>
+  <div class="out-block">
+    <div class="out-head">
+      <span class="out-label">优化后个人简介（约100字）</span>
+      <button class="copy-btn" onclick="copyField('outSummary')">复制</button>
+    </div>
+    <textarea class="textarea" data-k="output.summary" id="outSummary" placeholder="结合岗位核心要求，用100字浓缩你的核心价值..."></textarea>
+  </div>
+  <div class="out-block">
+    <div class="out-head">
+      <span class="out-label">工作经历改写（贴合JD关键词）</span>
+      <button class="copy-btn" onclick="copyField('outWork')">复制</button>
+    </div>
+    <textarea class="textarea textarea-lg" data-k="output.work" id="outWork" placeholder="重写工作经历，突出岗位需要的能力，用数据说话..."></textarea>
+  </div>
+  <div class="out-block">
+    <div class="out-head">
+      <span class="out-label">项目经历改写（突出岗位需要的能力）</span>
+      <button class="copy-btn" onclick="copyField('outProj')">复制</button>
+    </div>
+    <textarea class="textarea textarea-lg" data-k="output.proj" id="outProj" placeholder="选取与岗位最相关的项目，用STAR法则重写..."></textarea>
+  </div>
+  <div class="out-block">
+    <div class="out-head">
+      <span class="out-label">技能模块调整（优先放岗位需要的）</span>
+      <button class="copy-btn" onclick="copyField('outSkills')">复制</button>
+    </div>
+    <textarea class="textarea" data-k="output.skills" id="outSkills" placeholder="按岗位优先级重新排列技能，匹配的放前面..."></textarea>
+  </div>
+  <div class="out-block">
+    <div class="out-head">
+      <span class="out-label">最终简历版本（可直接投递）</span>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-sm btn-primary" onclick="generateFinal()">生成最终版</button>
+        <button class="copy-btn" onclick="copyField('outFinal')">复制全部</button>
+      </div>
+    </div>
+    <textarea class="textarea textarea-lg" data-k="output.final" id="outFinal" style="min-height:200px" placeholder="点击「生成最终版」自动合并，或手动粘贴最终简历..."></textarea>
+  </div>
+  <div style="margin-top:16px;text-align:center">
+    <button class="btn btn-success" onclick="exportReport()">📄 导出完整报告（TXT）</button>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<!-- Paste JD Modal -->
+<div class="modal-overlay" id="pasteModal" onclick="if(event.target===this)closePasteModal()">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="modal-title">📋 粘贴原始 JD 文本</span>
+      <button class="modal-close" onclick="closePasteModal()">×</button>
+    </div>
+    <div class="hint">将 BOSS 直聘岗位页面全文复制粘贴到下方文本框，点击「智能解析」自动填充公司/岗位/薪资/地点/职责/要求等字段。</div>
+    <textarea class="textarea" id="rawJD" style="min-height:260px;margin-bottom:12px;font-size:13px" placeholder="在此粘贴完整的 BOSS 岗位描述文本，包括公司名、岗位名、薪资、地点、岗位职责、任职要求等..."></textarea>
+    <div class="parse-result" id="parseResult"></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+      <button class="btn" onclick="closePasteModal()">取消</button>
+      <button class="btn btn-primary" onclick="smartParseFromModal()">🤖 智能解析并填充</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ============ STATE ============
+const STORAGE_KEY = 'resumeWorkbench_v1';
+let state = {
+  job:{company:'',industry:'',position:'',level:'',salary:'',location:'',duties:'',requirements:'',preferences:'',keywords:[]},
+  analysis:{coreAbilities:['','',''],hardSkills:[],softSkills:[],highFreqKw:[],hiddenReqs:['','','']},
+  resume:{name:'',years:'',phone:'',email:'',education:'',fullText:'',workExp:[],projExp:[],skills:[],highlights:['','','']},
+  match:{totalScore:0,kwScore:0,hsScore:0,expScore:0,advScore:0,hardMatch:[],kwMatch:[],missing:[],redundant:[],expIndustry:1,expYears:1,expScale:1,advFit:1,advDiff:1},
+  output:{summary:'',work:'',proj:'',skills:'',final:''}
+};
+
+// ============ KEYWORD DICTIONARY ============
+const KW_DICT = {
+  '编程开发':['Python','Java','JavaScript','TypeScript','C++','C#','Go','Rust','PHP','Ruby','Swift','Kotlin','Scala','R语言','Shell','SQL','HTML','CSS'],
+  '框架库':['Spring','Spring Boot','Django','Flask','Vue','React','Angular','Node.js','Express','MyBatis','React Native','Flutter','Bootstrap','jQuery','微服务'],
+  '数据库':['MySQL','PostgreSQL','Redis','MongoDB','Oracle','SQL Server','Elasticsearch','ClickHouse','HBase','Cassandra','SQLite'],
+  '大数据':['Hadoop','Spark','Flink','Kafka','Hive','Presto','Airflow','DataX','数仓','数据建模','ETL'],
+  '云运维':['Docker','Kubernetes','K8s','AWS','阿里云','腾讯云','华为云','Azure','Linux','Nginx','Jenkins','GitLab','Prometheus','Grafana','Terraform','Ansible','CI/CD','DevOps'],
+  'AI数据':['机器学习','深度学习','自然语言处理','NLP','计算机视觉','数据挖掘','数据分析','数据可视化','推荐系统','大模型','LLM','GPT','PyTorch','TensorFlow','Tableau','Power BI','A/B测试'],
+  '产品':['产品设计','用户体验','UX','UI','交互设计','原型设计','用户研究','竞品分析','用户画像','用户旅程','PRD','BRD','MRD','敏捷','Scrum','需求分析'],
+  '供应链生产':['供应链','生产计划','物料控制','PMC','ERP','SAP','MRP','BOM','仓储管理','库存控制','采购','供应商管理','物流','WMS','MES','SCM','精益生产','六西格玛','5S','ISO','质量管理','产能规划','排产','收卷','拉带','塑料','包装'],
+  '财务':['财务分析','成本控制','预算管理','审计','税务','会计','CPA','ACCA','CFA','风控','合规','信贷'],
+  '市场运营':['市场调研','品牌策划','内容运营','用户运营','活动运营','社群运营','SEO','SEM','投放','ROI','GMV','转化率','留存率','DAU','MAU','私域','增长','裂变'],
+  '软技能':['沟通能力','抗压能力','执行力','逻辑思维','数据驱动','结果导向','责任心','主动性','团队合作','创新能力','学习能力','领导力','演讲能力','时间管理','问题解决','批判性思维','跨部门协作','客户导向','细节导向','战略思维','成果导向','项目管理','团队管理']
+};
+const ALL_KW = [];
+for(const cat in KW_DICT) KW_DICT[cat].forEach(kw=>ALL_KW.push({word:kw,cat:cat}));
+const STOP_WORDS = new Set(['我们','你们','他们','这个','那个','什么','怎么','能够','可以','应该','需要','具有','具备','优先','熟练','熟悉','掌握','了解','相关','工作','经验','能力','负责','参与','完成','进行','以及','或者','如果','虽然','但是','因为','所以','对于','关于','通过','根据','按照','基于','作为','岗位','职位','公司','企业','部门','团队','人员',' candidate','任职','要求','职责','描述','薪资','福利','待遇','优秀','良好','扎实','深厚','丰富','较强','一定','三年','五年','一年','两年','本科','硕士','博士','大专','学历','以上','以下','之间','包括','不含','含','等','的','了','在','和','与','或','及','是','为','对','有','无','并','以','可','能','会','将','被','从','到','向','给','让','使','用','做','看','说','想','要','得','着','过','已','正','才','只','还','也','都','就','很','太','最','更','再','又','且','但','若','则','于','之','其','此','彼','某','每','各','另','别','本','此','该','某','些','点','种','类','样','方面','情况','问题','方式','方法','内容','信息','系统','平台','工具','技术','方案','目标','结果','效果','成果','价值','水平','程度','范围','领域','方向','阶段','过程','流程','步骤','环节','要素','因素','条件','前提','基础','核心','关键','重要','主要','基本','具体','实际','理论','实践','应用','开发','设计','实现','维护','优化','改进','提升','提高','降低','减少','增加','获取','处理','分析','评估','监控','管理','规划','制定','执行','落实','推动','推进','协调','配合','支持','保障','确保','保证','提供','输出','交付','上线','迭代','版本','模块','功能','性能','安全','稳定','可靠','高效','灵活','可扩展','可维护','可测试','可复用','可配置','可监控','可追溯','可预测','可解释','可理解','可读性','可用性','可访问','可兼容','可移植']);
+
+// ============ STORAGE ============
+function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(e){console.warn('save failed',e)}}
+function loadState(){
+  try{
+    const s=localStorage.getItem(STORAGE_KEY);
+    if(s){const p=JSON.parse(s);state=Object.assign(state,p);state.analysis=Object.assign({coreAbilities:['','',''],hardSkills:[],softSkills:[],highFreqKw:[],hiddenReqs:['','','']},p.analysis||{});state.resume=Object.assign({workExp:[],projExp:[],skills:[],highlights:['','','']},p.resume||{});state.match=Object.assign({expIndustry:1,expYears:1,expScale:1,advFit:1,advDiff:1},p.match||{});state.output=Object.assign({},p.output||{})}
+  }catch(e){console.warn('load failed',e)}
+}
+
+// ============ INPUT BINDING ============
+function bindInputs(){
+  document.querySelectorAll('[data-k]').forEach(el=>{
+    const keys=el.dataset.k.split('.');
+    let obj=state;
+    for(let i=0;i<keys.length-1;i++){
+      const k=keys[i];
+      if(/^\d+$/.test(k)){obj=obj[parseInt(k)]}else{obj=obj[k]=obj[k]||{}}
+    }
+    const lastKey=keys[keys.length-1];
+    const lastIdx=/^\d+$/.test(lastKey)?parseInt(lastKey):null;
+    if(el.tagName==='TEXTAREA'||el.tagName==='INPUT'){
+      if(lastIdx!==null){el.value=obj[lastIdx]||''}else{el.value=obj[lastKey]||''}
+      el.addEventListener('input',()=>{
+        if(lastIdx!==null){obj[lastIdx]=el.value}else{obj[lastKey]=el.value}
+        saveState();
+      });
+    }
+  });
+}
+
+// ============ TAGS / KEYWORDS ============
+function renderTags(containerId,arr,type,hitMap){
+  const c=document.getElementById(containerId);
+  if(!c)return;
+  const addHtml=c.querySelector('.tag-add');
+  const addHtmlStr=addHtml?addHtml.outerHTML:'';
+  if(!arr||arr.length===0){c.innerHTML=addHtmlStr||(type==='freq'?'<span class="empty" style="padding:4px">提取后自动显示</span>':'');return}
+  let html='';
+  arr.forEach((item,i)=>{
+    const word=typeof item==='string'?item:item.word;
+    const cnt=typeof item==='object'?item.count:null;
+    let cls='tag';
+    if(hitMap){
+      const h=hitMap[word];
+      if(h==='hit')cls='tag tag-hit';else if(h==='miss')cls='tag tag-miss';else if(h==='partial')cls='tag tag-partial';
+    }
+    if(type==='freq')cls='tag tag-blue';
+    if(type==='hard')cls='tag tag-purple';
+    if(type==='soft')cls='tag tag-blue';
+    html+=`<span class="${cls}">${word}${cnt?` <span class="cnt">×${cnt}</span>`:''}<span class="x" onclick="removeKeyword('${containerId}',${i})">×</span></span>`;
+  });
+  c.innerHTML=html+addHtmlStr;
+}
+function removeKeyword(containerId,idx){
+  if(containerId==='jobKeywords'){state.job.keywords.splice(idx,1)}
+  else if(containerId==='hardSkills'){state.analysis.hardSkills.splice(idx,1)}
+  else if(containerId==='softSkills'){state.analysis.softSkills.splice(idx,1)}
+  else if(containerId==='resumeSkills'){state.resume.skills.splice(idx,1)}
+  else if(containerId==='highFreqKw'){state.analysis.highFreqKw.splice(idx,1)}
+  saveState();renderAllTags();
+}
+function addKeyword(type,val){
+  val=val.trim();if(!val)return;
+  if(type==='job'){if(!state.job.keywords.includes(val))state.job.keywords.push(val)}
+  else if(type==='hard'){if(!state.analysis.hardSkills.includes(val))state.analysis.hardSkills.push(val)}
+  else if(type==='soft'){if(!state.analysis.softSkills.includes(val))state.analysis.softSkills.push(val)}
+  else if(type==='skill'){if(!state.resume.skills.includes(val))state.resume.skills.push(val)}
+  saveState();renderAllTags();
+}
+function clearKeywords(){state.job.keywords=[];state.analysis.hardSkills=[];state.analysis.softSkills=[];state.analysis.highFreqKw=[];saveState();renderAllTags()}
+function renderAllTags(){
+  renderTags('jobKeywords',state.job.keywords,'job');
+  renderTags('hardSkills',state.analysis.hardSkills,'hard');
+  renderTags('softSkills',state.analysis.softSkills,'soft');
+  renderTags('resumeSkills',state.resume.skills,'skill');
+  renderTags('highFreqKw',state.analysis.highFreqKw,'freq');
+}
+
+// ============ KEYWORD EXTRACTION ============
+function extractKeywords(){
+  const text=(state.job.duties||'')+'\n'+(state.job.requirements||'');
+  if(!text.trim()){showToast('请先粘贴岗位职责或任职要求');return}
+  const found=new Map();
+  // 1. Predefined keywords
+  ALL_KW.forEach(kw=>{
+    const cnt=countInText(text,kw.word);
+    if(cnt>0)found.set(kw.word,{word:kw.word,count:cnt,cat:kw.cat});
+  });
+  // 2. Frequency-based Chinese terms (2-4 chars)
+  const terms=text.match(/[\u4e00-\u9fa5]{2,4}/g)||[];
+  const freq={};
+  terms.forEach(t=>{if(!STOP_WORDS.has(t))freq[t]=(freq[t]||0)+1});
+  Object.entries(freq).forEach(([term,cnt])=>{
+    if(cnt>=2&&!found.has(term))found.set(term,{word:term,count:cnt,cat:'其他'});
+  });
+  // Sort by frequency
+  const sorted=Array.from(found.values()).sort((a,b)=>b.count-a.count);
+  // Populate job keywords
+  state.job.keywords=sorted.map(s=>s.word);
+  // Populate high freq
+  state.analysis.highFreqKw=sorted.slice(0,15);
+  // Auto-categorize hard/soft skills
+  state.analysis.hardSkills=[];
+  state.analysis.softSkills=[];
+  sorted.forEach(s=>{
+    if(s.cat==='软技能'){state.analysis.softSkills.push(s.word)}
+    else if(s.cat!=='其他'){state.analysis.hardSkills.push(s.word)}
+  });
+  // Auto-fill core abilities based on top keywords
+  const topKw=sorted.slice(0,5).map(s=>s.word);
+  if(topKw.length>0){
+    const existing=state.analysis.coreAbilities.filter(s=>s.trim());
+    if(existing.length===0){
+      state.analysis.coreAbilities[0]=topKw[0]?`具备${topKw[0]}相关能力`:'';
+      state.analysis.coreAbilities[1]=topKw[1]?`熟悉${topKw[1]}，能独立负责`:'';
+      state.analysis.coreAbilities[2]=topKw[2]?`有${topKw[2]}经验`:'';
+    }
+  }
+  saveState();
+  renderAllTags();
+  // Re-bind core abilities inputs
+  document.querySelectorAll('[data-k^="analysis.coreAbilities"]').forEach(el=>{
+    const idx=parseInt(el.dataset.k.split('.')[2]);
+    el.value=state.analysis.coreAbilities[idx]||'';
+  });
+  document.querySelectorAll('[data-k^="analysis.hiddenReqs"]').forEach(el=>{
+    const idx=parseInt(el.dataset.k.split('.')[2]);
+    el.value=state.analysis.hiddenReqs[idx]||'';
+  });
+  showToast(`提取到 ${sorted.length} 个关键词，硬技能 ${state.analysis.hardSkills.length} 个，软技能 ${state.analysis.softSkills.length} 个`);
+}
+function countInText(text,word){
+  const lowerText=text.toLowerCase();
+  const lowerWord=word.toLowerCase();
+  let cnt=0,idx=0;
+  while((idx=lowerText.indexOf(lowerWord,idx))!==-1){cnt++;idx+=lowerWord.length}
+  return cnt;
+}
+
+// ============ WORK / PROJECT ENTRIES ============
+function addWorkEntry(){
+  state.resume.workExp.push({company:'',position:'',time:'',content:'',results:''});
+  saveState();renderWorkEntries();
+}
+function removeWorkEntry(idx){
+  state.resume.workExp.splice(idx,1);
+  saveState();renderWorkEntries();
+}
+function renderWorkEntries(){
+  const c=document.getElementById('workEntries');
+  if(state.resume.workExp.length===0){c.innerHTML='<div class="empty">点击「添加工作经历」录入</div>';return}
+  c.innerHTML=state.resume.workExp.map((e,i)=>`
+    <div class="entry" data-type="work" data-idx="${i}">
+      <div class="entry-head">
+        <span class="label">工作经历 ${i+1}</span>
+        <button class="btn btn-sm btn-warn" onclick="removeWorkEntry(${i})">删除</button>
+      </div>
+      <div class="fr2" style="margin-bottom:8px">
+        <input class="input" placeholder="公司名称" value="${esc(e.company)}" oninput="updateEntry('work',${i},'company',this.value)">
+        <input class="input" placeholder="职位" value="${esc(e.position)}" oninput="updateEntry('work',${i},'position',this.value)">
+      </div>
+      <input class="input" style="margin-bottom:8px" placeholder="时间段（如：2021.06-至今）" value="${esc(e.time)}" oninput="updateEntry('work',${i},'time',this.value)">
+      <textarea class="textarea" style="margin-bottom:8px;min-height:60px" placeholder="工作内容" oninput="updateEntry('work',${i},'content',this.value)">${esc(e.content)}</textarea>
+      <textarea class="textarea" style="min-height:50px" placeholder="成果/数据结果" oninput="updateEntry('work',${i},'results',this.value)">${esc(e.results)}</textarea>
+    </div>`).join('');
+}
+function addProjEntry(){
+  state.resume.projExp.push({name:'',role:'',actions:'',results:''});
+  saveState();renderProjEntries();
+}
+function removeProjEntry(idx){
+  state.resume.projExp.splice(idx,1);
+  saveState();renderProjEntries();
+}
+function renderProjEntries(){
+  const c=document.getElementById('projEntries');
+  if(state.resume.projExp.length===0){c.innerHTML='<div class="empty">点击「添加项目经历」录入</div>';return}
+  c.innerHTML=state.resume.projExp.map((e,i)=>`
+    <div class="entry" data-type="proj" data-idx="${i}">
+      <div class="entry-head">
+        <span class="label">项目经历 ${i+1}</span>
+        <button class="btn btn-sm btn-warn" onclick="removeProjEntry(${i})">删除</button>
+      </div>
+      <div class="fr2" style="margin-bottom:8px">
+        <input class="input" placeholder="项目名称" value="${esc(e.name)}" oninput="updateEntry('proj',${i},'name',this.value)">
+        <input class="input" placeholder="你的职责/角色" value="${esc(e.role)}" oninput="updateEntry('proj',${i},'role',this.value)">
+      </div>
+      <textarea class="textarea" style="margin-bottom:8px;min-height:60px" placeholder="具体动作（做了什么）" oninput="updateEntry('proj',${i},'actions',this.value)">${esc(e.actions)}</textarea>
+      <textarea class="textarea" style="min-height:50px" placeholder="数据结果（量化成果）" oninput="updateEntry('proj',${i},'results',this.value)">${esc(e.results)}</textarea>
+    </div>`).join('');
+}
+function updateEntry(type,idx,field,val){
+  const arr=type==='work'?state.resume.workExp:state.resume.projExp;
+  if(arr[idx])arr[idx][field]=val;
+  saveState();
+}
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+// ============ MATCHING ANALYSIS ============
+function runMatch(){
+  // Build resume text
+  let resumeText=state.resume.fullText||'';
+  if(!resumeText){
+    // Combine structured fields
+    resumeText=[state.resume.name,state.resume.education,state.resume.years].join(' ');
+    state.resume.workExp.forEach(e=>{resumeText+=' '+e.company+' '+e.position+' '+e.content+' '+e.results});
+    state.resume.projExp.forEach(e=>{resumeText+=' '+e.name+' '+e.role+' '+e.actions+' '+e.results});
+    resumeText+=' '+state.resume.skills.join(' ');
+    resumeText+=' '+state.resume.highlights.join(' ');
+  }
+  if(!resumeText.trim()){showToast('请先录入简历信息');return}
+  if(state.job.keywords.length===0){showToast('请先提取岗位关键词');return}
+  // Keyword matching
+  state.match.kwMatch=state.job.keywords.map(kw=>({word:kw,hit:countInText(resumeText,kw)>0}));
+  const hitCnt=state.match.kwMatch.filter(k=>k.hit).length;
+  state.match.kwScore=Math.round(hitCnt/state.match.kwMatch.length*100);
+  // Hard skill matching
+  state.match.hardMatch=state.analysis.hardSkills.map(skill=>({skill,hit:countInText(resumeText,skill)>0}));
+  const hsHit=state.match.hardMatch.filter(h=>h.hit).length;
+  state.match.hsScore=state.match.hardMatch.length>0?Math.round(hsHit/state.match.hardMatch.length*100):0;
+  // Experience & advantage (from manual selection)
+  const expVals=[state.match.expIndustry,state.match.expYears,state.match.expScale];
+  state.match.expScore=Math.round((expVals.map(v=>v===0?0:v===1?50:100).reduce((a,b)=>a+b,0)/3));
+  const advVals=[state.match.advFit,state.match.advDiff];
+  state.match.advScore=Math.round((advVals.map(v=>v===0?0:v===1?50:100).reduce((a,b)=>a+b,0)/2));
+  // Total score
+  state.match.totalScore=Math.round(state.match.kwScore*0.30+state.match.hsScore*0.35+state.match.expScore*0.20+state.match.advScore*0.15);
+  // Missing items (keywords not in resume)
+  state.match.missing=state.match.kwMatch.filter(k=>!k.hit).map(k=>k.word);
+  // Redundant items (resume skills not in JD)
+  const jdKwSet=new Set(state.job.keywords.map(k=>k.toLowerCase()));
+  state.match.redundant=state.resume.skills.filter(s=>!jdKwSet.has(s.toLowerCase()));
+  saveState();
+  renderMatchResults();
+  showToast(`匹配分析完成！总分 ${state.match.totalScore}/100`);
+}
+function renderMatchResults(){
+  const m=state.match;
+  // Scores
+  const setScore=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val};
+  setScore('totalScore',m.totalScore);
+  setScore('kwScore',m.kwScore);
+  setScore('hsScore',m.hsScore);
+  setScore('expScore',m.expScore);
+  setScore('advScore',m.advScore);
+  // Total bar
+  const bar=document.getElementById('totalBar');
+  if(bar){bar.style.width=m.totalScore+'%';
+    bar.style.background=m.totalScore>=70?'var(--green)':m.totalScore>=40?'var(--yellow)':'var(--red)';}
+  // Hard skill match list
+  const hml=document.getElementById('hardMatchList');
+  if(hml){
+    if(m.hardMatch.length===0){hml.innerHTML='<div class="empty">无硬技能数据</div>'}
+    else{hml.innerHTML=m.hardMatch.map((h,i)=>`
+      <div class="match-row">
+        <div class="match-icon ${h.hit?'mi-ok':'mi-no'}" onclick="toggleHardMatch(${i})">${h.hit?'✓':'✗'}</div>
+        <span class="match-text"><span class="${h.hit?'hit':'miss'}">${esc(h.skill)}</span></span>
+      </div>`).join('')}
+  }
+  // Keyword match list
+  const kml=document.getElementById('kwMatchList');
+  if(kml){
+    if(m.kwMatch.length===0){kml.innerHTML='<div class="empty">无关键词数据</div>'}
+    else{kml.innerHTML=m.kwMatch.map(k=>`
+      <div class="match-row">
+        <div class="match-icon ${k.hit?'mi-ok':'mi-no'}">${k.hit?'✓':'✗'}</div>
+        <span class="match-text"><span class="${k.hit?'hit':'miss'}">${esc(k.word)}</span></span>
+      </div>`).join('')}
+  }
+  // Missing items
+  const ml=document.getElementById('missingList');
+  if(ml){
+    if(m.missing.length===0){ml.innerHTML='<div class="empty">无缺失项 🎉</div>'}
+    else{ml.innerHTML=m.missing.map(k=>`<div class="gap-item"><span class="gap-icon" style="color:var(--red)">✗</span><span>${esc(k)}</span></div>`).join('')}
+  }
+  // Redundant items
+  const rl=document.getElementById('redundantList');
+  if(rl){
+    if(m.redundant.length===0){rl.innerHTML='<div class="empty">无冗余项</div>'}
+    else{rl.innerHTML=m.redundant.map(k=>`<div class="gap-item"><span class="gap-icon" style="color:var(--yellow)">⚠</span><span>${esc(k)}</span></div>`).join('')}
+  }
+  // Experience & advantage indicators
+  renderMatchIcon('expIndustry',m.expIndustry);
+  renderMatchIcon('expYears',m.expYears);
+  renderMatchIcon('expScale',m.expScale);
+  renderMatchIcon('advFit',m.advFit);
+  renderMatchIcon('advDiff',m.advDiff);
+}
+function renderMatchIcon(id,val){
+  const el=document.getElementById(id);
+  if(!el)return;
+  const txt=document.getElementById(id+'Txt');
+  const labels=['不匹配','部分匹配','匹配'];
+  const icons=['✗','半','✓'];
+  const classes=['mi-no','mi-half','mi-ok'];
+  el.className='match-icon '+classes[val];
+  el.textContent=icons[val];
+  if(txt)txt.textContent=labels[val];
+}
+function toggleHardMatch(idx){
+  if(state.match.hardMatch[idx]){state.match.hardMatch[idx].hit=!state.match.hardMatch[idx].hit;
+    const hsHit=state.match.hardMatch.filter(h=>h.hit).length;
+    state.match.hsScore=state.match.hardMatch.length>0?Math.round(hsHit/state.match.hardMatch.length*100):0;
+    state.match.totalScore=Math.round(state.match.kwScore*0.30+state.match.hsScore*0.35+state.match.expScore*0.20+state.match.advScore*0.15);
+    saveState();renderMatchResults();}
+}
+function cycleMatch(id,max){
+  const keys={expIndustry:'expIndustry',expYears:'expYears',expScale:'expScale',advFit:'advFit',advDiff:'advDiff'};
+  const k=keys[id];
+  if(k){state.match[k]=(state.match[k]+1)%max;
+    const expVals=[state.match.expIndustry,state.match.expYears,state.match.expScale];
+    state.match.expScore=Math.round((expVals.map(v=>v===0?0:v===1?50:100).reduce((a,b)=>a+b,0)/3));
+    const advVals=[state.match.advFit,state.match.advDiff];
+    state.match.advScore=Math.round((advVals.map(v=>v===0?0:v===1?50:100).reduce((a,b)=>a+b,0)/2));
+    state.match.totalScore=Math.round(state.match.kwScore*0.30+state.match.hsScore*0.35+state.match.expScore*0.20+state.match.advScore*0.15);
+    saveState();renderMatchIcon(id,state.match[k]);
+    // Update score displays
+    document.getElementById('expScore').textContent=state.match.expScore;
+    document.getElementById('advScore').textContent=state.match.advScore;
+    document.getElementById('totalScore').textContent=state.match.totalScore;
+    const bar=document.getElementById('totalBar');
+    bar.style.width=state.match.totalScore+'%';
+    bar.style.background=state.match.totalScore>=70?'var(--green)':state.match.totalScore>=40?'var(--yellow)':'var(--red)';
+  }
+}
+
+// ============ OUTPUT ============
+function generateOptimized(){
+  // Check minimum data
+  if(!state.job.position&&!state.job.duties&&!state.job.requirements){
+    showToast('请先填写岗位信息（模块1）');scrollToSec('m1');return;
+  }
+  if(!state.resume.fullText&&!state.resume.workExp.length&&!state.resume.name){
+    showToast('请先填写简历信息（模块3）');scrollToSec('m3');return;
+  }
+  // Collect matched keywords from match results
+  const matchedKw=(state.match.kwMatch||[]).filter(k=>k.hit).map(k=>k.word);
+  const matchedHs=(state.match.hardMatch||[]).filter(h=>h.status==='match').map(h=>h.skill);
+  const allMatched=[...new Set([...matchedKw,...matchedHs])];
+  const missingKw=(state.match.kwMatch||[]).filter(k=>!k.hit).map(k=>k.word).slice(0,8);
+  // Also use job keywords if match not run yet
+  const jobKw=state.job.keywords||[];
+  const kwSource=allMatched.length>0?allMatched:jobKw;
+  const name=state.resume.name||'';
+  const years=state.resume.years||'';
+  const position=state.job.position||'目标岗位';
+  const industry=state.job.industry||'';
+  // === 1. Generate personal summary (~100 chars) ===
+  let summary='';
+  if(years)summary+=years;
+  if(position&&position!=='目标岗位')summary+=' '+position+'经验';
+  if(kwSource.length>0){
+    const top5=kwSource.slice(0,5).join('、');
+    summary+=summary?'，精通'+top5+'。':'具备'+top5+'等核心能力。';
+  }
+  const hl=state.resume.highlights.filter(h=>h&&h.trim());
+  if(hl.length>0){
+    summary+=hl.slice(0,2).join('；');
+    if(!summary.endsWith('。')&&!summary.endsWith('；'))summary+='。';
+  }
+  if(industry)summary+='熟悉'+industry+'行业运作模式，';
+  summary+='能快速融入团队并产出成果。';
+  state.output.summary=summary;
+  // === 2. Generate optimized work experience ===
+  const workParts=[];
+  const workList=state.resume.workExp||[];
+  for(const exp of workList){
+    if(!exp.company&&!exp.position&&!exp.content)continue;
+    let part='';
+    if(exp.company||exp.position){
+      part+=(exp.company||'')+(exp.company&&exp.position?' | ':'')+(exp.position||'');
+    }
+    if(exp.time)part+=(part?' | ':'')+exp.time;
+    if(part)part+='\n';
+    if(exp.content){
+      const lines=exp.content.split(/[\n;；]/).map(l=>l.trim()).filter(l=>l);
+      for(const line of lines)part+='• '+line+'\n';
+    }
+    if(exp.results){
+      part+='▸ 核心成果：'+exp.results+'\n';
+    }
+    workParts.push(part.trim());
+  }
+  // Fallback: extract from fullText
+  if(workParts.length===0&&state.resume.fullText){
+    const lines=state.resume.fullText.split('\n').map(l=>l.trim()).filter(l=>l);
+    let inWork=false;
+    for(const line of lines){
+      if(/工作经历|工作经验|工作背景/i.test(line)){inWork=true;continue}
+      if(/项目经历|项目经验|教育背景|学历|技能|自我评价|证书/i.test(line)){inWork=false;continue}
+      if(inWork&&line.length>3)workParts.push(line);
+    }
+  }
+  // Add keyword suggestion note
+  if(missingKw.length>0&&workParts.length>0){
+    workParts.push('\n💡 建议在工作经历中补充以下岗位关键词：'+missingKw.join('、'));
+  }
+  state.output.work=workParts.join('\n\n')||'请根据岗位要求补充工作经历，突出与'+position+'相关的职责和成果。';
+  // === 3. Generate optimized project experience (STAR format) ===
+  const projParts=[];
+  const projList=state.resume.projExp||[];
+  for(const proj of projList){
+    if(!proj.name&&!proj.role&&!proj.actions)continue;
+    let part='【'+(proj.name||'项目')+'】';
+    if(proj.role)part+=' | 角色：'+proj.role;
+    part+='\n';
+    if(proj.actions){
+      const lines=proj.actions.split(/[\n;；]/).map(l=>l.trim()).filter(l=>l);
+      for(const line of lines)part+='• '+line+'\n';
+    }
+    if(proj.results){
+      part+='▸ 项目成果：'+proj.results+'\n';
+    }
+    projParts.push(part.trim());
+  }
+  // Fallback: extract from fullText
+  if(projParts.length===0&&state.resume.fullText){
+    const lines=state.resume.fullText.split('\n').map(l=>l.trim()).filter(l=>l);
+    let inProj=false;
+    for(const line of lines){
+      if(/项目经历|项目经验/i.test(line)){inProj=true;continue}
+      if(/教育|技能|自我评价|证书|工作经历/i.test(line)){inProj=false;continue}
+      if(inProj&&line.length>3)projParts.push(line);
+    }
+  }
+  state.output.proj=projParts.join('\n\n')||'请选取与'+position+'最相关的项目，用STAR法则（情境-任务-行动-结果）改写。';
+  // === 4. Reorder skills - matched first ===
+  const skills=[...(state.resume.skills||[])];
+  const matched=[];
+  const unmatched=[];
+  for(const s of skills){
+    const isMatch=kwSource.some(k=>{
+      const sl=s.toLowerCase(),kl=k.toLowerCase();
+      return sl.includes(kl)||kl.includes(sl);
+    });
+    if(isMatch)matched.push(s);else unmatched.push(s);
+  }
+  let skillsText='';
+  if(matched.length>0){
+    skillsText+='★ 岗位匹配技能（优先展示）：\n'+matched.join('  |  ')+'\n\n';
+  }
+  if(unmatched.length>0){
+    skillsText+='其他技能：\n'+unmatched.join('  |  ');
+  }
+  if(skills.length===0&&kwSource.length>0){
+    skillsText+='★ 建议补充以下岗位要求技能：\n'+kwSource.slice(0,12).join('  |  ');
+  }
+  state.output.skills=skillsText||'请补充技能清单，将岗位要求的技能排在前面。';
+  // === 5. Save & refresh ===
+  saveState();
+  refreshValues();
+  // Auto-generate final merged version
+  generateFinal();
+  showToast('✅ 优化简历已生成！可查看各模块并手动微调');
+  // Scroll to summary
+  document.getElementById('outSummary').scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function generateFinal(){
+  const parts=[];
+  if(state.output.summary)parts.push('【个人简介】\n'+state.output.summary);
+  if(state.output.work)parts.push('【工作经历】\n'+state.output.work);
+  if(state.output.proj)parts.push('【项目经历】\n'+state.output.proj);
+  if(state.output.skills)parts.push('【技能清单】\n'+state.output.skills);
+  const final=parts.length>0?parts.join('\n\n'):'';
+  const el=document.getElementById('outFinal');
+  el.value=final;
+  state.output.final=final;
+  saveState();
+  showToast(final?'最终版已生成':'请先填写各模块内容');
+}
+function copyField(id){
+  const el=document.getElementById(id);
+  if(!el||!el.value.trim()){showToast('内容为空');return}
+  navigator.clipboard.writeText(el.value).then(()=>{
+    const btn=el.closest('.out-block').querySelector('.copy-btn');
+    if(btn){btn.classList.add('copied');btn.textContent='已复制✓';setTimeout(()=>{btn.classList.remove('copied');btn.textContent='复制'},1500)}
+  }).catch(()=>{
+    el.select();document.execCommand('copy');showToast('已复制');
+  });
+}
+
+// ============ EXPORT / IMPORT ============
+function exportData(){
+  const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`简历工作台_${state.job.company||'未命名'}_${dateStr()}.json`;
+  a.click();
+  showToast('数据已导出');
+}
+function importData(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    try{const data=JSON.parse(ev.target.result);
+      state=Object.assign(state,data);
+      state.analysis=Object.assign({coreAbilities:['','',''],hardSkills:[],softSkills:[],highFreqKw:[],hiddenReqs:['','','']},data.analysis||{});
+      state.resume=Object.assign({workExp:[],projExp:[],skills:[],highlights:['','','']},data.resume||{});
+      state.match=Object.assign({expIndustry:1,expYears:1,expScale:1,advFit:1,advDiff:1},data.match||{});
+      state.output=Object.assign({},data.output||{});
+      saveState();loadToUI();showToast('数据已导入');
+    }catch(err){showToast('导入失败：文件格式错误')}
+  };
+  reader.readAsText(file);
+  e.target.value='';
+}
+function exportReport(){
+  const lines=[];
+  lines.push('═══════════════════════════════════════');
+  lines.push('     岗位-简历匹配报告');
+  lines.push('     生成时间：'+new Date().toLocaleString('zh-CN'));
+  lines.push('═══════════════════════════════════════\n');
+  // Module 1
+  lines.push('【一、岗位信息】');
+  lines.push('公司：'+(state.job.company||'-'));
+  lines.push('行业：'+(state.job.industry||'-'));
+  lines.push('岗位：'+(state.job.position||'-'));
+  lines.push('级别：'+(state.job.level||'-'));
+  lines.push('薪资：'+(state.job.salary||'-'));
+  lines.push('地点：'+(state.job.location||'-'));
+  lines.push('偏好：'+(state.job.preferences||'-'));
+  lines.push('');
+  // Module 2
+  lines.push('【二、岗位需求分析】');
+  lines.push('核心能力要求：');
+  state.analysis.coreAbilities.filter(s=>s.trim()).forEach((s,i)=>lines.push(`  ${i+1}. ${s}`));
+  lines.push('必备技能：'+state.analysis.hardSkills.join('、'));
+  lines.push('加分技能：'+state.analysis.softSkills.join('、'));
+  lines.push('高频关键词：'+state.analysis.highFreqKw.map(k=>k.word||k).join('、'));
+  lines.push('隐藏要求：');
+  state.analysis.hiddenReqs.filter(s=>s.trim()).forEach((s,i)=>lines.push(`  ${i+1}. ${s}`));
+  lines.push('');
+  // Module 4
+  lines.push('【三、匹配度分析】');
+  lines.push(`匹配度总分：${state.match.totalScore}/100`);
+  lines.push(`关键词命中：${state.match.kwScore}%`);
+  lines.push(`硬技能匹配：${state.match.hsScore}%`);
+  lines.push(`经验匹配：${state.match.expScore}%`);
+  lines.push(`优势匹配：${state.match.advScore}%`);
+  lines.push('');
+  lines.push('缺失项：'+(state.match.missing.length>0?state.match.missing.join('、'):'无'));
+  lines.push('冗余项：'+(state.match.redundant.length>0?state.match.redundant.join('、'):'无'));
+  lines.push('');
+  // Module 5
+  lines.push('【四、优化后简历】');
+  if(state.output.final){
+    lines.push(state.output.final);
+  }else{
+    if(state.output.summary)lines.push('--- 个人简介 ---\n'+state.output.summary+'\n');
+    if(state.output.work)lines.push('--- 工作经历 ---\n'+state.output.work+'\n');
+    if(state.output.proj)lines.push('--- 项目经历 ---\n'+state.output.proj+'\n');
+    if(state.output.skills)lines.push('--- 技能清单 ---\n'+state.output.skills);
+  }
+  lines.push('\n═══════════════════════════════════════');
+  const text=lines.join('\n');
+  const blob=new Blob([text],{type:'text/plain;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`匹配报告_${state.job.company||'未命名'}_${dateStr()}.txt`;
+  a.click();
+  showToast('报告已导出');
+}
+function clearModule(n){
+  const names=['岗位信息','需求分析','简历信息','匹配度分析','优化输出'];
+  if(!confirm('确定清空「'+names[n-1]+'」模块的数据？'))return;
+  if(n===1){
+    state.job={company:'',industry:'',position:'',level:'',salary:'',location:'',duties:'',requirements:'',preferences:'',keywords:[]};
+  }else if(n===2){
+    state.analysis={coreAbilities:['','',''],hardSkills:[],softSkills:[],highFreqKw:[],hiddenReqs:['','','']};
+  }else if(n===3){
+    state.resume={name:'',years:'',phone:'',email:'',education:'',fullText:'',workExp:[],projExp:[],skills:[],highlights:['','','']};
+  }else if(n===4){
+    state.match={totalScore:0,kwScore:0,hsScore:0,expScore:0,advScore:0,hardMatch:[],kwMatch:[],missing:[],redundant:[],expIndustry:1,expYears:1,expScale:1,advFit:1,advDiff:1};
+  }else if(n===5){
+    state.output={summary:'',work:'',proj:'',skills:'',final:''};
+  }
+  saveState();
+  refreshValues();
+  renderAllTags();
+  renderWorkEntries();
+  renderProjEntries();
+  renderMatchResults();
+  showToast(names[n-1]+'已清空');
+}
+function clearAll(){
+  if(!confirm('确定清空所有数据？此操作不可恢复。'))return;
+  localStorage.removeItem(STORAGE_KEY);
+  location.reload();
+}
+function dateStr(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+
+// ============ UI HELPERS ============
+function scrollToSec(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'})}
+function toggleCollapse(id,el){const c=document.getElementById(id);if(c.classList.contains('collapsed')){c.classList.remove('collapsed');c.style.maxHeight='500px';el.querySelector('span').textContent='💡 使用说明（点击收起）'}else{c.classList.add('collapsed');c.style.maxHeight='0';el.querySelector('span').textContent='💡 使用说明（点击展开）'}}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500)}
+// ============ RESUME FILE UPLOAD ============
+function handleResumeFile(event){
+  const file=event.target.files[0];
+  if(!file)return;
+  processResumeFile(file);
+  event.target.value='';
+}
+async function processResumeFile(file){
+  const st=document.getElementById('uploadStatus');
+  st.textContent='⏳ 正在解析 '+file.name+'...';
+  st.style.color='var(--blue)';
+  st.classList.add('show');
+  if(typeof DecompressionStream==='undefined'){
+    st.textContent='⚠️ 当前浏览器不支持文件解析（需Chrome 103+/Edge 103+）。建议发送微信由 AI 解析';
+    st.style.color='var(--yellow)';
+    return;
+  }
+  const ext=file.name.split('.').pop().toLowerCase();
+  let text='';
+  try{
+    if(ext==='txt'||ext==='md'){
+      text=await file.text();
+    }else if(ext==='docx'){
+      text=await parseDocx(file);
+    }else if(ext==='pdf'){
+      text=await parsePdf(file);
+    }else if(ext==='doc'){
+      st.textContent='⚠️ .doc 格式不支持，请另存为 .docx 或发送微信由 AI 解析';
+      st.style.color='var(--yellow)';
+      return;
+    }else{
+      st.textContent='⚠️ 不支持的格式：'+ext;
+      st.style.color='var(--red)';
+      return;
+    }
+    if(text&&text.trim().length>10){
+      state.resume.fullText=text;
+      saveState();
+      refreshValues();
+      const cnt=text.trim().length;
+      st.textContent='✅ 解析成功！提取 '+cnt+' 字符，已填入「简历全文」。点击「智能解析简历」自动填充各字段';
+      st.style.color='var(--green)';
+      showToast('简历解析成功，提取 '+cnt+' 字符');
+    }else{
+      st.textContent='⚠️ 未能提取足够文本，建议发送微信由 AI 解析';
+      st.style.color='var(--yellow)';
+      showToast('解析结果较少，建议微信上传');
+    }
+  }catch(e){
+    console.error('parse error',e);
+    st.textContent='⚠️ 解析失败：'+e.message+'。建议发送微信由 AI 解析';
+    st.style.color='var(--red)';
+    showToast('解析失败，建议微信上传');
+  }
+}
+// --- DOCX parser (central directory approach, handles data descriptors) ---
+async function parseDocx(file){
+  const buffer=await file.arrayBuffer();
+  const bytes=new Uint8Array(buffer);
+  const td=new TextDecoder('utf-8');
+  // 1. Find End of Central Directory (EOCD) - search backwards
+  let eocd=-1;
+  for(let i=bytes.length-22;i>=Math.max(0,bytes.length-65557);i--){
+    if(bytes[i]===0x50&&bytes[i+1]===0x4b&&bytes[i+2]===0x05&&bytes[i+3]===0x06){eocd=i;break}
+  }
+  if(eocd<0)throw new Error('无法解析 ZIP 结构（未找到 EOCD）');
+  const cdEntries=readU16(bytes,eocd+10);
+  const cdOff=readU32(bytes,eocd+16);
+  // 2. Parse central directory entries
+  let off=cdOff;
+  for(let i=0;i<cdEntries&&off<bytes.length-46;i++){
+    if(!(bytes[off]===0x50&&bytes[off+1]===0x4b&&bytes[off+2]===0x01&&bytes[off+3]===0x02))break;
+    const method=readU16(bytes,off+10);
+    const compSize=readU32(bytes,off+20);
+    const nameLen=readU16(bytes,off+28);
+    const extraLen=readU16(bytes,off+30);
+    const commentLen=readU16(bytes,off+32);
+    const localOff=readU32(bytes,off+42);
+    const name=td.decode(bytes.subarray(off+46,off+46+nameLen));
+    if(name==='word/document.xml'&&compSize>0){
+      // 3. Read local file header to find actual data offset
+      const lfhNameLen=readU16(bytes,localOff+26);
+      const lfhExtraLen=readU16(bytes,localOff+28);
+      const dataStart=localOff+30+lfhNameLen+lfhExtraLen;
+      const compData=bytes.subarray(dataStart,dataStart+compSize);
+      let xml='';
+      if(method===8){
+        const ds=new DecompressionStream('deflate-raw');
+        const blob=new Blob([compData]);
+        const xBuf=await new Response(blob.stream().pipeThrough(ds)).arrayBuffer();
+        const xBytes=new Uint8Array(xBuf);
+        // Detect encoding from XML declaration
+        const headStr=new TextDecoder('latin1').decode(xBytes.subarray(0,200));
+        const encM=headStr.match(/encoding=["']([^"']+)["']/i);
+        const xmlEnc=encM?encM[1].toLowerCase():'utf-8';
+        try{xml=new TextDecoder(xmlEnc).decode(xBytes)}catch(e){xml=new TextDecoder('utf-8').decode(xBytes)}
+      }else if(method===0){
+        xml=td.decode(compData);
+      }else{
+        throw new Error('不支持的压缩方式：'+method);
+      }
+      if(xml)return extractDocxText(xml);
+    }
+    off+=46+nameLen+extraLen+commentLen;
+  }
+  throw new Error('DOCX 内未找到 document.xml');
+}
+function readU16(b,o){return b[o]|(b[o+1]<<8)}
+function readU32(b,o){return (b[o]|(b[o+1]<<8)|(b[o+2]<<16)|(b[o+3]<<24))>>>0}
+function extractDocxText(xml){
+  // Replace paragraph endings, breaks, tabs with separators
+  xml=xml.replace(/<\/w:p>/g,'\n');
+  xml=xml.replace(/<w:br[^>]*\/>/g,'\n');
+  xml=xml.replace(/<w:tab[^>]*\/>/g,'\t');
+  // Extract all <w:t> contents using [\s\S] to match across lines
+  const re=/<w:t[^>]*>([\s\S]*?)<\/w:t>/g;
+  let m,lastEnd=0,parts=[];
+  while((m=re.exec(xml))!==null){
+    // Preserve newlines between matches (paragraph breaks)
+    const gap=xml.substring(lastEnd,m.index);
+    const nl=gap.match(/\n/g);
+    if(nl&&parts.length>0)parts.push(nl.join(''));
+    parts.push(decodeXmlEntities(m[1]));
+    lastEnd=m.index+m[0].length;
+  }
+  return parts.join('').replace(/\n{3,}/g,'\n\n').trim();
+}
+function decodeXmlEntities(s){
+  return s.replace(/&#x([0-9A-Fa-f]+);/g,function(_,h){return String.fromCharCode(parseInt(h,16))})
+    .replace(/&#(\d+);/g,function(_,d){return String.fromCharCode(parseInt(d,10))})
+    .replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&apos;/g,"'")
+    .replace(/&amp;/g,'&');
+}
+// --- PDF parser (multi-strategy + CMap + multi-encoding) ---
+async function parsePdf(file){
+  const buffer=await file.arrayBuffer();
+  const bytes=new Uint8Array(buffer);
+  const latin1=new TextDecoder('latin1');
+  const fullText=latin1.decode(bytes);
+  // Collect all streams (decompressed + uncompressed)
+  const decompTexts=[]; // Latin1-decoded stream text
+  const decompBytesA=[]; // Raw Uint8Array bytes
+  let streamCnt=0,decompCnt=0;
+  let pos=0;
+  while(true){
+    let sIdx;
+    while(true){
+      sIdx=fullText.indexOf('stream',pos);
+      if(sIdx<0)break;
+      let j=sIdx-1;
+      while(j>=0&&(fullText[j]===' '||fullText[j]==='\t'||fullText[j]==='\r'||fullText[j]==='\n'))j--;
+      if(j>=1&&fullText[j]==='>'&&fullText[j-1]==='>')break;
+      pos=sIdx+6;
+    }
+    if(sIdx<0)break;
+    streamCnt++;
+    const streamStart=sIdx+6;
+    const actualStart=fullText[streamStart]==='\r'?streamStart+2:(fullText[streamStart]==='\n'?streamStart+1:streamStart);
+    const eIdx=fullText.indexOf('endstream',actualStart);
+    if(eIdx<0)break;
+    let streamText=fullText.substring(actualStart,eIdx).replace(/[\r\n\s]+$/,'');
+    const dictArea=fullText.substring(Math.max(0,sIdx-300),sIdx);
+    const isFlate=/FlateDecode/i.test(dictArea);
+    if(isFlate){
+      const sb=new Uint8Array(streamText.length);
+      for(let i=0;i<streamText.length;i++)sb[i]=streamText.charCodeAt(i)&0xff;
+      let dBuf=null;
+      for(const fmt of['deflate','deflate-raw']){
+        try{
+          const ds=new DecompressionStream(fmt);
+          const blob=new Blob([sb]);
+          dBuf=await new Response(blob.stream().pipeThrough(ds)).arrayBuffer();
+          break;
+        }catch(e){}
+      }
+      if(dBuf){
+        const dB=new Uint8Array(dBuf);
+        decompTexts.push(latin1.decode(dB));
+        decompBytesA.push(dB);
+        decompCnt++;
+      }
+    }else{
+      const sb=new Uint8Array(streamText.length);
+      for(let i=0;i<streamText.length;i++)sb[i]=streamText.charCodeAt(i)&0xff;
+      decompTexts.push(streamText);
+      decompBytesA.push(sb);
+    }
+    pos=eIdx+9;
+  }
+  // Build ToUnicode CMap from all decompressed streams
+  const cmap=new Map();
+  for(const t of decompTexts){parseCMap(t,cmap)}
+  // === Strategy 1: Extract text from Tj/TJ operators (with CMap + multi-encoding) ===
+  const texts=[];
+  for(const t of decompTexts){extractPdfTextOps(t,texts,cmap)}
+  let result=texts.filter(t=>t.trim().length>0).join('\n');
+  if(result.length>=20&&hasChinese(result))return result;
+  if(result.length>=50)return result;
+  // === Strategy 2: Try GBK/GB18030 decoding of decompressed stream bytes ===
+  for(let i=0;i<decompBytesA.length;i++){
+    const decoded=tryDecodeBytes(decompBytesA[i]);
+    if(decoded){
+      const brute=extractReadableSequences(decoded);
+      if(brute.length>=20)return brute;
+    }
+  }
+  // === Strategy 2b: Brute-force scan Latin1 decompressed text ===
+  const allDecomp=decompTexts.join('\n');
+  if(allDecomp.length>100){
+    const brute=extractReadableSequences(allDecomp);
+    if(brute.length>=20)return brute;
+  }
+  // === Strategy 3: Raw scan entire PDF ===
+  const raw=extractReadableSequences(fullText);
+  if(raw.length>=20)return raw;
+  // === All failed ===
+  throw new Error('PDF文本提取不足(流:'+streamCnt+' 解压:'+decompCnt+' CMap映射:'+cmap.size+')。请发送微信由AI用专业引擎解析');
+}
+function hasChinese(s){return /[\u4e00-\u9fff]/.test(s)}
+function tryDecodeBytes(bytes){
+  for(const enc of['utf-8','gbk','gb18030']){
+    try{
+      const t=new TextDecoder(enc,{fatal:true}).decode(bytes);
+      if(hasChinese(t))return t;
+    }catch(e){}
+  }
+  return null;
+}
+function parseCMap(text,cmap){
+  let m;
+  // beginbfchar: <CID> <Unicode>
+  const bfRe=/beginbfchar\s+([\s\S]*?)endbfchar/g;
+  while((m=bfRe.exec(text))!==null){
+    const pairs=m[1].match(/<([0-9A-Fa-f]+)>\s*<([0-9A-Fa-f]+)>/g);
+    if(pairs)for(const p of pairs){
+      const pm=p.match(/<([0-9A-Fa-f]+)>\s*<([0-9A-Fa-f]+)>/);
+      if(pm){const cid=parseInt(pm[1],16),uni=parseInt(pm[2],16);if(uni>0)cmap.set(cid,uni)}
+    }
+  }
+  // beginbfrange: <start> <end> <target> or <start> <end> [<t1> <t2> ...]
+  const brRe=/beginbfrange\s+([\s\S]*?)endbfrange/g;
+  while((m=brRe.exec(text))!==null){
+    const srRe=/<([0-9A-Fa-f]+)>\s*<([0-9A-Fa-f]+)>\s*<([0-9A-Fa-f]+)>/g;
+    let rm;
+    while((rm=srRe.exec(m[1]))!==null){
+      const st=parseInt(rm[1],16),ed=parseInt(rm[2],16),tg=parseInt(rm[3],16);
+      for(let c=st;c<=ed;c++)cmap.set(c,tg+(c-st));
+    }
+    const arRe=/<([0-9A-Fa-f]+)>\s*<([0-9A-Fa-f]+)>\s*\[([^\]]*)\]/g;
+    while((rm=arRe.exec(m[1]))!==null){
+      const st=parseInt(rm[1],16),ed=parseInt(rm[2],16);
+      const tgs=rm[3].match(/<([0-9A-Fa-f]+)>/g);
+      if(tgs){let idx=0;for(let c=st;c<=ed&&idx<tgs.length;c++,idx++){const u=parseInt(tgs[idx].slice(1,-1),16);if(u>0)cmap.set(c,u)}}
+    }
+  }
+}
+function pdfStringToBytes(s){
+  const out=[];
+  for(let i=0;i<s.length;i++){
+    if(s[i]==='\\'&&i+1<s.length){
+      const n=s[i+1];
+      if(n==='\\'){out.push(0x5C);i++}
+      else if(n==='('){out.push(0x28);i++}
+      else if(n===')'){out.push(0x29);i++}
+      else if(n==='n'){out.push(0x0A);i++}
+      else if(n==='r'){out.push(0x0D);i++}
+      else if(n==='t'){out.push(0x09);i++}
+      else if(n==='b'){out.push(0x08);i++}
+      else if(n==='f'){out.push(0x0C);i++}
+      else if(n>='0'&&n<='7'){
+        let oct=n;i++;
+        while(oct.length<3&&i+1<s.length&&s[i+1]>='0'&&s[i+1]<='7'){oct+=s[i+1];i++}
+        out.push(parseInt(oct,8)&0xFF);
+      }
+      else{out.push(n.charCodeAt(0)&0xFF);i++}
+    }else{out.push(s.charCodeAt(i)&0xFF)}
+  }
+  return new Uint8Array(out);
+}
+function tryDecodeChinese(s){
+  const bytes=pdfStringToBytes(s);
+  for(const enc of['utf-8','gbk','gb18030']){
+    try{
+      const t=new TextDecoder(enc,{fatal:true}).decode(bytes);
+      return t;
+    }catch(e){}
+  }
+  return cleanPdfString(s);
+}
+function extractPdfTextOps(src,texts,cmap){
+  cmap=cmap||new Map();
+  let m;
+  // (text) Tj
+  const tjRe=/\(((?:[^()\\]|\\.)*)\)\s*Tj/g;
+  while((m=tjRe.exec(src))!==null){
+    const t=tryDecodeChinese(m[1]);
+    if(t.length>0)texts.push(t);
+  }
+  // [(parts)] TJ
+  const tjArrRe=/\[([^\]]*)\]\s*TJ/g;
+  while((m=tjArrRe.exec(src))!==null){
+    const litParts=m[1].match(/\(((?:[^()\\]|\\.)*)\)/g);
+    if(litParts){
+      const line=litParts.map(p=>tryDecodeChinese(p.slice(1,-1))).join('');
+      if(line.length>0)texts.push(line);
+    }
+    const hexParts=m[1].match(/<([0-9A-Fa-f\s]+)>/g);
+    if(hexParts){
+      const line=hexParts.map(p=>hexToText(p.slice(1,-1),cmap)).join('');
+      if(line.length>0)texts.push(line);
+    }
+  }
+  // <hex> Tj
+  const hexRe=/<([0-9A-Fa-f\s]+)>\s*Tj/g;
+  while((m=hexRe.exec(src))!==null){
+    const t=hexToText(m[1],cmap);
+    if(t.length>0)texts.push(t);
+  }
+}
+function hexToText(hex,cmap){
+  cmap=cmap||new Map();
+  hex=hex.replace(/\s/g,'');
+  if(hex.length<2)return '';
+  const bytes=new Uint8Array(hex.length/2);
+  for(let i=0;i<hex.length;i+=2)bytes[i/2]=parseInt(hex.substring(i,i+2),16);
+  // 1. CMap lookup (2-byte CID, big-endian)
+  if(cmap.size>0&&bytes.length>=2&&bytes.length%2===0){
+    let r='';
+    for(let i=0;i<bytes.length;i+=2){
+      const cid=(bytes[i]<<8)|bytes[i+1];
+      if(cmap.has(cid))r+=String.fromCharCode(cmap.get(cid));
+      else if(cid>=0x20&&cid<=0x7e)r+=String.fromCharCode(cid);
+    }
+    if(hasChinese(r))return r;
+  }
+  // 2. UTF-16BE
+  if(bytes.length%2===0){
+    let r='';
+    for(let i=0;i<bytes.length;i+=2){
+      const c=(bytes[i]<<8)|bytes[i+1];
+      if((c>=0x4e00&&c<=0x9fff)||(c>=0x3000&&c<=0x303f)||(c>=0xff00&&c<=0xffef)||(c>=0x20&&c<=0x7e)||c===0x0a)r+=String.fromCharCode(c);
+    }
+    if(hasChinese(r))return r;
+  }
+  // 3. GBK / GB18030 / UTF-8
+  for(const enc of['gbk','gb18030','utf-8']){
+    try{
+      const t=new TextDecoder(enc,{fatal:true}).decode(bytes);
+      if(hasChinese(t))return t;
+    }catch(e){}
+  }
+  // 4. ASCII fallback
+  let a='';
+  for(let i=0;i<bytes.length;i++)if(bytes[i]>=0x20&&bytes[i]<=0x7e)a+=String.fromCharCode(bytes[i]);
+  return a;
+}
+function extractReadableSequences(content){
+  const seqs=[];
+  let cur='';
+  for(let i=0;i<content.length;i++){
+    const code=content.charCodeAt(i);
+    if((code>=0x4e00&&code<=0x9fff)||(code>=0x3000&&code<=0x303f)||(code>=0xff00&&code<=0xffef)||(code>=0x20&&code<=0x7e)){cur+=content[i]}
+    else{if(cur.length>=4)seqs.push(cur);cur=''}
+  }
+  if(cur.length>=4)seqs.push(cur);
+  return seqs.filter(s=>{const cn=s.match(/[\u4e00-\u9fa5]/g);return(cn&&cn.length>=2)||s.length>=5}).join('\n');
+}
+function cleanPdfString(s){
+  let r='';
+  for(let i=0;i<s.length;i++){
+    if(s[i]==='\\'&&i+1<s.length){
+      const n=s[i+1];
+      if(n==='\\'){r+='\\';i++}
+      else if(n==='('){r+='(';i++}
+      else if(n===')'){r+=')';i++}
+      else if(n==='n'){r+='\n';i++}
+      else if(n==='r'){r+='';i++}
+      else if(n==='t'){r+=' ';i++}
+      else{r+=n;i++}
+    }else{r+=s[i]}
+  }
+  return r.trim();
+}
+
+// --- Resume info parser ---
+function parseResumeInfo(){
+  const text=state.resume.fullText||'';
+  if(!text.trim()){showToast('请先上传简历或粘贴简历文本');return}
+  const filled=[];
+  const lines=text.split('\n').map(l=>l.trim()).filter(l=>l);
+  // Phone
+  const ph=text.match(/1[3-9]\d{9}/);
+  if(ph&&!state.resume.phone){state.resume.phone=ph[0];filled.push('电话')}
+  // Email
+  const em=text.match(/[\w.+-]+@[\w-]+\.[\w.-]+/);
+  if(em&&!state.resume.email){state.resume.email=em[0];filled.push('邮箱')}
+  // Name
+  if(!state.resume.name){
+    const nm=text.match(/姓\s*名\s*[：:]\s*(.+)/);
+    if(nm){state.resume.name=nm[1].trim().substring(0,15);filled.push('姓名')}
+    else{
+      for(const line of lines){
+        if(line.length>=2&&line.length<=8&&!line.match(/[@\d:：|｜]/)&&!line.match(/简历|resume|求职|curriculum/i)){
+          state.resume.name=line;filled.push('姓名');break;
+        }
+      }
+    }
+  }
+  // Years
+  if(!state.resume.years){
+    const yr=text.match(/(\d+)\s*年\s*(?:工作)?(?:经验|经历)/);
+    if(yr){state.resume.years=yr[1]+'年';filled.push('工作年限')}
+  }
+  // Education
+  if(!state.resume.education){
+    const eduSec=findSection(text,['教育背景','教育经历','学历信息']);
+    if(eduSec){
+      const firstLine=eduSec.split('\n').find(l=>l.trim());
+      if(firstLine){state.resume.education=firstLine.trim().substring(0,40);filled.push('学历')}
+    }
+    if(!state.resume.education){
+      if(/硕士|研究生/.test(text)){state.resume.education='硕士';filled.push('学历')}
+      else if(/本科/.test(text)){state.resume.education='本科';filled.push('学历')}
+      else if(/大专|专科/.test(text)){state.resume.education='大专';filled.push('学历')}
+    }
+  }
+  // Work experience
+  const workSec=findSection(text,['工作经历','工作经验','工作履历']);
+  if(workSec){
+    const entries=splitEntries(workSec);
+    if(entries.length>0){
+      state.resume.workExp=entries.map(e=>({
+        company:extractField(e,['公司','企业'])||firstLine(e),
+        position:extractField(e,['职位','岗位','职务'])||'',
+        time:extractTime(e),
+        content:e.substring(0,500),
+        results:''
+      }));
+      filled.push('工作经历');
+    }
+  }
+  // Project experience
+  const projSec=findSection(text,['项目经历','项目经验','项目经历描述']);
+  if(projSec){
+    const entries=splitEntries(projSec);
+    if(entries.length>0){
+      state.resume.projExp=entries.map(e=>({
+        name:extractField(e,['项目名称','项目'])||firstLine(e),
+        role:extractField(e,['角色','职责','负责'])||'',
+        actions:e.substring(0,500),
+        results:''
+      }));
+      filled.push('项目经历');
+    }
+  }
+  // Skills
+  if(state.resume.skills.length===0){
+    const skillSec=findSection(text,['专业技能','技能清单','技能特长','核心技能']);
+    if(skillSec){
+      const skills=skillSec.split(/[、,，\n•·●■◆\-\|]+/).map(s=>s.trim().replace(/^[0-9.、]+/,'')).filter(s=>s.length>=2&&s.length<=30);
+      if(skills.length>0){state.resume.skills=[...new Set(skills)].slice(0,20);filled.push('技能')}
+    }
+  }
+  saveState();
+  refreshValues();
+  renderAllTags();
+  renderWorkEntries();
+  renderProjEntries();
+  if(filled.length>0){
+    showToast('解析完成！填充了：'+filled.join('、'));
+  }else{
+    showToast('未识别到结构化信息，请手动填写');
+  }
+}
+function findSection(text,markers){
+  for(const marker of markers){
+    const idx=text.indexOf(marker);
+    if(idx>=0){
+      const after=text.substring(idx+marker.length);
+      // Find next section
+      const allMarkers=['工作经历','工作经验','工作履历','项目经历','项目经验','专业技能','技能清单','技能特长','核心技能','教育背景','教育经历','学历信息','自我评价','个人评价','证书','荣誉','自我介绍','个人简介'];
+      let end=after.length;
+      for(const am of allMarkers){
+        if(am===marker)continue;
+        const ai=after.indexOf(am);
+        if(ai>=0&&ai<end)end=ai;
+      }
+      return after.substring(0,end).replace(/^[\s：:]*\n?/,'').trim();
+    }
+  }
+  return null;
+}
+function splitEntries(text){
+  // Split by numbered items, bullet points, or double newlines
+  let parts=text.split(/\n(?=\d+[.、)）]|●|■|◆|•|【|『)/);
+  if(parts.length<=1)parts=text.split(/\n{2,}/);
+  return parts.map(p=>p.trim()).filter(p=>p.length>5);
+}
+function extractField(text,fields){
+  for(const f of fields){
+    const m=text.match(new RegExp(f+'\\s*[：:]\\s*(.+)'));
+    if(m)return m[1].trim().substring(0,30);
+  }
+  return null;
+}
+function extractTime(text){
+  const m=text.match(/(\d{4}[.\/年]\s*\d{1,2}[.\/月]?\s*[-–—~至]+\s*(?:\d{4}[.\/年]\s*\d{1,2}[.\/月]?|至今|现在))/);
+  return m?m[1].trim():'';
+}
+function firstLine(text){
+  const l=text.split('\n').find(l=>l.trim());
+  return l?l.trim().substring(0,30):'';
+}
+
+// ============ SMART JD PARSE ============
+function refreshValues(){
+  document.querySelectorAll('[data-k]').forEach(el=>{
+    const keys=el.dataset.k.split('.');
+    let obj=state;
+    for(let i=0;i<keys.length-1;i++){
+      const k=keys[i];
+      if(/^\d+$/.test(k)){obj=obj[parseInt(k)]||{}}else{obj=obj[k]=obj[k]||{}}
+    }
+    const lk=keys[keys.length-1];
+    const li=/^\d+$/.test(lk)?parseInt(lk):null;
+    if(el.tagName==='TEXTAREA'||el.tagName==='INPUT'){
+      el.value=li!==null?(obj[li]||''):(obj[lk]||'');
+    }
+  });
+}
+function openPasteModal(){
+  document.getElementById('pasteModal').classList.add('show');
+  setTimeout(()=>document.getElementById('rawJD').focus(),100);
+}
+function closePasteModal(){document.getElementById('pasteModal').classList.remove('show')}
+function smartParse(){
+  const raw=(state.job.duties||'')+'\n'+(state.job.requirements||'')+'\n'+(state.job.company||'')+'\n'+(state.job.position||'');
+  if(!raw.trim()){showToast('请先粘贴 JD 文本，或点击「粘贴原始 JD」');return}
+  const filled=parseJD(raw);
+  showToast('智能解析完成，填充了 '+filled+' 个字段');
+}
+function smartParseFromModal(){
+  const raw=document.getElementById('rawJD').value;
+  if(!raw.trim()){showToast('请先粘贴 JD 文本');return}
+  const filled=parseJD(raw);
+  const pr=document.getElementById('parseResult');
+  pr.textContent='✅ 解析完成，已填充 '+filled+' 个字段。点击右上角 × 关闭查看结果。';
+  pr.classList.add('show');
+  showToast('智能解析完成，填充了 '+filled+' 个字段');
+}
+function parseJD(text){
+  const filled={company:0,industry:0,position:0,level:0,salary:0,location:0,duties:0,requirements:0,preferences:0};
+  const lines=text.split('\n').map(l=>l.trim());
+  // --- Company ---
+  let m=text.match(/(?:公司|企业)名称?\s*[：:]\s*(.+)/i);
+  if(m){state.job.company=m[1].trim();filled.company=1}
+  // --- Industry ---
+  m=text.match(/行业\s*[：:]\s*(.+)/i);
+  if(m){state.job.industry=m[1].trim();filled.industry=1}
+  // --- Position ---
+  m=text.match(/(?:岗位|职位|招聘)\s*名称?\s*[：:]\s*(.+)/i);
+  if(m){state.job.position=m[1].trim();filled.position=1}
+  // --- Salary ---
+  m=text.match(/(\d{1,2}[kK][-~·]\d{1,2}[kK](?:·\d+薪)?)/);
+  if(m){state.job.salary=m[1];filled.salary=1}
+  else{m=text.match(/(\d+[-~]\d+万)/);if(m){state.job.salary=m[1];filled.salary=1}
+  else{m=text.match(/薪资\s*[：:]\s*(.+)/i);if(m){state.job.salary=m[1].trim();filled.salary=1}}}
+  // --- Location ---
+  m=text.match(/(?:工作?地点|城市|base)\s*[：:]\s*(.+)/i);
+  if(m){state.job.location=m[1].trim();filled.location=1}
+  else{
+    const cities=['北京','上海','广州','深圳','杭州','成都','武汉','南京','苏州','西安','长沙','重庆','天津','青岛','厦门','合肥','郑州','东莞','佛山','宁波','无锡','福州','济南','大连','沈阳','哈尔滨','长春','昆明','南宁','贵阳','太原','石家庄','兰州','海口','三亚','珠海','中山','惠州','常州','温州','烟台','潍坊','保定','绍兴','扬州','洛阳'];
+    for(const c of cities){if(text.includes(c)){state.job.location=c;filled.location=1;break}}
+  }
+  // --- Level ---
+  m=text.match(/(?:级别|层级|职级)\s*[：:]\s*(.+)/i);
+  if(m){state.job.level=m[1].trim();filled.level=1}
+  else{
+    const ym=text.match(/(\d+)\s*[-~]\s*(\d+)\s*年/);
+    if(ym){
+      const y=parseInt(ym[2]);
+      state.job.level=y>=5?'高级':y>=3?'中级':'初级';filled.level=1;
+    }else if(/资深|高级|senior/i.test(text)){state.job.level='高级';filled.level=1}
+    else if(/中级|intermediate/i.test(text)){state.job.level='中级';filled.level=1}
+    else if(/初级|junior|应届|实习/i.test(text)){state.job.level='初级';filled.level=1}
+  }
+  // --- Duties ---
+  const dutyMarkers=['岗位职责','工作内容','工作职责','职责描述','岗位职责描述','Job Responsibilities','Responsibilities'];
+  const reqMarkers=['任职要求','岗位要求','任职资格','职位要求','任职条件','任职要求描述','Job Requirements','Requirements','Qualifications'];
+  let dutyText='',reqText='';
+  for(const marker of dutyMarkers){
+    const idx=text.indexOf(marker);
+    if(idx>=0){
+      const after=text.substring(idx+marker.length);
+      let endIdx=after.length;
+      const allM=[...reqMarkers,...dutyMarkers.filter(d=>d!==marker)];
+      for(const rm of allM){const ri=after.indexOf(rm);if(ri>=0&&ri<endIdx)endIdx=ri}
+      dutyText=after.substring(0,endIdx).replace(/^[：:\s\n\r]+/,'').trim();
+      break;
+    }
+  }
+  for(const marker of reqMarkers){
+    const idx=text.indexOf(marker);
+    if(idx>=0){
+      const after=text.substring(idx+marker.length);
+      reqText=after.replace(/^[：:\s\n\r]+/,'').trim();
+      for(const dm of dutyMarkers){const di=reqText.indexOf(dm);if(di>=0)reqText=reqText.substring(0,di).trim()}
+      break;
+    }
+  }
+  if(dutyText){state.job.duties=dutyText;filled.duties=1}
+  if(reqText){state.job.requirements=reqText;filled.requirements=1}
+  // --- Preferences ---
+  const prefs=[];
+  const pr1=/([\u4e00-\u9fa5a-zA-Z]{2,6}?)优先/g;
+  let pm;
+  while((pm=pr1.exec(text))!==null){
+    const w=pm[1].trim();
+    if(w.length>=2&&!prefs.includes(w)&&!['具有','具备','有相关','有类似','有一定','有过','熟悉','了解','掌握','能够','可以'].includes(w))prefs.push(w);
+  }
+  const pr2=/([\u4e00-\u9fa5a-zA-Z]{2,6}?)\s*(?:是\s*)?加分/g;
+  while((pm=pr2.exec(text))!==null){
+    const w=pm[1].trim();
+    if(w.length>=2&&!prefs.includes(w))prefs.push(w);
+  }
+  if(prefs.length>0){state.job.preferences=prefs.join('、');filled.preferences=1}
+  // --- Try header line (BOSS format: "产品经理 25-50K 深圳·南山区 5-7年 本科") ---
+  if(!filled.position||!filled.salary||!filled.location){
+    for(const line of lines){
+      if(line.match(/\d{1,2}[kK][-~]/)||line.match(/\d+[-~]\d+万/)){
+        const parts=line.split(/[\s·]+/).filter(p=>p);
+        for(const p of parts){
+          if(!filled.salary&&p.match(/^\d{1,2}[kK][-~]\d{1,2}[kK]/i)){state.job.salary=p;filled.salary=1}
+          else if(!filled.salary&&p.match(/^\d+[-~]\d+万/)){state.job.salary=p;filled.salary=1}
+          else if(!filled.level&&p.match(/^\d+[-~]\d+年/)){const y=parseInt(p.match(/(\d+)/g).pop());state.job.level=y>=5?'高级':y>=3?'中级':'初级';filled.level=1}
+          else if(['本科','硕士','大专','博士'].includes(p)){}
+          else if(!filled.location){const cities=['北京','上海','广州','深圳','杭州','成都','武汉','南京','苏州','西安','长沙','重庆','天津','青岛','厦门','合肥','郑州','东莞','佛山','宁波','珠海','中山','惠州','大连','沈阳','福州','济南','昆明','南宁','海口','三亚'];for(const c of cities){if(p.includes(c)){state.job.location=p;filled.location=1;break}}}
+          else if(!filled.position&&p.length<=20&&!p.match(/^\d/)){state.job.position=p;filled.position=1}
+        }
+        break;
+      }
+    }
+  }
+  saveState();
+  refreshValues();
+  renderAllTags();
+  return Object.values(filled).reduce((a,b)=>a+b,0);
+}
+
+function loadToUI(){
+  bindInputs();
+  renderAllTags();
+  renderWorkEntries();
+  renderProjEntries();
+  renderMatchResults();
+}
+
+// ============ INIT ============
+loadState();
+loadToUI();
+</script>
+</body>
+</html>
