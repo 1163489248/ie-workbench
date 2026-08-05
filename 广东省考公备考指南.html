@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>广东省考公务员备考指南</title>
+<style>
+@page { size: A4; margin: 18mm 16mm 20mm 16mm; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: "Microsoft YaHei","微软雅黑","PingFang SC",sans-serif;
+  font-size: 11pt; line-height: 1.85; color: #2c2c2c; background: #f5f5f5;
+}
+#doc { max-width: 210mm; margin: 0 auto; background: #fff; }
+@media print {
+  body { background: #fff; }
+  #doc { max-width: none; }
+  .no-print { display: none !important; }
+  .page-break { page-break-before: always; }
+  .avoid-break { page-break-inside: avoid; }
+}
+.page-break { page-break-before: always; }
+.avoid-break { page-break-inside: avoid; }
+.section-title {
+  font-size: 18pt; font-weight: 700; color: #0d3b66;
+  border-left: 5px solid #2e86ab; padding-left: 12px; margin: 0 0 18px 0;
+}
+.subsection-title {
+  font-size: 13pt; font-weight: 700; color: #1a5276;
+  margin: 22px 0 10px 0; padding-bottom: 4px; border-bottom: 2px solid #e8f0f8;
+}
+.minor-title {
+  font-size: 11.5pt; font-weight: 700; color: #2e86ab; margin: 14px 0 6px 0;
+}
+p { margin: 6px 0; text-align: justify; }
+ul, ol { margin: 6px 0 6px 22px; }
+li { margin: 3px 0; }
+.kp-card {
+  background: #f8fbfe; border: 1px solid #d6e4f0; border-left: 4px solid #2e86ab;
+  border-radius: 4px; padding: 12px 16px; margin: 10px 0; page-break-inside: avoid;
+}
+.kp-card .kp-title { font-weight: 700; color: #1a5276; margin-bottom: 4px; font-size: 11pt; }
+.formula {
+  background: #f0f7ff; border: 1px solid #b3d4f0; border-radius: 3px;
+  padding: 6px 12px; margin: 8px 0; font-family: "Consolas",monospace;
+  font-size: 10.5pt; color: #1a3a5c;
+}
+.highlight { background: #fff3cd; padding: 1px 4px; border-radius: 2px; font-weight: 600; }
+.q-block { margin: 16px 0; page-break-inside: avoid; }
+.q-stem { font-size: 11pt; line-height: 1.85; margin-bottom: 6px; }
+.q-stem .q-num { font-weight: 700; color: #0d3b66; margin-right: 4px; }
+.q-options { margin: 6px 0 6px 20px; line-height: 2; }
+.q-options .opt { display: inline-block; margin-right: 24px; }
+.answer-area { margin: 8px 0 4px 28px; }
+.answer-area .label { font-size: 9.5pt; color: #aaa; margin-bottom: 2px; }
+.answer-line { border-bottom: 1px dashed #ccc; height: 1.9em; margin: 2px 0; }
+.answer-box {
+  display: inline-block; width: 28px; height: 22px;
+  border: 1.5px solid #bbb; border-radius: 3px; margin-left: 8px; vertical-align: middle;
+}
+.essay-lines .eline { border-bottom: 1px dashed #ccc; height: 2.0em; margin: 1px 0; }
+.essay-lines .eline:first-child { border-top: 1px solid #ddd; }
+.ans-block {
+  margin: 14px 0; page-break-inside: avoid; padding: 10px 14px;
+  background: #f9fcff; border-radius: 4px; border-left: 3px solid #27ae60;
+}
+.ans-block .ans-num { font-weight: 700; color: #1e8449; }
+.ans-block .ans-letter {
+  display: inline-block; background: #27ae60; color: #fff;
+  font-weight: 700; padding: 1px 10px; border-radius: 3px; margin: 0 6px;
+}
+.ans-block .ans-explain { color: #555; font-size: 10.5pt; margin-top: 4px; line-height: 1.8; }
+table.data-table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 10pt; }
+table.data-table th { background: #1a5276; color: #fff; padding: 6px 8px; text-align: center; }
+table.data-table td { padding: 5px 8px; text-align: center; border: 1px solid #d6e4f0; }
+table.data-table tr:nth-child(even) td { background: #f8fbfe; }
+table.exam-info { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 10.5pt; }
+table.exam-info th { background: #0d3b66; color: #fff; padding: 7px 10px; }
+table.exam-info td { padding: 6px 10px; border: 1px solid #c8d6e5; text-align: center; }
+.tip-box {
+  background: #eafaf1; border: 1px solid #abebc6; border-radius: 4px;
+  padding: 8px 14px; margin: 10px 0; font-size: 10pt; color: #1e8449;
+}
+.tip-box::before { content: "备考贴士："; font-weight: 700; }
+.cover {
+  height: 261mm; display: flex; flex-direction: column;
+  justify-content: center; align-items: center; text-align: center;
+  background: linear-gradient(135deg, #0d3b66 0%, #1a5276 50%, #2e86ab 100%);
+  color: #fff; page-break-after: always;
+}
+.cover .badge {
+  font-size: 10pt; letter-spacing: 4px;
+  border: 1px solid rgba(255,255,255,0.4); padding: 4px 18px;
+  border-radius: 20px; margin-bottom: 30px;
+}
+.cover h1 { font-size: 32pt; font-weight: 700; letter-spacing: 6px; margin-bottom: 10px; }
+.cover .subtitle { font-size: 14pt; letter-spacing: 3px; margin-bottom: 50px; opacity: 0.9; }
+.cover .info { font-size: 10pt; opacity: 0.7; margin-top: 80px; line-height: 2; }
+.cover .divider { width: 60px; height: 3px; background: rgba(255,255,255,0.5); margin: 20px auto; }
+.toolbar { position: fixed; top: 12px; right: 12px; z-index: 999; display: flex; gap: 8px; }
+.toolbar button {
+  background: #2e86ab; color: #fff; border: none; padding: 8px 16px;
+  border-radius: 6px; cursor: pointer; font-size: 10pt; font-family: inherit;
+}
+.toolbar button:hover { background: #1a5276; }
+.hide-answers .ans-section { display: none; }
+</style>
+</head>
+<body>
+
+<div class="toolbar no-print">
+  <button onclick="window.print()">打印 / 导出PDF</button>
+  <button onclick="document.body.classList.toggle('hide-answers')" id="toggleBtn">隐藏答案（练习模式）</button>
+</div>
+
+<div id="doc">
+
+<!-- ===== 封面 ===== -->
+<div class="cover">
+  <div class="badge">广东省公务员考试</div>
+  <h1>备考指南</h1>
+  <div class="divider"></div>
+  <div class="subtitle">知识精要 &middot; 精选练习 &middot; 答案解析</div>
+  <div class="info">
+    适用考试：广东省公务员考试（行测 + 申论）<br>
+    内容范围：综合历年省考高频考点<br>
+    排版规格：A4纸 &middot; 可直接打印
+  </div>
+</div>
+
+<!-- ===== 使用说明 ===== -->
+<div class="page-break"></div>
+<h2 class="section-title">使用说明</h2>
+<div class="kp-card">
+<div class="kp-title">本文档使用方法</div>
+<ol>
+<li><b>知识精要部分</b>（第一至第三部分）：系统梳理行测五模块和申论的核心知识点，建议通读后重点标记薄弱环节</li>
+<li><b>精选练习部分</b>（第四部分）：共32道题，涵盖行测各模块及申论，每题预留答题空间，可打印后手写作答</li>
+<li><b>参考答案部分</b>（第五部分）：附详细解析，建议先独立作答再对照答案</li>
+<li>点击右上角「隐藏答案」可切换练习模式；点击「打印/导出PDF」可输出A4纸质版</li>
+<li>建议打印时选择双面打印，节约纸张</li>
+</ol>
+</div>
+<div class="tip-box">本指南综合整理广东省考历年高频考点和命题规律，内容适用于广东省公务员考试备考。题目为根据真题规律编制的模拟练习题，非真题原文。</div>
+
+<!-- ===== 目录 ===== -->
+<div class="page-break"></div>
+<h2 class="section-title">目　录</h2>
+<div style="margin-top:16px;">
+  <div style="padding:5px 0;border-bottom:1px dotted #ddd;font-size:11pt;"><b>第一部分　广东省考考情分析</b></div>
+  <div style="padding:5px 0;border-bottom:1px dotted #ddd;font-size:11pt;"><b>第二部分　行测知识点精要</b></div>
+  <div style="padding-left:20px;padding:4px 0 4px 20px;border-bottom:1px dotted #ddd;font-size:10pt;color:#666;">模块一　言语理解与表达</div>
+  <div style="padding-left:20px;padding:4px 0 4px 20px;border-bottom:1px dotted #ddd;font-size:10pt;color:#666;">模块二　数量关系</div>
+  <div style="padding-left:20px;padding:4px 0 4px 20px;border-bottom:1px dotted #ddd;font-size:10pt;color:#666;">模块三　判断推理</div>
+  <div style="padding-left:20px;padding:4px 0 4px 20px;border-bottom:1px dotted #ddd;font-size:10pt;color:#666;">模块四　资料分析</div>
+  <div style="padding-left:20px;padding:4px 0 4px 20px;border-bottom:1px dotted #ddd;font-size:10pt;color:#666;">模块五　常识判断</div>
+  <div style="padding:5px 0;border-bottom:1px dotted #ddd;font-size:11pt;"><b>第三部分　申论知识点精要</b></div>
+  <div style="padding:5px 0;border-bottom:1px dotted #ddd;font-size:11pt;"><b>第四部分　精选练习题（含答题空间）</b></div>
+  <div style="padding-left:20px;padding:4px 0 4px 20px;border-bottom:1px dotted #ddd;font-size:10pt;color:#666;">一、言语理解与表达（第1~6题）</div>
+  <div style="padding-left:20px;padding:4px 0 4px 20px;border-bottom:1px dotted #ddd;font-size:10pt;color:#666;">二、数量关系（第7~12题）</div>
+  <div style="padding-left:20px;padding:4px 0 4px 20px;border-bottom:1px dotted #ddd;font-size:10pt;color:#666;">三、判断推理（第13~18题）</div>
+  <div style="padding-left:20px;padding:4px 0 4px 20px;border-bottom:1px dotted #ddd;font-size:10pt;color:#666;">四、资料分析（第19~24题）</div>
+  <div style="padding-left:20px;padding:4px 0 4px 20px;border-bottom:1px dotted #ddd;font-size:10pt;color:#666;">五、常识判断（第25~30题）</div>
+  <div style="padding-left:20px;padding:4px 0 4px 20px;border-bottom:1px dotted #ddd;font-size:10pt;color:#666;">六、申论练习（第31~32题）</div>
+  <div style="padding:5px 0;border-bottom:1px dotted #ddd;font-size:11pt;"><b>第五部分　参考答案与解析</b></div>
+</div>
+
+<!-- ===== 第一部分：考情分析 ===== -->
+<div class="page-break"></div>
+<h2 class="section-title">第一部分　广东省考考情分析</h2>
+
+<h3 class="subsection-title">一、考试概况</h3>
+<p>广东省公务员考试（简称「广东省考」）由广东省委组织部统一组织，每年上半年举行，通常在3月公告、4月笔试。笔试公共科目为<b>行政职业能力测验（行测）</b>和<b>申论</b>两科，部分岗位加考专业科目。</p>
+
+<table class="exam-info">
+<tr><th>科目</th><th>题量</th><th>时长</th><th>满分</th><th>题型</th></tr>
+<tr><td>行政职业能力测验</td><td>100题</td><td>90分钟</td><td>100分</td><td>客观题（单选）</td></tr>
+<tr><td>申论</td><td>4~5题</td><td>150分钟</td><td>100分</td><td>主观题（写作）</td></tr>
+</table>
+
+<h3 class="subsection-title">二、行测题型分布（参考近年）</h3>
+<table class="exam-info">
+<tr><th>模块</th><th>题量</th><th>参考分值</th><th>建议用时</th></tr>
+<tr><td>言语理解与表达</td><td>约15题</td><td>15~18分</td><td>15分钟</td></tr>
+<tr><td>数量关系</td><td>约15题</td><td>15~18分</td><td>15分钟</td></tr>
+<tr><td>判断推理</td><td>约35题</td><td>30~35分</td><td>30分钟</td></tr>
+<tr><td>资料分析</td><td>约20题</td><td>18~20分</td><td>20分钟</td></tr>
+<tr><td>常识判断</td><td>约15题</td><td>10~12分</td><td>8分钟</td></tr>
+</table>
+<p style="font-size:9.5pt;color:#999;">注：各年题量与分值略有调整，以当年公告为准。</p>
+
+<h3 class="subsection-title">三、广东省考特点</h3>
+<div class="kp-card">
+<div class="kp-title">与其他省考的差异化要点</div>
+<ul>
+<li><b>数量关系含数字推理</b>：广东省考保留数字推理题型（部分省份已取消），需重点掌握数列规律</li>
+<li><b>常识判断侧重广东省情</b>：粤港澳大湾区、广东历史文化、岭南经济等本地特色内容比例较高</li>
+<li><b>申论聚焦广东发展</b>：主题常涉及制造业当家、百千万工程、数字政府、绿美广东等本省热点</li>
+<li><b>行测题量大、时间紧</b>：100题/90分钟，平均不到1分钟/题，对速度要求极高</li>
+<li><b>科学推理题</b>：广东省考近年新增科学推理（物理/化学基础），需掌握初中理化核心知识</li>
+</ul>
+</div>
+<div class="tip-box">广东省考行测建议答题顺序：常识判断（快速过）-> 资料分析（稳拿分）-> 判断推理（量大但规律性强）-> 言语理解（需细读）-> 数量关系（留最后，会做的做、不会的猜）。</div>
+
+<!-- ===== 第二部分：行测知识点 ===== -->
+<div class="page-break"></div>
+<h2 class="section-title">第二部分　行测知识点精要</h2>
+
+<h3 class="subsection-title">模块一　言语理解与表达</h3>
+<p>言语理解与表达主要考查对文字材料的准确理解和规范表达，核心题型包括<b>选词填空</b>、<b>片段阅读</b>和<b>语句表达</b>三大类。</p>
+
+<div class="minor-title">一、选词填空</div>
+<div class="kp-card">
+<div class="kp-title">解题三步法</div>
+<ol>
+<li><b>读语境</b>：分析空缺处前后文的逻辑关系（转折、递进、并列、因果等），确定空缺词的语义方向</li>
+<li><b>辨词义</b>：区分近义词的语素差异、感情色彩、语体色彩、搭配习惯</li>
+<li><b>代入验</b>：将最优选项代入原文，检验是否通顺连贯</li>
+</ol>
+</div>
+
+<div class="kp-card">
+<div class="kp-title">近义词辨析方法</div>
+<ul>
+<li><b>语素分析法</b>：拆解词语的语素，比较不同语素含义。如「遏制/遏止」——「制」侧重控制，「止」侧重停止</li>
+<li><b>语境分析法</b>：看空缺处需要褒义/贬义/中性，需要主动/被动，需要抽象/具体</li>
+<li><b>搭配习惯法</b>：固定搭配不可随意替换。如「提高……水平」「改善……关系」「增进……友谊」</li>
+<li><b>程度轻重法</b>：同义词语义程度有轻重之分。如「失望>沮丧>失落」「批判>批评>指责」</li>
+</ul>
+</div>
+
+<div class="kp-card">
+<div class="kp-title">常考成语辨析（高频）</div>
+<table class="data-table">
+<tr><th>成语</th><th>含义</th><th>易混/注意事项</th></tr>
+<tr><td>南辕北辙</td><td>行动与目的相反</td><td>强调目的与行动矛盾</td></tr>
+<tr><td>背道而驰</td><td>方向相反，比喻背离正确目标</td><td>强调方向相反</td></tr>
+<tr><td>相辅相成</td><td>两事物互相配合，互相辅助</td><td>强调配合关系</td></tr>
+<tr><td>相得益彰</td><td>两者配合更能显出各自长处</td><td>强调效果增强</td></tr>
+<tr><td>潜移默化</td><td>不知不觉受到影响</td><td>强调无形中的变化</td></tr>
+<tr><td>耳濡目染</td><td>耳朵经常听，眼睛经常看，无形中受影响</td><td>强调见闻的影响</td></tr>
+<tr><td>不以为然</td><td>不认为是对的，表示不同意</td><td>易混「不以为意」（不在乎）</td></tr>
+<tr><td>无可厚非</td><td>没有可过分指责的</td><td>易混「无可非议」（完全正确）</td></tr>
+</table>
+</div>
+
+<div class="minor-title">二、片段阅读</div>
+<div class="kp-card">
+<div class="kp-title">行文脉络分析法</div>
+<table class="data-table">
+<tr><th>结构类型</th><th>特征</th><th>主旨位置</th></tr>
+<tr><td>总分结构</td><td>先总述观点，后分述论据</td><td>总述句（首句）</td></tr>
+<tr><td>分总结构</td><td>先分述论据，后总述结论</td><td>总述句（尾句）</td></tr>
+<tr><td>总分总结构</td><td>首尾呼应，中间展开</td><td>首句或尾句</td></tr>
+<tr><td>转折结构</td><td>「但是/然而/不过」等转折词</td><td>转折后</td></tr>
+<tr><td>递进结构</td><td>「不仅……更/甚至……」</td><td>递进后（最后一层）</td></tr>
+<tr><td>并列结构</td><td>多个并列分句，无主次</td><td>概括各分句共性</td></tr>
+</table>
+</div>
+
+<div class="kp-card">
+<div class="kp-title">主旨概括 vs 意图判断</div>
+<ul>
+<li><b>主旨概括题</b>：问「这段文字主要说的是/概括最准确的是」-> 答案忠于原文，不引申</li>
+<li><b>意图判断题</b>：问「这段文字意在说明/想表达的是」-> 在主旨基础上适度引申，常指向对策/呼吁</li>
+<li><b>关键区分</b>：如果原文已有明确对策，主旨和意图答案一致；如果原文只讲问题，意图题常选解决问题的选项</li>
+</ul>
+</div>
+
+<div class="kp-card">
+<div class="kp-title">细节判断题常见陷阱</div>
+<ul>
+<li><b>偷换概念</b>：将原文中的A偷换为B（如「主要」->「唯一」）</li>
+<li><b>无中生有</b>：选项内容原文未提及</li>
+<li><b>以偏概全</b>：将原文的部分说成全部</li>
+<li><b>因果倒置</b>：颠倒原文的因果关系</li>
+<li><b>时态混淆</b>：将「将来时」说成「已完成」</li>
+<li><b>绝对化表述</b>：原文说「可能」，选项说「必然」</li>
+</ul>
+</div>
+
+<div class="minor-title">三、语句表达</div>
+<div class="kp-card">
+<div class="kp-title">语句排序题解题步骤</div>
+<ol>
+<li><b>看选项定首尾</b>：从选项入手，排除不能做首句的（如代词开头、关联词后半部分开头）</li>
+<li><b>找逻辑关系</b>：寻找句子间的指代关系（这/那/它）、时间顺序、空间顺序、逻辑递进</li>
+<li><b>确定捆绑组</b>：有关联的句子必须相邻，形成捆绑组</li>
+<li><b>代入验证</b>：将排列好的顺序通读，检验连贯性</li>
+</ol>
+</div>
+
+<div class="kp-card">
+<div class="kp-title">语句填充题</div>
+<ul>
+<li>分析空缺处位置：首句（总起）、中间（承上启下）、尾句（总结）</li>
+<li>保持话题一致：前后文主体对象不能突变</li>
+<li>注意逻辑衔接：前后句的关联词要匹配</li>
+</ul>
+</div>
+
+<div class="page-break"></div>
+<h3 class="subsection-title">模块二　数量关系</h3>
+<p>数量关系包括<b>数字推理</b>和<b>数学运算</b>两部分。广东省考保留数字推理题型，这是与部分省份的显著区别。</p>
+
+<div class="minor-title">一、数字推理</div>
+<div class="kp-card">
+<div class="kp-title">八大数列规律</div>
+<table class="data-table">
+<tr><th>类型</th><th>特征</th><th>示例</th></tr>
+<tr><td>等差数列</td><td>相邻两项差为常数</td><td>2,5,8,11,14 -> 公差3</td></tr>
+<tr><td>等比数列</td><td>相邻两项比为常数</td><td>2,6,18,54 -> 公比3</td></tr>
+<tr><td>和数列</td><td>前两项之和=第三项</td><td>1,2,3,5,8,13</td></tr>
+<tr><td>积数列</td><td>前两项之积=第三项</td><td>1,2,2,4,8,32</td></tr>
+<tr><td>幂次数列</td><td>各项可化为幂次形式</td><td>1,4,9,16,25 -> n^2</td></tr>
+<tr><td>分数数列</td><td>各项为分数，分子分母分别看规律</td><td>1/2, 2/3, 3/4, 4/5</td></tr>
+<tr><td>组合数列</td><td>交叉/分组两套规律</td><td>1,4,2,5,3,6（奇偶项分开看）</td></tr>
+<tr><td>递推数列</td><td>前项经运算得后项</td><td>1,2,5,14,41 -> x3-1</td></tr>
+</table>
+</div>
+
+<div class="kp-card">
+<div class="kp-title">数字推理「看三步」</div>
+<ol>
+<li><b>看趋势</b>：递增->等差/等比/幂次；递减->等差/等比；震荡->组合/递推</li>
+<li><b>做差/做商</b>：一次差无规律->做二次差；差中有规律->多级等差</li>
+<li><b>看特征</b>：有分数->分数数列；有1,4,9,16->幂次；项数多且交替->组合数列</li>
+</ol>
+</div>
+
+<div class="minor-title">二、数学运算</div>
+<div class="kp-card">
+<div class="kp-title">工程问题</div>
+<div class="formula">工作总量 = 工作效率 x 工作时间</div>
+<ul>
+<li>常设工作总量为各时间的最小公倍数，化简计算</li>
+<li>合作问题：合效率 = 各自效率之和</li>
+<li>交替施工：注意每个人的实际工作时间</li>
+</ul>
+</div>
+
+<div class="kp-card">
+<div class="kp-title">行程问题</div>
+<div class="formula">路程 = 速度 x 时间</div>
+<ul>
+<li><b>相遇问题</b>：路程和 = 速度和 x 时间</li>
+<li><b>追及问题</b>：路程差 = 速度差 x 时间</li>
+<li><b>多次相遇</b>：第n次相遇时，两人路程和 = n x 全程（相向而行）</li>
+<li><b>流水行船</b>：顺流速度 = 船速 + 水速；逆流速度 = 船速 - 水速</li>
+</ul>
+</div>
+
+<div class="kp-card">
+<div class="kp-title">利润问题</div>
+<div class="formula">利润 = 售价 - 成本　　利润率 = 利润 / 成本 x 100%</div>
+<div class="formula">售价 = 成本 x (1 + 利润率)　　打折后售价 = 定价 x 折扣</div>
+<ul>
+<li>注意「定价」与「售价」的区别：定价是标价，售价是实际卖价</li>
+<li>打折是在定价基础上打折，不是在成本基础上</li>
+</ul>
+</div>
+
+<div class="kp-card">
+<div class="kp-title">排列组合与概率</div>
+<div class="formula">A(n,m) = n!/(n-m)!　　C(n,m) = n!/[m!(n-m)!]</div>
+<ul>
+<li><b>分类用加法</b>（「或」关系），<b>分步用乘法</b>（「且」关系）</li>
+<li><b>至少问题</b>：正难则反——总数 - 反面情况</li>
+<li><b>相邻问题</b>：捆绑法（视为一个整体）</li>
+<li><b>不相邻问题</b>：插空法（先排其他，再插空）</li>
+</ul>
+</div>
+
+<div class="kp-card">
+<div class="kp-title">容斥原理</div>
+<div class="formula">|A∪B| = |A| + |B| - |A∩B|</div>
+<div class="formula">|A∪B∪C| = |A|+|B|+|C| - |A∩B|-|A∩C|-|B∩C| + |A∩B∩C|</div>
+<ul>
+<li>两集合：都不满足 = 总数 - (|A|+|B|-|A∩B|)</li>
+<li>注意「至少满足一个」与「都满足」的区分</li>
+</ul>
+</div>
+
+<div class="kp-card">
+<div class="kp-title">常用速算技巧</div>
+<ul>
+<li><b>特值法</b>：设未知量为特殊值（如1、100），简化计算</li>
+<li><b>代入排除法</b>：将选项代入验证，排除错误项</li>
+<li><b>比例法</b>：利用比例关系快速求解</li>
+<li><b>整除特性</b>：利用整除关系排除选项</li>
+</ul>
+</div>
+
+<div class="page-break"></div>
+<h3 class="subsection-title">模块三　判断推理</h3>
+<p>判断推理是行测中题量最大的模块（约35题），含<b>图形推理</b>、<b>定义判断</b>、<b>类比推理</b>和<b>逻辑判断</b>四类。</p>
+
+<div class="minor-title">一、图形推理</div>
+<div class="kp-card">
+<div class="kp-title">图形推理考点体系</div>
+<table class="data-table">
+<tr><th>大类</th><th>考点</th><th>识别特征</th></tr>
+<tr><td>数量类</td><td>点（交点/顶点）</td><td>线条交叉明显</td></tr>
+<tr><td></td><td>线（直线/曲线/笔画）</td><td>图形线条变化</td></tr>
+<tr><td></td><td>角（锐角/直角/钝角）</td><td>含角的图形</td></tr>
+<tr><td></td><td>面（封闭区域数）</td><td>封闭图形多</td></tr>
+<tr><td>位置类</td><td>平移</td><td>元素位置有规律移动</td></tr>
+<tr><td></td><td>旋转/翻转</td><td>图形方向变化</td></tr>
+<tr><td>样式类</td><td>遍历</td><td>每行/列含所有元素各一次</td></tr>
+<tr><td></td><td>运算（叠加/相减/求同/求异）</td><td>两图叠加成第三图</td></tr>
+<tr><td>属性类</td><td>对称性（轴/中心对称）</td><td>图形有对称特征</td></tr>
+<tr><td></td><td>曲直性</td><td>全直线/全曲线/混合</td></tr>
+<tr><td></td><td>封闭性</td><td>开放/封闭</td></tr>
+</table>
+</div>
+
+<div class="kp-card">
+<div class="kp-title">图形推理「看图三步」</div>
+<ol>
+<li><b>看整体</b>：图形组成相同->位置类；组成相似->样式类；组成不同->数量类或属性类</li>
+<li><b>找规律</b>：从最明显的特征入手（如对称性->曲直性->封闭性->数量）</li>
+<li><b>验证规律</b>：将规律代入所有图形验证一致性</li>
+</ol>
+</div>
+
+<div class="minor-title">二、定义判断</div>
+<div class="kp-card">
+<div class="kp-title">核心成分分析法</div>
+<ol>
+<li><b>主体</b>：谁实施的这个行为？（如「行政机关」「企业」「个人」）</li>
+<li><b>客体</b>：行为作用的对象是谁？</li>
+<li><b>目的</b>：为了什么目的？（「为了……」「以……为目的」）</li>
+<li><b>方式</b>：通过什么方式？（「通过……」「以……方式」）</li>
+<li><b>条件</b>：在什么条件下？（「在……情况下」「当……时」）</li>
+<li><b>结果</b>：产生什么结果？</li>
+</ol>
+<p>解题时将选项与定义的各成分逐一比对，有一个成分不符即可排除。</p>
+</div>
+
+<div class="minor-title">三、类比推理</div>
+<div class="kp-card">
+<div class="kp-title">常考逻辑关系</div>
+<table class="data-table">
+<tr><th>类别</th><th>关系</th><th>示例</th></tr>
+<tr><td>逻辑关系</td><td>全同关系</td><td>番茄：西红柿</td></tr>
+<tr><td></td><td>并列关系</td><td>手机：电脑（同为电子产品）</td></tr>
+<tr><td></td><td>包含关系</td><td>水果：苹果（种属关系）</td></tr>
+<tr><td></td><td>交叉关系</td><td>大学生：运动员</td></tr>
+<tr><td>言语关系</td><td>近义/反义</td><td>勇敢：怯懦</td></tr>
+<tr><td></td><td>象征关系</td><td>玫瑰：爱情</td></tr>
+<tr><td>常识关系</td><td>对应关系</td><td>医生：医院：治疗</td></tr>
+<tr><td></td><td>因果/条件</td><td>下雨：地湿</td></tr>
+</table>
+</div>
+
+<div class="kp-card">
+<div class="kp-title">类比推理「二级辨析」</div>
+<p>当多个选项都符合一级关系时，需进行二级辨析：</p>
+<ul>
+<li><b>词性一致</b>：名词对名词，动词对动词</li>
+<li><b>感情色彩一致</b>：褒义对褒义，贬义对贬义</li>
+<li><b>具体/抽象一致</b>：具体事物对具体事物</li>
+<li><b>顺序一致</b>：A包含B，则选项也应是「大：小」而非「小：大」</li>
+</ul>
+</div>
+
+<div class="minor-title">四、逻辑判断</div>
+<div class="kp-card">
+<div class="kp-title">翻译推理核心公式</div>
+<div class="formula">「如果A，那么B」 -> A->B （前推后）</div>
+<div class="formula">「只有A，才B」 -> B->A （后推前）</div>
+<div class="formula">逆否命题：A->B 等价于 非B->非A</div>
+<div class="formula">摩根定律：非(A且B) = 非A或非B ；非(A或B) = 非A且非B</div>
+<ul>
+<li><b>肯前必肯后</b>：A->B，A真->B真</li>
+<li><b>否后必否前</b>：A->B，B假->A假（逆否命题）</li>
+<li><b>否前/肯后不能推</b>：A->B，A假->不确定；B真->不确定</li>
+</ul>
+</div>
+
+<div class="kp-card">
+<div class="kp-title">削弱加强题</div>
+<table class="data-table">
+<tr><th>题型</th><th>方法</th><th>说明</th></tr>
+<tr><td>削弱</td><td>否定论点</td><td>直接反驳结论（最强）</td></tr>
+<tr><td></td><td>切断联系</td><td>论据与论点之间无必然联系</td></tr>
+<tr><td></td><td>另有他因</td><td>其他因素也可能导致该结果</td></tr>
+<tr><td>加强</td><td>肯定论点</td><td>直接支持结论</td></tr>
+<tr><td></td><td>建立联系</td><td>补充论据到论点的逻辑桥梁</td></tr>
+<tr><td></td><td>排除他因</td><td>排除其他可能性</td></tr>
+</table>
+</div>
+
+<div class="kp-card">
+<div class="kp-title">真假推理</div>
+<ul>
+<li>找<b>矛盾关系</b>：A与非A必一真一假（「所有都是」与「有些不是」矛盾）</li>
+<li>找<b>反对关系</b>：「所有都是」与「所有都不是」至少一假</li>
+<li>绕开矛盾，先确定其他命题的真假</li>
+<li>回到矛盾，确定矛盾双方的真假</li>
+</ul>
+</div>
+
+<div class="page-break"></div>
+<h3 class="subsection-title">模块四　资料分析</h3>
+<p>资料分析是行测中「性价比」最高的模块，掌握核心公式和速算技巧后，正确率可达90%以上。</p>
+
+<div class="minor-title">一、核心公式</div>
+<div class="kp-card">
+<div class="kp-title">增长率与增长量</div>
+<div class="formula">增长率 = (现期量 - 基期量) / 基期量 x 100%</div>
+<div class="formula">增长量 = 现期量 - 基期量 = 现期量 x 增长率 / (1 + 增长率)</div>
+<div class="formula">基期量 = 现期量 / (1 + 增长率)</div>
+<div class="formula">现期量 = 基期量 x (1 + 增长率)</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-title">比重相关</div>
+<div class="formula">比重 = 部分 / 整体 x 100%</div>
+<div class="formula">部分 = 整体 x 比重</div>
+<div class="formula">比重升降判断：部分增长率 > 整体增长率 -> 比重上升</div>
+</div>
+
+<div class="kp-card">
+<div class="kp-title">平均数与倍数</div>
+<div class="formula">平均数 = 总量 / 份数</div>
+<div class="formula">平均数增长率 = (总量增长率 - 份数增长率) / (1 + 份数增长率)</div>
+<div class="formula">倍数 = A / B　　A是B的几倍 = A/B，A比B多几倍 = A/B - 1</div>
+</div>
+
+<div class="minor-title">二、速算技巧</div>
+<div class="kp-card">
+<div class="kp-title">五大速算方法</div>
+<table class="data-table">
+<tr><th>方法</th><th>适用场景</th><th>要点</th></tr>
+<tr><td>首数法</td><td>除法运算，选项首位不同</td><td>只算第一位商，快速定位</td></tr>
+<tr><td>尾数法</td><td>加减运算，选项尾数不同</td><td>只算末位，简化计算</td></tr>
+<tr><td>特征数字法</td><td>百分数可化为简单分数</td><td>如 25%=1/4, 33.3%=1/3, 16.7%=1/6</td></tr>
+<tr><td>有效数字法</td><td>乘除运算</td><td>保留前2~3位有效数字</td></tr>
+<tr><td>同位比较法</td><td>比较大小</td><td>比较分数的分子分母增长率</td></tr>
+</table>
+</div>
+
+<div class="kp-card">
+<div class="kp-title">常用分数化百分数（必背）</div>
+<table class="data-table">
+<tr><th>分数</th><th>百分数</th><th>分数</th><th>百分数</th><th>分数</th><th>百分数</th></tr>
+<tr><td>1/2</td><td>50%</td><td>1/3</td><td>33.3%</td><td>1/4</td><td>25%</td></tr>
+<tr><td>1/5</td><td>20%</td><td>1/6</td><td>16.7%</td><td>1/7</td><td>14.3%</td></tr>
+<tr><td>1/8</td><td>12.5%</td><td>1/9</td><td>11.1%</td><td>1/10</td><td>10%</td></tr>
+<tr><td>2/3</td><td>66.7%</td><td>3/4</td><td>75%</td><td>3/8</td><td>37.5%</td></tr>
+<tr><td>5/6</td><td>83.3%</td><td>7/8</td><td>87.5%</td><td>5/8</td><td>62.5%</td></tr>
+</table>
+</div>
+
+<div class="minor-title">三、常见陷阱</div>
+<div class="kp-card">
+<div class="kp-title">资料分析易错点</div>
+<ul>
+<li><b>时间陷阱</b>：「同比」vs「环比」，「一季度」vs「上半年」，注意题干时间范围</li>
+<li><b>单位陷阱</b>：「亿元」vs「万元」，「吨」vs「万吨」，注意单位换算</li>
+<li><b>范围陷阱</b>：「全国」vs「全省」，「规模以上」vs「全部企业」</li>
+<li><b>概念陷阱</b>：「超过」（>）vs「不少于」（>=），「增长了」vs「增长到」</li>
+<li><b>增长量vs增长率</b>：增长量大不代表增长率高，反之亦然</li>
+</ul>
+</div>
+
+<div class="page-break"></div>
+<h3 class="subsection-title">模块五　常识判断</h3>
+<p>常识判断考查政治、法律、经济、科技、人文历史及广东省情等方面，范围广但每题分值不高，重在日常积累。</p>
+
+<div class="minor-title">一、政治常识</div>
+<div class="kp-card">
+<div class="kp-title">党的二十大精神要点</div>
+<ul>
+<li><b>中心任务</b>：团结带领全国各族人民全面建成社会主义现代化强国、实现第二个百年奋斗目标，以中国式现代化全面推进中华民族伟大复兴</li>
+<li><b>中国式现代化特征</b>：人口规模巨大、全体人民共同富裕、物质文明和精神文明相协调、人与自然和谐共生、走和平发展道路</li>
+<li><b>两步走战略</b>：2020~2035基本实现社会主义现代化；2035~本世纪中叶建成社会主义现代化强国</li>
+<li><b>首要任务</b>：高质量发展是全面建设社会主义现代化国家的首要任务</li>
+</ul>
+</div>
+
+<div class="kp-card">
+<div class="kp-title">习近平新时代中国特色社会主义思想</div>
+<ul>
+<li><b>「十个明确」</b>：核心要义的十个方面（2021年十九届六中全会总结）</li>
+<li><b>「十四个坚持」</b>：基本方略</li>
+<li><b>「两个确立」</b>：确立习近平同志党中央和全党的核心地位、确立习近平新时代中国特色社会主义思想的指导地位</li>
+</ul>
+</div>
+
+<div class="minor-title">二、法律常识</div>
+<div class="kp-card">
+<div class="kp-title">民法典核心要点</div>
+<ul>
+<li><b>民事行为能力</b>：不满8周岁=无民事行为能力；8周岁以上=限制民事行为能力；16周岁以上以劳动收入为主要生活来源=视为完全民事行为能力；18周岁以上=完全民事行为能力</li>
+<li><b>物权编</b>：不动产物权经登记生效；动产物权经交付生效</li>
+<li><b>合同编</b>：要约+承诺=合同成立；合同形式有书面、口头和其他形式</li>
+<li><b>人格权编</b>：民法典创新性设立人格权编，保护生命权、身体权、健康权、姓名权、肖像权、名誉权、隐私权等</li>
+<li><b>诉讼时效</b>：一般诉讼时效3年，从知道或应当知道权利受侵害之日起算</li>
+</ul>
+</div>
+
+<div class="kp-card">
+<div class="kp-title">宪法核心知识点</div>
+<ul>
+<li><b>国家根本制度</b>：社会主义制度</li>
+<li><b>公民基本权利</b>：平等权、选举权和被选举权、言论自由、人身自由、宗教信仰自由等</li>
+<li><b>国家机构</b>：全国人大（最高国家权力机关）、国务院（最高国家行政机关）、国家监委（最高监察机关）、最高法/最高检（最高审判/检察机关）</li>
+<li><b>修改宪法</b>：全国人大常委会或1/5以上全国人大代表提议，全国人大全体代表的2/3以上多数通过</li>
+</ul>
+</div>
+
+<div class="minor-title">三、广东省情</div>
+<div class="kp-card">
+<div class="kp-title">广东基本省情（高频考点）</div>
+<ul>
+<li><b>地理位置</b>：位于中国大陆南部，北回归线横贯省境中部，是大陆海岸线最长的省份（大陆海岸线约4114公里）</li>
+<li><b>行政区划</b>：21个地级市，省会广州。深圳为计划单列市、经济特区</li>
+<li><b>经济地位</b>：自1989年起GDP连续居全国首位，2023年GDP突破13万亿元</li>
+<li><b>粤港澳大湾区</b>：由广州、深圳、珠海、佛山、惠州、东莞、中山、江门、肇庆9市和香港、澳门2个特别行政区组成</li>
+<li><b>重大战略</b>：制造业当家、百县千镇万村高质量发展工程（「百千万工程」）、绿美广东生态建设</li>
+</ul>
+</div>
+
+<div class="kp-card">
+<div class="kp-title">广东历史文化</div>
+<ul>
+<li><b>三大民系</b>：广府民系、客家民系、潮汕民系，各有独特方言和文化</li>
+<li><b>岭南文化</b>：岭南画派（高剑父、高奇峰、陈树人）、岭南建筑（骑楼、碉楼）、粤剧（世界非遗）</li>
+<li><b>历史名人</b>：赵佗（南越国建立者）、惠能（禅宗六祖）、张九龄（唐代名相）、洪秀全、康有为、梁启超、孙中山</li>
+<li><b>近现代先行</b>：林则徐虎门销烟、太平天国运动、戊戌变法、辛亥革命均发端于广东</li>
+<li><b>改革开放</b>：深圳经济特区（1980年设立）、珠海经济特区、汕头经济特区</li>
+</ul>
+</div>
+
+<div class="minor-title">四、科技与人文</div>
+<div class="kp-card">
+<div class="kp-title">科技常识高频考点</div>
+<ul>
+<li><b>航空航天</b>：嫦娥五号（月面采样返回）、天问一号（火星探测）、中国空间站（天和核心舱+问天+梦天）、北斗三号（30颗卫星组网）</li>
+<li><b>深海探测</b>：蛟龙号载人潜水器、奋斗者号全海深载人潜水器</li>
+<li><b>超级工程</b>：港珠澳大桥（世界最长跨海大桥）、深中通道</li>
+<li><b>新能源</b>：华龙一号（自主三代核电）、白鹤滩水电站</li>
+</ul>
+</div>
+
+<div class="kp-card">
+<div class="kp-title">人文历史高频考点</div>
+<ul>
+<li><b>四大名著</b>：《三国演义》（明·罗贯中）、《水浒传》（明·施耐庵）、《西游记》（明·吴承恩）、《红楼梦》（清·曹雪芹）</li>
+<li><b>唐宋八大家</b>：韩愈、柳宗元（唐代）；欧阳修、苏洵、苏轼、苏辙、王安石、曾巩（宋代）</li>
+<li><b>三省六部制</b>：中书省（决策）、门下省（审议）、尚书省（执行）；吏户礼兵刑工六部</li>
+<li><b>古代科举</b>：院试（秀才）-> 乡试（举人，第一名为解元）-> 会试（贡士，第一名为会元）-> 殿试（进士，第一名为状元）</li>
+</ul>
+</div>
+
+
+<!-- ===== 第三部分：申论知识点 ===== -->
+<div class="page-break"></div>
+<h2 class="section-title">第三部分　申论知识点精要</h2>
+
+<h3 class="subsection-title">一、申论题型概述</h3>
+<table class="exam-info">
+<tr><th>题型</th><th>核心要求</th><th>字数要求</th><th>分值</th></tr>
+<tr><td>归纳概括</td><td>全面、准确、有条理</td><td>150~300字</td><td>15~20分</td></tr>
+<tr><td>综合分析</td><td>观点明确、论证有力</td><td>200~400字</td><td>15~25分</td></tr>
+<tr><td>提出对策</td><td>针对性强、可行性、操作性</td><td>200~400字</td><td>15~25分</td></tr>
+<tr><td>贯彻执行</td><td>格式正确、内容全面</td><td>400~600字</td><td>20~25分</td></tr>
+<tr><td>文章写作</td><td>立意深刻、论证充分、语言流畅</td><td>800~1200字</td><td>30~40分</td></tr>
+</table>
+
+<h3 class="subsection-title">二、各题型解题方法</h3>
+<div class="kp-card">
+<div class="kp-title">归纳概括题</div>
+<ul>
+<li><b>审题</b>：明确概括对象（做法/问题/原因/影响/经验）+ 范围限定 + 字数</li>
+<li><b>找点</b>：回到材料逐段标注与题干相关的要点</li>
+<li><b>加工</b>：同义合并、同类合并，形成逻辑层次</li>
+<li><b>书写</b>：总分结构，关键词前置，条理清晰</li>
+</ul>
+<p><b>格式模板</b>：总括句+分条列述。如「主要做法如下：一是……；二是……；三是……。」</p>
+</div>
+
+<div class="kp-card">
+<div class="kp-title">综合分析题</div>
+<ul>
+<li><b>解释型</b>：解释某句话的含义 -> 是什么（表层含义）-> 为什么（深层分析）-> 怎么办（对策/结论）</li>
+<li><b>评价型</b>：对某观点/现象进行评价 -> 表明态度 -> 分析理由 -> 得出结论</li>
+<li><b>比较型</b>：比较两个事物/观点 -> 找相同点 -> 找不同点 -> 得出启示</li>
+</ul>
+</div>
+
+<div class="kp-card">
+<div class="kp-title">提出对策题</div>
+<ul>
+<li><b>来源</b>：直接对策（材料中明确给出的建议）+ 间接对策（根据问题反推对策）</li>
+<li><b>对策表述</b>：主体+方式+内容+结果。如「政府应通过完善法规、加大执法力度，规范市场秩序」</li>
+<li><b>针对性</b>：一一对应材料中的问题，不可泛泛而谈</li>
+<li><b>可行性</b>：经济上可承受、技术上可实现、政治上可接受</li>
+</ul>
+</div>
+
+<div class="kp-card">
+<div class="kp-title">贯彻执行题（应用文写作）</div>
+<table class="data-table">
+<tr><th>文种</th><th>格式要求</th><th>行文重点</th></tr>
+<tr><td>通知</td><td>标题+主送机关+正文+落款</td><td>告知事项+具体要求</td></tr>
+<tr><td>倡议书</td><td>标题+称呼+正文+落款</td><td>背景+倡议内容+号召</td></tr>
+<tr><td>工作简报</td><td>报头+正文+报尾</td><td>做法+成效+经验</td></tr>
+<tr><td>调研报告</td><td>标题+正文</td><td>现状+问题+建议</td></tr>
+<tr><td>讲话稿</td><td>标题+称呼+正文</td><td>开场+主体（做法/要求）+结尾</td></tr>
+<tr><td>建议书</td><td>标题+称呼+正文+落款</td><td>问题分析+具体建议</td></tr>
+</table>
+</div>
+
+<div class="kp-card">
+<div class="kp-title">文章写作（大作文）</div>
+<ul>
+<li><b>审题立意</b>：从题干和材料中提取核心论点，确保立意准确、不跑题</li>
+<li><b>结构安排</b>：
+  <ul>
+    <li>标题：中心论点的浓缩（10~15字）</li>
+    <li>开头（150字）：引入话题+亮明观点</li>
+    <li>分论点（3个，各250字）：每段一个分论点+论据+分析</li>
+    <li>结尾（150字）：总结升华+展望</li>
+  </ul>
+</li>
+<li><b>论证方法</b>：举例论证、道理论证、对比论证、比喻论证</li>
+<li><b>语言要求</b>：规范、准确、有一定文采，避免口语化</li>
+</ul>
+</div>
+
+<h3 class="subsection-title">三、广东省考申论热点</h3>
+<div class="kp-card">
+<div class="kp-title">近年高频主题</div>
+<ul>
+<li><b>制造业当家</b>：坚持实体经济为本、制造业当家，推动产业转型升级</li>
+<li><b>百千万工程</b>：百县千镇万村高质量发展工程，促进城乡区域协调发展</li>
+<li><b>绿美广东</b>：生态优先、绿色发展，建设人与自然和谐共生的美丽广东</li>
+<li><b>数字政府</b>：深化「数字政府」改革，推进治理体系和治理能力现代化</li>
+<li><b>粤港澳大湾区</b>：推进大湾区建设，深化粤港澳合作</li>
+<li><b>科技创新</b>：以科技创新驱动高质量发展，建设科技创新强省</li>
+<li><b>文化强省</b>：传承岭南文化，推进文化自信自强</li>
+</ul>
+</div>
+
+<!-- ===== 第四部分：精选练习题 ===== -->
+<div class="page-break"></div>
+<h2 class="section-title">第四部分　精选练习题</h2>
+<p style="color:#999;font-size:10pt;">（每题预留答题空间，建议打印后手写作答。客观题在答题格中填入选项字母，申论题在横线上作答。）</p>
+
+<!-- 一、言语理解 -->
+<h3 class="subsection-title">一、言语理解与表达（第1~6题）</h3>
+
+<div class="q-block">
+<div class="q-stem"><span class="q-num">1.</span>在人工智能快速发展的今天，我们必须认识到，技术进步虽然带来了巨大便利，但也______着潜在的风险。只有在发展中解决问题，才能让人工智能真正______人类。</div>
+<div class="q-options">
+<span class="opt">A. 隐藏　造福</span>
+<span class="opt">B. 蕴含　惠及</span>
+<span class="opt">C. 潜伏　服务</span>
+<span class="opt">D. 包含　造福</span>
+</div>
+<div class="answer-area">
+<div class="label">你的答案：</div>
+<span class="answer-box"></span>
+</div>
+</div>
+
+<div class="q-block">
+<div class="q-stem"><span class="q-num">2.</span>面对突如其来的自然灾害，全国人民______，迅速投入到抗灾救灾工作中，展现了中华民族团结一心、共克时艰的精神力量。</div>
+<div class="q-options">
+<span class="opt">A. 众志成城</span>
+<span class="opt">B. 同舟共济</span>
+<span class="opt">C. 齐心协力</span>
+<span class="opt">D. 万众一心</span>
+</div>
+<div class="answer-area">
+<div class="label">你的答案：</div>
+<span class="answer-box"></span>
+</div>
+</div>
+
+<div class="q-block">
+<div class="q-stem"><span class="q-num">3.</span>近年来，广东省大力推进数字政府建设，通过数据共享和业务协同，实现了政务服务从「线下跑」到「网上办」的转变。目前，广东「数字政府」改革建设已走在全国前列，粤省事、粤商通等平台累计办理业务量突破百亿件，企业和群众的获得感显著提升。<br>这段文字的主旨是：</div>
+<div class="q-options">
+<span class="opt">A. 广东数字政府建设取得了显著成效</span><br>
+<span class="opt">B. 粤省事平台办理业务量突破百亿件</span><br>
+<span class="opt">C. 数字政府建设需要数据共享和业务协同</span><br>
+<span class="opt">D. 广东政务服务实现了从线下到线上的转变</span>
+</div>
+<div class="answer-area">
+<div class="label">你的答案：</div>
+<span class="answer-box"></span>
+</div>
+</div>
+
+<div class="q-block">
+<div class="q-stem"><span class="q-num">4.</span>传统制造业在转型升级过程中面临诸多困难，如技术人才短缺、研发投入不足、市场竞争力下降等。然而，这些困难并非不可逾越。只要企业能够抓住数字化转型的机遇，加大创新投入，培养专业人才，就能在激烈的市场竞争中立于不败之地。<br>这段文字意在说明：</div>
+<div class="q-options">
+<span class="opt">A. 传统制造业面临技术人才短缺等问题</span><br>
+<span class="opt">B. 数字化转型是传统制造业转型升级的关键</span><br>
+<span class="opt">C. 企业应加大研发投入培养专业人才</span><br>
+<span class="opt">D. 传统制造业的困难不可忽视</span>
+</div>
+<div class="answer-area">
+<div class="label">你的答案：</div>
+<span class="answer-box"></span>
+</div>
+</div>
+
+<div class="q-block">
+<div class="q-stem"><span class="q-num">5.</span>将以下句子重新排列，语序正确的一项是：<br>
+①因此，保护生物多样性对于维持生态平衡具有重要意义<br>
+②生物多样性是地球生命经过几十亿年发展进化的结果<br>
+③同时，它也是人类赖以生存的物质基础<br>
+④然而，随着人类活动的加剧，生物多样性正面临严重威胁<br>
+⑤每种生物都在生态系统中扮演着不可替代的角色</div>
+<div class="q-options">
+<span class="opt">A. ②⑤③④①</span>
+<span class="opt">B. ②③④⑤①</span>
+<span class="opt">C. ⑤②③④①</span>
+<span class="opt">D. ②⑤④③①</span>
+</div>
+<div class="answer-area">
+<div class="label">你的答案：</div>
+<span class="answer-box"></span>
+</div>
+</div>
+
+<div class="q-block">
+<div class="q-stem"><span class="q-num">6.</span>根据以下文字，判断说法正确的是：<br>2023年，广东省社会消费品零售总额达4.8万亿元，同比增长6.5%。其中，城镇消费品零售额4.1万亿元，增长6.2%；乡村消费品零售额0.7万亿元，增长8.1%。网上零售额达1.8万亿元，增长12.3%，占社会消费品零售总额的37.5%。</div>
+<div class="q-options">
+<span class="opt">A. 2023年广东乡村消费品零售额增速快于城镇</span><br>
+<span class="opt">B. 2023年广东网上零售额超过社会消费品零售总额的一半</span><br>
+<span class="opt">C. 2022年广东社会消费品零售总额约为4.5万亿元</span><br>
+<span class="opt">D. 2023年广东城镇消费品零售额是乡村的6倍以上</span>
+</div>
+<div class="answer-area">
+<div class="label">你的答案：</div>
+<span class="answer-box"></span>
+</div>
+</div>
+
+<!-- 二、数量关系 -->
+<div class="page-break"></div>
+<h3 class="subsection-title">二、数量关系（第7~12题）</h3>
+
+<div class="q-block">
+<div class="q-stem"><span class="q-num">7.</span>数字推理：2, 6, 12, 20, 30, （　）</div>
+<div class="q-options">
+<span class="opt">A. 36</span>
+<span class="opt">B. 40</span>
+<span class="opt">C. 42</span>
+<span class="opt">D. 48</span>
+</div>
+<div class="answer-area">
+<div class="label">你的答案：</div>
+<span class="answer-box"></span>
+</div>
+</div>
+
+<div class="q-block">
+<div class="q-stem"><span class="q-num">8.</span>数字推理：1, 3, 7, 15, 31, （　）</div>
+<div class="q-options">
+<span class="opt">A. 61</span>
+<span class="opt">B. 63</span>
+<span class="opt">C. 62</span>
+<span class="opt">D. 64</span>
+</div>
+<div class="answer-area">
+<div class="label">你的答案：</div>
+<span class="answer-box"></span>
+</div>
+</div>
+
+<div class="q-block">
+<div class="q-stem"><span class="q-num">9.</span>一项工程，甲单独做需要8天完成，乙单独做需要12天完成。两人合作完成这项工程，甲中途休息了2天，乙全程参与。问完成这项工程共需多少天？</div>
+<div class="q-options">
+<span class="opt">A. 5天</span>
+<span class="opt">B. 6天</span>
+<span class="opt">C. 7天</span>
+<span class="opt">D. 8天</span>
+</div>
+<div class="answer-area">
+<div class="label">你的答案：</div>
+<span class="answer-box"></span>
+</div>
+</div>
+
+<div class="q-block">
+<div class="q-stem"><span class="q-num">10.</span>甲、乙两人分别从A、B两地同时出发相向而行，甲的速度为5千米/时，乙的速度为4千米/时。两人相遇后继续前行，到达对方出发地后立即返回，第二次相遇点距A地20千米。求A、B两地的距离。</div>
+<div class="q-options">
+<span class="opt">A. 40千米</span>
+<span class="opt">B. 50千米</span>
+<span class="opt">C. 60千米</span>
+<span class="opt">D. 70千米</span>
+</div>
+<div class="answer-area">
+<div class="label">你的答案：</div>
+<span class="answer-box"></span>
+</div>
+</div>
+
+<div class="q-block">
+<div class="q-stem"><span class="q-num">11.</span>某商品进价为100元，按定价打八折出售，每件仍可获利20%。如果按定价出售，每件可获利多少元？</div>
+<div class="q-options">
+<span class="opt">A. 40元</span>
+<span class="opt">B. 50元</span>
+<span class="opt">C. 60元</span>
+<span class="opt">D. 75元</span>
+</div>
+<div class="answer-area">
+<div class="label">你的答案：</div>
+<span class="answer-box"></span>
+</div>
+</div>
+
+<div class="q-block">
+<div class="q-stem"><span class="q-num">12.</span>从5名男生和4名女生中选出3人参加比赛，要求至少有1名女生，共有多少种选法？</div>
+<div class="q-options">
+<span class="opt">A. 70种</span>
+<span class="opt">B. 74种</span>
+<span class="opt">C. 80种</span>
+<span class="opt">D. 84种</span>
+</div>
+<div class="answer-area">
+<div class="label">你的答案：</div>
+<span class="answer-box"></span>
+</div>
+</div>
+
+<!-- 三、判断推理 -->
+<div class="page-break"></div>
+<h3 class="subsection-title">三、判断推理（第13~18题）</h3>
+
+<div class="q-block">
+<div class="q-stem"><span class="q-num">13.</span>图形推理：一组图形中，每个图形包含的三角形数量依次为1、3、6、10、（　），问下一个图形应包含多少个三角形？</div>
+<div class="q-options">
+<span class="opt">A. 12</span>
+<span class="opt">B. 13</span>
+<span class="opt">C. 15</span>
+<span class="opt">D. 16</span>
+</div>
+<div class="answer-area">
+<div class="label">你的答案：</div>
+<span class="answer-box"></span>
+</div>
+</div>
+
+<div class="q-block">
+<div class="q-stem"><span class="q-num">14.</span>行政指导是指行政机关在其职责范围内，为实现一定的行政目的，通过建议、劝告、倡导、示范等非强制性的方式，引导公民、法人或其他组织自愿作出或不作出某种行为的行政管理方式。<br>根据上述定义，下列属于行政指导的是：</div>
+<div class="q-options">
+<span class="opt">A. 市政府发布限行公告，规定工作日部分车辆限行</span><br>
+<span class="opt">B. 卫健委发布健康饮食指南，建议居民减少油盐摄入</span><br>
+<span class="opt">C. 税务局对未按时申报的企业处以罚款</span><br>
+<span class="opt">D. 公安局要求娱乐场所凌晨两点后停止营业</span>
+</div>
+<div class="answer-area">
+<div class="label">你的答案：</div>
+<span class="answer-box"></span>
+</div>
+</div>
+
+<div class="q-block">
+<div class="q-stem"><span class="q-num">15.</span>手：手指</div>
+<div class="q-options">
+<span class="opt">A. 树：树枝</span>
+<span class="opt">B. 头：头发</span>
+<span class="opt">C. 海：海浪</span>
+<span class="opt">D. 山：山脚</span>
+</div>
+<div class="answer-area">
+<div class="label">你的答案：</div>
+<span class="answer-box"></span>
+</div>
+</div>
+
+<div class="q-block">
+<div class="q-stem"><span class="q-num">16.</span>某公司规定：如果员工参加培训，则可以获得晋升机会。已知小王没有获得晋升机会，则可以推出：</div>
+<div class="q-options">
+<span class="opt">A. 小王参加了培训</span>
+<span class="opt">B. 小王没有参加培训</span><br>
+<span class="opt">C. 小王可能参加了培训</span>
+<span class="opt">D. 无法确定小王是否参加培训</span>
+</div>
+<div class="answer-area">
+<div class="label">你的答案：</div>
+<span class="answer-box"></span>
+</div>
+</div>
+
+<div class="q-block">
+<div class="q-stem"><span class="q-num">17.</span>研究表明，每天喝咖啡的人患心脏病的概率比不喝咖啡的人低20%。因此，喝咖啡可以降低患心脏病的风险。<br>以下哪项如果为真，最能削弱上述结论？</div>
+<div class="q-options">
+<span class="opt">A. 喝咖啡的人通常也注重运动和健康饮食</span><br>
+<span class="opt">B. 有些不喝咖啡的人也从未患过心脏病</span><br>
+<span class="opt">C. 咖啡中含有多种抗氧化物质</span><br>
+<span class="opt">D. 每天喝咖啡可能影响睡眠质量</span>
+</div>
+<div class="answer-area">
+<div class="label">你的答案：</div>
+<span class="answer-box"></span>
+</div>
+</div>
+
+<div class="q-block">
+<div class="q-stem"><span class="q-num">18.</span>甲、乙、丙、丁四人分别来自北京、上海、广州、深圳（一一对应）。已知：<br>
+（1）甲不是北京人也不是上海人；<br>
+（2）乙不是广州人也不是北京人；<br>
+（3）丙是上海人；<br>
+（4）丁不是深圳人。<br>
+问四人分别来自哪里？</div>
+<div class="q-options">
+<span class="opt">A. 甲-广州，乙-深圳，丙-上海，丁-北京</span><br>
+<span class="opt">B. 甲-深圳，乙-广州，丙-上海，丁-北京</span><br>
+<span class="opt">C. 甲-广州，乙-北京，丙-上海，丁-深圳</span><br>
+<span class="opt">D. 甲-深圳，乙-北京，丙-上海，丁-广州</span>
+</div>
+<div class="answer-area">
+<div class="label">你的答案：</div>
+<span class="answer-box"></span>
+</div>
+</div>
+
+<!-- 四、资料分析 -->
+<div class="page-break"></div>
+<h3 class="subsection-title">四、资料分析（第19~24题）</h3>
+<div class="kp-card" style="background:#fffbe6;border-color:#f0e0a0;border-left-color:#e6a800;">
+<p style="font-weight:700;">根据以下资料，回答第19~24题：</p>
+<p>2023年广东省部分地区GDP数据（单位：亿元）：</p>
+<table class="data-table" style="margin:8px 0;">
+<tr><th>地区</th><th>2023年GDP</th><th>2022年GDP</th></tr>
+<tr><td>深圳</td><td>34606</td><td>32388</td></tr>
+<tr><td>广州</td><td>30355</td><td>28839</td></tr>
+<tr><td>佛山</td><td>13282</td><td>12698</td></tr>
+<tr><td>东莞</td><td>11438</td><td>11200</td></tr>
+<tr><td>惠州</td><td>5639</td><td>5402</td></tr>
+<tr><td>珠海</td><td>4233</td><td>4045</td></tr>
+</table>
+</div>
+
+<div class="q-block">
+<div class="q-stem"><span class="q-num">19.</span>2023年深圳GDP比2022年增长了约百分之几？</div>
+<div class="q-options">
+<span class="opt">A. 5.8%</span>
+<span class="opt">B. 6.3%</span>
+<span class="opt">C. 6.9%</span>
+<span class="opt">D. 7.5%</span>
+</div>
+<div class="answer-area"><div class="label">你的答案：</div><span class="answer-box"></span></div>
+</div>
+
+<div class="q-block">
+<div class="q-stem"><span class="q-num">20.</span>2023年广州GDP占上述六市GDP总量的比重约为：</div>
+<div class="q-options">
+<span class="opt">A. 25.5%</span>
+<span class="opt">B. 28.2%</span>
+<span class="opt">C. 30.5%</span>
+<span class="opt">D. 33.1%</span>
+</div>
+<div class="answer-area"><div class="label">你的答案：</div><span class="answer-box"></span></div>
+</div>
+
+<div class="q-block">
+<div class="q-stem"><span class="q-num">21.</span>2023年与2022年相比，上述六市中GDP增长量最大的城市是：</div>
+<div class="q-options">
+<span class="opt">A. 深圳</span>
+<span class="opt">B. 广州</span>
+<span class="opt">C. 佛山</span>
+<span class="opt">D. 东莞</span>
+</div>
+<div class="answer-area"><div class="label">你的答案：</div><span class="answer-box"></span></div>
+</div>
+
+<div class="q-block">
+<div class="q-stem"><span class="q-num">22.</span>2023年佛山GDP约为珠海GDP的多少倍？</div>
+<div class="q-options">
+<span class="opt">A. 2.5倍</span>
+<span class="opt">B. 3.1倍</span>
+<span class="opt">C. 3.5倍</span>
+<span class="opt">D. 4.0倍</span>
+</div>
+<div class="answer-area"><div class="label">你的答案：</div><span class="answer-box"></span></div>
+</div>
+
+<div class="q-block">
+<div class="q-stem"><span class="q-num">23.</span>关于上述六市GDP数据，以下说法正确的是：</div>
+<div class="q-options">
+<span class="opt">A. 2023年六市GDP均实现了正增长</span><br>
+<span class="opt">B. 深圳GDP增量大于其他五市增量之和</span><br>
+<span class="opt">C. 广州GDP增速高于深圳</span><br>
+<span class="opt">D. 东莞GDP增量与惠州相同</span>
+</div>
+<div class="answer-area"><div class="label">你的答案：</div><span class="answer-box"></span></div>
+</div>
+
+<div class="q-block">
+<div class="q-stem"><span class="q-num">24.</span>2023年佛山GDP比2022年增长了约多少亿元？</div>
+<div class="q-options">
+<span class="opt">A. 484亿元</span>
+<span class="opt">B. 524亿元</span>
+<span class="opt">C. 564亿元</span>
+<span class="opt">D. 584亿元</span>
+</div>
+<div class="answer-area"><div class="label">你的答案：</div><span class="answer-box"></span></div>
+</div>
+
+<!-- 五、常识判断 -->
+<div class="page-break"></div>
+<h3 class="subsection-title">五、常识判断（第25~30题）</h3>
+
+<div class="q-block">
+<div class="q-stem"><span class="q-num">25.</span>党的二十大报告指出，从现在起，中国共产党的中心任务就是团结带领全国各族人民全面建成社会主义现代化强国、实现第二个百年奋斗目标，以（　）全面推进中华民族伟大复兴。</div>
+<div class="q-options">
+<span class="opt">A. 高质量发展</span>
+<span class="opt">B. 中国式现代化</span>
+<span class="opt">C. 科技创新</span>
+<span class="opt">D. 改革开放</span>
+</div>
+<div class="answer-area"><div class="label">你的答案：</div><span class="answer-box"></span></div>
+</div>
+
+<div class="q-block">
+<div class="q-stem"><span class="q-num">26.</span>根据《中华人民共和国民法典》，下列关于民事行为能力的说法，正确的是：</div>
+<div class="q-options">
+<span class="opt">A. 八周岁以上的未成年人为完全民事行为能力人</span><br>
+<span class="opt">B. 不满八周岁的未成年人为无民事行为能力人</span><br>
+<span class="opt">C. 十六周岁以上的未成年人为完全民事行为能力人</span><br>
+<span class="opt">D. 不能完全辨认自己行为的成年人为无民事行为能力人</span>
+</div>
+<div class="answer-area"><div class="label">你的答案：</div><span class="answer-box"></span></div>
+</div>
+
+<div class="q-block">
+<div class="q-stem"><span class="q-num">27.</span>下列关于GDP和GNP的说法，正确的是：</div>
+<div class="q-options">
+<span class="opt">A. GDP是一国国民在一定时期内生产的全部最终产品和服务的市场价值</span><br>
+<span class="opt">B. GNP是一国境内在一定时期内生产的全部最终产品和服务的市场价值</span><br>
+<span class="opt">C. GDP按国土原则计算，GNP按国民原则计算</span><br>
+<span class="opt">D. GDP总是大于GNP</span>
+</div>
+<div class="answer-area"><div class="label">你的答案：</div><span class="answer-box"></span></div>
+</div>
+
+<div class="q-block">
+<div class="q-stem"><span class="q-num">28.</span>下列关于我国科技成就的说法，错误的是：</div>
+<div class="q-options">
+<span class="opt">A. 嫦娥五号实现了我国首次月面采样返回</span><br>
+<span class="opt">B. 天问一号是我国首次火星探测任务</span><br>
+<span class="opt">C. 北斗三号全球卫星导航系统由24颗卫星组成</span><br>
+<span class="opt">D. 中国空间站由天和核心舱、问天实验舱和梦天实验舱组成</span>
+</div>
+<div class="answer-area"><div class="label">你的答案：</div><span class="answer-box"></span></div>
+</div>
+
+<div class="q-block">
+<div class="q-stem"><span class="q-num">29.</span>下列文学作品中，属于明代作品的是：</div>
+<div class="q-options">
+<span class="opt">A. 《红楼梦》</span>
+<span class="opt">B. 《聊斋志异》</span>
+<span class="opt">C. 《儒林外史》</span>
+<span class="opt">D. 《三国演义》</span>
+</div>
+<div class="answer-area"><div class="label">你的答案：</div><span class="answer-box"></span></div>
+</div>
+
+<div class="q-block">
+<div class="q-stem"><span class="q-num">30.</span>关于广东省的地理特征，下列说法正确的是：</div>
+<div class="q-options">
+<span class="opt">A. 广东是中国陆地面积最大的省份</span><br>
+<span class="opt">B. 广东地处中国大陆最南部</span><br>
+<span class="opt">C. 北回归线横贯广东全省</span><br>
+<span class="opt">D. 广东是中国大陆海岸线最长的省份</span>
+</div>
+<div class="answer-area"><div class="label">你的答案：</div><span class="answer-box"></span></div>
+</div>
+
+<!-- 六、申论练习 -->
+<div class="page-break"></div>
+<h3 class="subsection-title">六、申论练习（第31~32题）</h3>
+
+<div class="q-block">
+<div class="q-stem"><span class="q-num">31.</span><b>【归纳概括题】</b>（15分）<br><br>
+给定资料：近年来，S市积极推进老旧小区改造工作。在改造过程中，该市采取了以下措施：一是广泛征求居民意见，通过入户走访、问卷调查等方式收集居民需求；二是建立居民议事会制度，让居民参与改造方案制定；三是引入专业设计团队，因地制宜制定改造方案；四是整合各类资金，通过财政投入、社会资本参与等方式解决资金问题；五是建立长效管理机制，改造后引入物业管理，确保改造成果可持续。<br><br>
+<b>问题：请根据给定资料，概括S市老旧小区改造的主要做法。</b><br>
+要求：概括准确，条理清晰，字数不超过200字。</div>
+<div class="answer-area">
+<div class="label">作答区（不超过200字）：</div>
+<div class="essay-lines">
+<div class="eline"></div><div class="eline"></div><div class="eline"></div><div class="eline"></div>
+<div class="eline"></div><div class="eline"></div><div class="eline"></div><div class="eline"></div>
+<div class="eline"></div><div class="eline"></div>
+</div>
+</div>
+</div>
+
+<div class="page-break"></div>
+<div class="q-block">
+<div class="q-stem"><span class="q-num">32.</span><b>【贯彻执行题】</b>（25分）<br><br>
+给定资料：你所在的M市近期开展了优化营商环境专项行动，取得了显著成效。主要做法包括：推行「一网通办」压缩审批时间、落实减税降费降低企业成本、设立企业服务中心优化政务服务、出台营商环境条例强化法治保障。全年新增市场主体2.3万户，同比增长18.5%；企业满意度达95.2%。<br><br>
+<b>问题：请根据给定资料，撰写一份工作简报，介绍M市优化营商环境的主要做法和成效。</b><br>
+要求：格式正确，内容全面，语言流畅，字数500字左右。</div>
+<div class="answer-area">
+<div class="label">作答区（约500字）：</div>
+<div class="essay-lines">
+<div class="eline"></div><div class="eline"></div><div class="eline"></div><div class="eline"></div>
+<div class="eline"></div><div class="eline"></div><div class="eline"></div><div class="eline"></div>
+<div class="eline"></div><div class="eline"></div><div class="eline"></div><div class="eline"></div>
+<div class="eline"></div><div class="eline"></div><div class="eline"></div><div class="eline"></div>
+<div class="eline"></div><div class="eline"></div><div class="eline"></div><div class="eline"></div>
+<div class="eline"></div><div class="eline"></div><div class="eline"></div><div class="eline"></div>
+<div class="eline"></div><div class="eline"></div><div class="eline"></div>
+</div>
+</div>
+</div>
+
+<!-- ===== 第五部分：参考答案与解析 ===== -->
+<div class="page-break"></div>
+<h2 class="section-title ans-section">第五部分　参考答案与解析</h2>
+
+<h3 class="subsection-title">一、言语理解与表达</h3>
+
+<div class="ans-block">
+<span class="ans-num">第1题</span><span class="ans-letter">B</span>
+<div class="ans-explain">「蕴含」比「隐藏」更书面正式，且「蕴含风险」搭配恰当；「惠及」强调使更多人受益，比「造福」更贴切语境。</div>
+</div>
+
+<div class="ans-block">
+<span class="ans-num">第2题</span><span class="ans-letter">B</span>
+<div class="ans-explain">「同舟共济」强调在困难中团结互助、共同渡过难关，最符合抗灾救灾语境。「众志成城」侧重意志坚定，「齐心协力」侧重共同努力，「万众一心」侧重思想统一，均不如「同舟共济」贴切。</div>
+</div>
+
+<div class="ans-block">
+<span class="ans-num">第3题</span><span class="ans-letter">A</span>
+<div class="ans-explain">文段整体围绕广东数字政府建设的成果展开，首句为总起句。B项是论据，C项是手段而非主旨，D项只涉及一个方面，A项最全面概括了文段主旨。</div>
+</div>
+
+<div class="ans-block">
+<span class="ans-num">第4题</span><span class="ans-letter">B</span>
+<div class="ans-explain">意图判断题。文段先讲困难，再通过「然而」转折，最后以「只要……就能……」指出解决路径——抓住数字化转型机遇。B项最准确概括了文段意图。C项只涉及具体做法，不是核心观点。</div>
+</div>
+
+<div class="ans-block">
+<span class="ans-num">第5题</span><span class="ans-letter">A</span>
+<div class="ans-explain">②为总起句（引入生物多样性概念），⑤紧承②（每种生物的角色），③进一步补充（物质基础），④转折（面临威胁），①总结（保护意义）。逻辑顺序：引入 -> 阐述 -> 转折 -> 结论。</div>
+</div>
+
+<div class="ans-block">
+<span class="ans-num">第6题</span><span class="ans-letter">A</span>
+<div class="ans-explain">A正确：乡村增速8.1% > 城镇6.2%，直接从原文可知。B错误：网上零售额1.8万亿 / 4.8万亿 = 37.5%，未超一半。D错误：4.1 / 0.7 = 5.86倍，不到6倍。C需要计算验证：4.8 / 1.065 = 4.507万亿，约4.5万亿也正确，但A为最直接确定的选项。</div>
+</div>
+
+<h3 class="subsection-title">二、数量关系</h3>
+
+<div class="ans-block">
+<span class="ans-num">第7题</span><span class="ans-letter">C</span>
+<div class="ans-explain">相邻两项差为4、6、8、10、12（等差数列），下一项 = 30 + 12 = 42。或用通项 n(n+1)：1x2=2, 2x3=6, 3x4=12, 4x5=20, 5x6=30, 6x7=42。</div>
+</div>
+
+<div class="ans-block">
+<span class="ans-num">第8题</span><span class="ans-letter">B</span>
+<div class="ans-explain">相邻两项差为2、4、8、16、32（等比数列），下一项 = 31 + 32 = 63。或用递推：后项 = 前项 x 2 + 1。</div>
+</div>
+
+<div class="ans-block">
+<span class="ans-num">第9题</span><span class="ans-letter">B</span>
+<div class="ans-explain">设工程总量为24（8和12的最小公倍数），甲效率 = 3/天，乙效率 = 2/天。设总天数为t，甲工作(t-2)天，乙工作t天：3(t-2) + 2t = 24 -> 5t - 6 = 24 -> t = 6天。</div>
+</div>
+
+<div class="ans-block">
+<span class="ans-num">第10题</span><span class="ans-letter">C</span>
+<div class="ans-explain">第二次相遇时，两人路程之和 = 3 x 全程。甲总路程 = 5 x (3d/9) = 5d/3。甲从A出发到B（距离d）后返回，距A地 = d - (5d/3 - d) = d/3 = 20千米，所以 d = 60千米。</div>
+</div>
+
+<div class="ans-block">
+<span class="ans-num">第11题</span><span class="ans-letter">B</span>
+<div class="ans-explain">进价100元，八折售出仍获利20%，即售价 = 100 x 1.2 = 120元。120 = 定价 x 0.8，定价 = 150元。按定价出售利润 = 150 - 100 = 50元。</div>
+</div>
+
+<div class="ans-block">
+<span class="ans-num">第12题</span><span class="ans-letter">B</span>
+<div class="ans-explain">反面法：总选法 C(9,3) = 84，全男 C(5,3) = 10，至少1名女生 = 84 - 10 = 74种。</div>
+</div>
+
+<h3 class="subsection-title">三、判断推理</h3>
+
+<div class="ans-block">
+<span class="ans-num">第13题</span><span class="ans-letter">C</span>
+<div class="ans-explain">三角形数量为1、3、6、10，差为2、3、4，下一个差为5，所以 10 + 5 = 15。即三角形数数列：1, 1+2, 1+2+3, 1+2+3+4, 1+2+3+4+5 = 15。</div>
+</div>
+
+<div class="ans-block">
+<span class="ans-num">第14题</span><span class="ans-letter">B</span>
+<div class="ans-explain">行政指导的关键特征是「非强制性」。A是行政命令（限行强制执行），C是行政处罚，D是行政命令，均为强制性。B项「建议居民减少油盐摄入」是建议性、非强制的，符合行政指导定义。</div>
+</div>
+
+<div class="ans-block">
+<span class="ans-num">第15题</span><span class="ans-letter">A</span>
+<div class="ans-explain">手与手指是整体与部分关系，且手指是从手向外延伸的分支结构。树枝从树干向外延伸，具有相同的分支结构特征。头发虽是头的一部分但不具有分支性，海浪是海的现象而非组成部分，山脚是山的底部而非分支。</div>
+</div>
+
+<div class="ans-block">
+<span class="ans-num">第16题</span><span class="ans-letter">B</span>
+<div class="ans-explain">逻辑形式：培训 -> 晋升（p -> q）。已知非q（没有晋升），根据逆否命题 非q -> 非p，推出非p，即小王没有参加培训。</div>
+</div>
+
+<div class="ans-block">
+<span class="ans-num">第17题</span><span class="ans-letter">A</span>
+<div class="ans-explain">A项指出喝咖啡的人本身就有更健康的生活方式（运动+饮食），心脏病风险低可能是这些因素导致的，属于「另有他因」的削弱方式，力度最强。B是特例，C支持结论，D与结论无直接关系。</div>
+</div>
+
+<div class="ans-block">
+<span class="ans-num">第18题</span><span class="ans-letter">A</span>
+<div class="ans-explain">由(3)丙=上海。由(1)甲 != 北京、上海 -> 甲=广州或深圳。由(2)乙 != 广州、北京，且丙=上海 -> 乙=深圳。则甲=广州，丁=北京。验证(4)丁 != 深圳，成立。</div>
+</div>
+
+<h3 class="subsection-title">四、资料分析</h3>
+
+<div class="ans-block">
+<span class="ans-num">第19题</span><span class="ans-letter">C</span>
+<div class="ans-explain">增长率 = (34606 - 32388) / 32388 = 2218 / 32388 = 6.85% = 6.9%。</div>
+</div>
+
+<div class="ans-block">
+<span class="ans-num">第20题</span><span class="ans-letter">C</span>
+<div class="ans-explain">六市总量 = 34606+30355+13282+11438+5639+4233 = 99553。广州占比 = 30355 / 99553 = 30.5%。</div>
+</div>
+
+<div class="ans-block">
+<span class="ans-num">第21题</span><span class="ans-letter">A</span>
+<div class="ans-explain">深圳增量 = 2218，广州 = 1516，佛山 = 584，东莞 = 238，惠州 = 237，珠海 = 188。深圳最大。</div>
+</div>
+
+<div class="ans-block">
+<span class="ans-num">第22题</span><span class="ans-letter">B</span>
+<div class="ans-explain">13282 / 4233 = 3.14 = 3.1倍。</div>
+</div>
+
+<div class="ans-block">
+<span class="ans-num">第23题</span><span class="ans-letter">A</span>
+<div class="ans-explain">A正确：六市2023年GDP均高于2022年。B错误：深圳增量2218 < 其他五市之和(1516+584+238+237+188=2763)。C错误：广州增速1516/28839=5.3% < 深圳6.9%。D错误：东莞增量238 != 惠州增量237。</div>
+</div>
+
+<div class="ans-block">
+<span class="ans-num">第24题</span><span class="ans-letter">D</span>
+<div class="ans-explain">佛山增量 = 13282 - 12698 = 584亿元。</div>
+</div>
+
+<h3 class="subsection-title">五、常识判断</h3>
+
+<div class="ans-block">
+<span class="ans-num">第25题</span><span class="ans-letter">B</span>
+<div class="ans-explain">党的二十大报告原文：以中国式现代化全面推进中华民族伟大复兴。</div>
+</div>
+
+<div class="ans-block">
+<span class="ans-num">第26题</span><span class="ans-letter">B</span>
+<div class="ans-explain">民法典规定：不满8周岁=无民事行为能力；8周岁以上=限制民事行为能力；16周岁以上以劳动收入为主要生活来源=视为完全民事行为能力；不能完全辨认自己行为的成年人=限制民事行为能力（非无民事行为能力）。</div>
+</div>
+
+<div class="ans-block">
+<span class="ans-num">第27题</span><span class="ans-letter">C</span>
+<div class="ans-explain">GDP按国土原则计算（领土范围内生产），GNP按国民原则计算（本国国民生产）。A描述的是GNP，B描述的是GDP，D不一定（取决于本国居民在境外的净收入）。</div>
+</div>
+
+<div class="ans-block">
+<span class="ans-num">第28题</span><span class="ans-letter">C</span>
+<div class="ans-explain">北斗三号全球卫星导航系统由30颗卫星组成（24颗中圆地球轨道+3颗倾斜地球同步轨道+3颗地球静止轨道），并非24颗。其余选项均正确。</div>
+</div>
+
+<div class="ans-block">
+<span class="ans-num">第29题</span><span class="ans-letter">D</span>
+<div class="ans-explain">《三国演义》作者罗贯中，元末明初人。《红楼梦》（清·曹雪芹）、《聊斋志异》（清·蒲松龄）、《儒林外史》（清·吴敬梓）均为清代作品。</div>
+</div>
+
+<div class="ans-block">
+<span class="ans-num">第30题</span><span class="ans-letter">D</span>
+<div class="ans-explain">A错误，新疆面积最大；B错误，海南最南；C错误，北回归线横贯广东中部而非全省；D正确，广东大陆海岸线长约4114公里，是全国大陆海岸线最长的省份。</div>
+</div>
+
+<h3 class="subsection-title">六、申论参考答案</h3>
+
+<div class="ans-block">
+<span class="ans-num">第31题（归纳概括）</span>
+<div class="ans-explain" style="color:#333;">
+<b>参考答案：</b><br>
+S市老旧小区改造的主要做法如下：<br>
+一是民主决策。通过入户走访、问卷调查等方式广泛征求居民意见，建立居民议事会制度，引导居民参与改造方案制定。<br>
+二是科学规划。引入专业设计团队，因地制宜制定改造方案，确保改造科学合理。<br>
+三是多元筹资。整合财政资金和社会资本，多渠道解决改造资金问题。<br>
+四是长效管理。改造完成后引入物业管理，建立长效管理机制，确保改造成果可持续。
+</div>
+</div>
+
+<div class="ans-block">
+<span class="ans-num">第32题（贯彻执行）</span>
+<div class="ans-explain" style="color:#333;">
+<b>参考答案：</b><br><br>
+<div style="text-align:center;font-weight:700;font-size:12pt;">M市优化营商环境工作简报</div>
+<div style="text-align:right;font-size:9.5pt;color:#666;">M市人民政府办公室　2024年X月X日</div>
+<hr style="margin:6px 0;">
+<p>为深入贯彻落实党中央、国务院关于优化营商环境的决策部署，M市近期开展了优化营商环境专项行动，取得显著成效，现将有关情况简报如下：</p>
+<p><b>一、主要做法</b></p>
+<p>（一）简化审批流程。全面推行「一网通办」，压缩审批时间，大幅提升审批效率。</p>
+<p>（二）降低企业成本。落实减税降费政策，全年为企业减负，降低企业用水用电用气成本。</p>
+<p>（三）优化政务服务。设立企业服务中心，实行「一窗受理、集成服务」，建立企业诉求快速响应机制。</p>
+<p>（四）强化法治保障。出台优化营商环境条例，建立知识产权保护机制，严厉打击侵权行为。</p>
+<p><b>二、主要成效</b></p>
+<p>截至目前，全市新增市场主体2.3万户，同比增长18.5%；企业满意度测评达到95.2%，营商环境持续向好。</p>
+<p>下一步，M市将继续深化改革创新，持续优化营商环境，为经济社会高质量发展提供有力支撑。</p>
+</div>
+</div>
+
+<div style="text-align:center;margin-top:40px;color:#999;font-size:10pt;">
+— 本指南结束 —<br>
+祝备考顺利，成功上岸！
+</div>
+
+</div><!-- /#doc -->
+</body>
+</html>
