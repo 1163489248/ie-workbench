@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>六西格玛管理（第二版）</title>
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:#1a1a1a;color:#e0e0e0;font-family:'Microsoft YaHei',sans-serif;overflow:hidden;height:100vh;display:flex;flex-direction:column}
+
+/* 顶部栏 */
+.topbar{background:#0f0f0f;padding:8px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #333;flex-shrink:0;z-index:10}
+.topbar .title{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:50vw}
+.topbar .page-info{font-size:13px;color:#888;white-space:nowrap}
+.btn{background:#2a2a2a;border:1px solid #444;color:#e0e0e0;padding:6px 14px;border-radius:6px;font-size:13px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.btn:hover{background:#383838;border-color:#555}
+.btn:active{transform:scale(.95)}
+.btn:disabled{opacity:.3;cursor:not-allowed}
+
+/* 阅读区 */
+.reader{flex:1;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.canvas-wrap{position:relative;display:flex;gap:2px;box-shadow:0 4px 20px rgba(0,0,0,.5)}
+canvas{background:#fff;display:block;max-height:100%;max-width:100%}
+
+/* 翻页按钮 */
+.nav-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.6);border:none;color:#fff;font-size:24px;padding:12px 10px;cursor:pointer;border-radius:0 8px 8px 0;z-index:5;transition:all .2s;opacity:.5}
+.nav-btn:hover{opacity:1;background:rgba(0,0,0,.8)}
+.nav-prev{left:0}
+.nav-next{right:0;border-radius:8px 0 0 8px}
+
+/* 底部进度 */
+.bottombar{background:#0f0f0f;padding:6px 16px;border-top:1px solid #333;flex-shrink:0;display:flex;align-items:center;gap:12px}
+.progress-bar{flex:1;height:4px;background:#333;border-radius:2px;cursor:pointer;position:relative}
+.progress-fill{height:100%;background:#38bdf8;border-radius:2px;transition:width .3s}
+.progress-thumb{position:absolute;top:50%;transform:translate(-50%,-50%);width:12px;height:12px;background:#38bdf8;border-radius:50%;opacity:0;transition:opacity .2s}
+.progress-bar:hover .progress-thumb{opacity:1}
+
+/* 加载 */
+.loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#1a1a1a;z-index:20}
+.spinner{width:40px;height:40px;border:3px solid #333;border-top-color:#38bdf8;border-radius:50%;animation:spin 1s linear infinite}
+.loading-text{margin-top:12px;font-size:14px;color:#888}
+
+/* 页面跳转 */
+.page-input{width:50px;background:#2a2a2a;border:1px solid #444;color:#e0e0e0;text-align:center;padding:3px 6px;border-radius:4px;font-size:13px}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* 手机适配 */
+@media(max-width:680px){
+  .topbar .title{font-size:13px;max-width:40vw}
+  .nav-btn{padding:10px 8px;font-size:20px}
+  .bottombar{padding:6px 10px;gap:8px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <button class="btn" id="prevBtn" onclick="prevPage()">◀ 上一页</button>
+  <span class="title">📖 六西格玛管理（第二版）</span>
+  <span class="page-info">第 <input type="number" class="page-input" id="pageInput" value="1" onchange="jumpTo()"> / <span id="totalPages">-</span> 页</span>
+  <button class="btn" id="nextBtn" onclick="nextPage()">下一页 ▶</button>
+</div>
+
+<div class="reader" id="reader">
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <div class="loading-text">正在加载电子书...</div>
+  </div>
+  <button class="nav-btn nav-prev" onclick="prevPage()">‹</button>
+  <div class="canvas-wrap">
+    <canvas id="pdfCanvas"></canvas>
+  </div>
+  <button class="nav-btn nav-next" onclick="nextPage()">›</button>
+</div>
+
+<div class="bottombar">
+  <span style="font-size:12px;color:#666;white-space:nowrap">进度</span>
+  <div class="progress-bar" id="progressBar" onclick="seekTo(event)">
+    <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    <div class="progress-thumb" id="progressThumb" style="left:0%"></div>
+  </div>
+  <span style="font-size:12px;color:#666;white-space:nowrap" id="progressText">0%</span>
+</div>
+
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+
+const PDF_URL = 'six-sigma.pdf';
+const canvas = document.getElementById('pdfCanvas');
+const ctx = canvas.getContext('2d');
+
+let pdfDoc = null;
+let currentPage = 1;
+let totalPages = 0;
+let rendering = false;
+let pendingPage = null;
+
+// 渲染页面
+function renderPage(num) {
+  if (rendering) { pendingPage = num; return; }
+  rendering = true;
+  
+  pdfDoc.getPage(num).then(function(page) {
+    const reader = document.getElementById('reader');
+    const maxW = reader.clientWidth - 80;
+    const maxH = reader.clientHeight - 20;
+    
+    // 原始比例
+    const viewport0 = page.getViewport({scale:1});
+    let scale = Math.min(maxW / viewport0.width, maxH / viewport0.height);
+    scale = Math.max(scale, 0.3); // 最小缩放
+    
+    const viewport = page.getViewport({scale: scale * (window.devicePixelRatio || 1)});
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    canvas.style.width = (viewport.width / (window.devicePixelRatio || 1)) + 'px';
+    canvas.style.height = (viewport.height / (window.devicePixelRatio || 1)) + 'px';
+    
+    const renderCtx = { canvasContext: ctx, viewport: viewport };
+    page.render(renderCtx).promise.then(function() {
+      rendering = false;
+      document.getElementById('loading').style.display = 'none';
+      
+      // 更新UI
+      currentPage = num;
+      document.getElementById('pageInput').value = num;
+      const pct = Math.round(num / totalPages * 100);
+      document.getElementById('progressFill').style.width = pct + '%';
+      document.getElementById('progressThumb').style.left = pct + '%';
+      document.getElementById('progressText').textContent = pct + '%';
+      
+      // 更新按钮状态
+      document.getElementById('prevBtn').disabled = num <= 1;
+      document.getElementById('nextBtn').disabled = num >= totalPages;
+      
+      // 处理待渲染
+      if (pendingPage !== null) {
+        const p = pendingPage;
+        pendingPage = null;
+        renderPage(p);
+      }
+    });
+  });
+}
+
+// 翻页
+function prevPage() {
+  if (currentPage <= 1) return;
+  renderPage(currentPage - 1);
+}
+function nextPage() {
+  if (currentPage >= totalPages) return;
+  renderPage(currentPage + 1);
+}
+function jumpTo() {
+  const num = parseInt(document.getElementById('pageInput').value);
+  if (num >= 1 && num <= totalPages) {
+    renderPage(num);
+  } else {
+    document.getElementById('pageInput').value = currentPage;
+  }
+}
+
+// 进度条跳转
+function seekTo(e) {
+  const bar = document.getElementById('progressBar');
+  const rect = bar.getBoundingClientRect();
+  const pct = (e.clientX - rect.left) / rect.width;
+  const num = Math.max(1, Math.min(totalPages, Math.ceil(pct * totalPages)));
+  renderPage(num);
+}
+
+// 键盘翻页
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'ArrowLeft') prevPage();
+  if (e.key === 'ArrowRight') nextPage();
+});
+
+// 触摸滑动
+let touchStartX = 0;
+document.getElementById('reader').addEventListener('touchstart', function(e) {
+  touchStartX = e.touches[0].clientX;
+});
+document.getElementById('reader').addEventListener('touchend', function(e) {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(dx) > 50) {
+    if (dx > 0) prevPage(); else nextPage();
+  }
+});
+
+// 窗口大小变化
+let resizeTimer;
+window.addEventListener('resize', function() {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(function() {
+    renderPage(currentPage);
+  }, 300);
+});
+
+// 加载PDF
+pdfjsLib.getDocument(PDF_URL).promise.then(function(pdf) {
+  pdfDoc = pdf;
+  totalPages = pdf.numPages;
+  document.getElementById('totalPages').textContent = totalPages;
+  renderPage(1);
+}).catch(function(err) {
+  document.getElementById('loading').innerHTML = 
+    '<div style="color:#f87171;font-size:14px">❌ 加载失败: ' + err.message + '</div>';
+});
+</script>
+</body>
+</html>
