@@ -2,65 +2,95 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no,viewport-fit=cover">
 <title>六西格玛管理（第二版）</title>
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{background:#1a1a1a;color:#e0e0e0;font-family:'Microsoft YaHei',sans-serif;overflow:hidden;height:100vh;display:flex;flex-direction:column}
+:root{--bg:#1a1a1a;--bar:#0f0f0f;--border:#333;--accent:#38bdf8;--text:#e0e0e0;--dim:#888}
+html,body{height:100%;height:100dvh;overflow:hidden}
+body{background:var(--bg);color:var(--text);font-family:'Microsoft YaHei','PingFang SC',sans-serif;display:flex;flex-direction:column}
 
 /* 顶部栏 */
-.topbar{background:#0f0f0f;padding:8px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #333;flex-shrink:0;z-index:10}
-.topbar .title{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:50vw}
-.topbar .page-info{font-size:13px;color:#888;white-space:nowrap}
-.btn{background:#2a2a2a;border:1px solid #444;color:#e0e0e0;padding:6px 14px;border-radius:6px;font-size:13px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.topbar{background:var(--bar);padding:6px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;border-bottom:1px solid var(--border);flex-shrink:0;z-index:10;padding-top:env(safe-area-inset-top,6px)}
+.topbar-left,.topbar-right{display:flex;align-items:center;gap:6px}
+.topbar .title{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:40vw}
+.topbar .page-info{font-size:13px;color:var(--dim);white-space:nowrap;display:flex;align-items:center;gap:4px}
+.btn{background:#2a2a2a;border:1px solid #444;color:var(--text);padding:6px 12px;border-radius:6px;font-size:13px;cursor:pointer;transition:all .15s;white-space:nowrap;-webkit-user-select:none;user-select:none}
 .btn:hover{background:#383838;border-color:#555}
-.btn:active{transform:scale(.95)}
-.btn:disabled{opacity:.3;cursor:not-allowed}
+.btn:active{transform:scale(.92)}
+.btn:disabled{opacity:.25;cursor:not-allowed}
+.btn-icon{padding:6px 10px;font-size:16px}
+.page-input{width:48px;background:#2a2a2a;border:1px solid #444;color:var(--text);text-align:center;padding:4px 4px;border-radius:4px;font-size:13px;font-family:inherit}
 
 /* 阅读区 */
-.reader{flex:1;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
-.canvas-wrap{position:relative;display:flex;gap:2px;box-shadow:0 4px 20px rgba(0,0,0,.5)}
-canvas{background:#fff;display:block;max-height:100%;max-width:100%}
+.reader{flex:1;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;touch-action:pan-y}
+.canvas-wrap{position:relative;display:flex;box-shadow:0 4px 20px rgba(0,0,0,.5);line-height:0}
+canvas{background:#fff;display:block}
 
-/* 翻页按钮 */
-.nav-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.6);border:none;color:#fff;font-size:24px;padding:12px 10px;cursor:pointer;border-radius:0 8px 8px 0;z-index:5;transition:all .2s;opacity:.5}
-.nav-btn:hover{opacity:1;background:rgba(0,0,0,.8)}
-.nav-prev{left:0}
-.nav-next{right:0;border-radius:8px 0 0 8px}
+/* 翻页热区（透明，覆盖左右两侧） */
+.tap-zone{position:absolute;top:0;bottom:0;width:30%;z-index:5}
+.tap-prev{left:0}
+.tap-next{right:0}
+/* 可见的翻页箭头 */
+.nav-arrow{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.45);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;z-index:6;opacity:.35;transition:opacity .2s;pointer-events:none}
+.reader:active .nav-arrow{opacity:.6}
+.nav-arrow.left{left:8px}
+.nav-arrow.right{right:8px}
 
 /* 底部进度 */
-.bottombar{background:#0f0f0f;padding:6px 16px;border-top:1px solid #333;flex-shrink:0;display:flex;align-items:center;gap:12px}
-.progress-bar{flex:1;height:4px;background:#333;border-radius:2px;cursor:pointer;position:relative}
-.progress-fill{height:100%;background:#38bdf8;border-radius:2px;transition:width .3s}
-.progress-thumb{position:absolute;top:50%;transform:translate(-50%,-50%);width:12px;height:12px;background:#38bdf8;border-radius:50%;opacity:0;transition:opacity .2s}
-.progress-bar:hover .progress-thumb{opacity:1}
+.bottombar{background:var(--bar);padding:8px 16px;border-top:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;gap:10px;padding-bottom:env(safe-area-inset-bottom,8px)}
+.progress-bar{flex:1;height:24px;display:flex;align-items:center;cursor:pointer;position:relative}
+.progress-track{width:100%;height:4px;background:#333;border-radius:2px;position:relative}
+.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .3s}
+.progress-thumb{position:absolute;top:50%;transform:translate(-50%,-50%);width:14px;height:14px;background:var(--accent);border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,.4)}
 
 /* 加载 */
-.loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#1a1a1a;z-index:20}
-.spinner{width:40px;height:40px;border:3px solid #333;border-top-color:#38bdf8;border-radius:50%;animation:spin 1s linear infinite}
-.loading-text{margin-top:12px;font-size:14px;color:#888}
-
-/* 页面跳转 */
-.page-input{width:50px;background:#2a2a2a;border:1px solid #444;color:#e0e0e0;text-align:center;padding:3px 6px;border-radius:4px;font-size:13px}
-
+.loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg);z-index:20}
+.spinner{width:40px;height:40px;border:3px solid #333;border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite}
+.loading-text{margin-top:12px;font-size:14px;color:var(--dim)}
 @keyframes spin{to{transform:rotate(360deg)}}
 
+/* 继续阅读提示 */
+.resume-banner{position:absolute;top:8px;left:50%;transform:translateX(-50%);background:rgba(56,189,248,.15);border:1px solid rgba(56,189,248,.4);color:var(--accent);padding:8px 16px;border-radius:20px;font-size:13px;z-index:15;white-space:nowrap;cursor:pointer;transition:all .3s;backdrop-filter:blur(8px)}
+.resume-banner:active{transform:translateX(-50%) scale(.95)}
+.resume-banner.hidden{opacity:0;pointer-events:none;transform:translateX(-50%) translateY(-10px)}
+
 /* 手机适配 */
-@media(max-width:680px){
-  .topbar .title{font-size:13px;max-width:40vw}
-  .nav-btn{padding:10px 8px;font-size:20px}
+@media(max-width:600px){
+  .topbar{padding:6px 8px}
+  .topbar .title{font-size:12px;max-width:30vw}
+  .topbar .page-info{font-size:12px}
+  .btn{padding:5px 8px;font-size:12px}
+  .btn-icon{padding:5px 8px;font-size:14px}
+  .page-input{width:40px;font-size:12px;padding:3px}
   .bottombar{padding:6px 10px;gap:8px}
+  .progress-track{height:3px}
+  .progress-thumb{width:12px;height:12px}
+  .nav-arrow{width:30px;height:30px;font-size:16px}
+  .tap-zone{width:35%}
+  .resume-banner{font-size:12px;padding:6px 12px}
+}
+@media(max-width:380px){
+  .btn-text{display:none}
+  .btn{padding:5px 8px}
+  .topbar .title{max-width:25vw}
 }
 </style>
 </head>
 <body>
 
 <div class="topbar">
-  <button class="btn" id="prevBtn" onclick="prevPage()">◀ 上一页</button>
-  <span class="title">📖 六西格玛管理（第二版）</span>
-  <span class="page-info">第 <input type="number" class="page-input" id="pageInput" value="1" onchange="jumpTo()"> / <span id="totalPages">-</span> 页</span>
-  <button class="btn" id="nextBtn" onclick="nextPage()">下一页 ▶</button>
+  <div class="topbar-left">
+    <button class="btn btn-icon" id="prevBtn" onclick="prevPage()">◀</button>
+    <span class="title">📖 六西格玛管理（第二版）</span>
+  </div>
+  <div class="topbar-right">
+    <span class="page-info">
+      <input type="number" class="page-input" id="pageInput" value="1" onchange="jumpTo()"> / <span id="totalPages">-</span>
+    </span>
+    <button class="btn btn-icon" id="nextBtn" onclick="nextPage()">▶</button>
+  </div>
 </div>
 
 <div class="reader" id="reader">
@@ -68,26 +98,34 @@ canvas{background:#fff;display:block;max-height:100%;max-width:100%}
     <div class="spinner"></div>
     <div class="loading-text">正在加载电子书...</div>
   </div>
-  <button class="nav-btn nav-prev" onclick="prevPage()">‹</button>
+  <div class="tap-zone tap-prev" onclick="prevPage()"></div>
+  <div class="nav-arrow left">‹</div>
   <div class="canvas-wrap">
     <canvas id="pdfCanvas"></canvas>
   </div>
-  <button class="nav-btn nav-next" onclick="nextPage()">›</button>
+  <div class="nav-arrow right">›</div>
+  <div class="tap-zone tap-next" onclick="nextPage()"></div>
+  <div class="resume-banner hidden" id="resumeBanner" onclick="resumeReading()">
+    📖 上次读到第 <span id="resumePage">1</span> 页，点击继续
+  </div>
 </div>
 
 <div class="bottombar">
-  <span style="font-size:12px;color:#666;white-space:nowrap">进度</span>
+  <span style="font-size:12px;color:#666;white-space:nowrap" id="progressLabel">0%</span>
   <div class="progress-bar" id="progressBar" onclick="seekTo(event)">
-    <div class="progress-fill" id="progressFill" style="width:0%"></div>
-    <div class="progress-thumb" id="progressThumb" style="left:0%"></div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+      <div class="progress-thumb" id="progressThumb" style="left:0%;opacity:0"></div>
+    </div>
   </div>
-  <span style="font-size:12px;color:#666;white-space:nowrap" id="progressText">0%</span>
+  <span style="font-size:12px;color:#666;white-space:nowrap" id="pageLabel">1/-</span>
 </div>
 
 <script>
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
 
 const PDF_URL = 'six-sigma.pdf';
+const STORAGE_KEY = 'six-sigma-read-progress';
 const canvas = document.getElementById('pdfCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -96,46 +134,55 @@ let currentPage = 1;
 let totalPages = 0;
 let rendering = false;
 let pendingPage = null;
+let savedProgress = null;
+
+// 读取保存的进度
+try {
+  savedProgress = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+} catch(e) { savedProgress = null; }
 
 // 渲染页面
 function renderPage(num) {
   if (rendering) { pendingPage = num; return; }
   rendering = true;
-  
+
   pdfDoc.getPage(num).then(function(page) {
     const reader = document.getElementById('reader');
-    const maxW = reader.clientWidth - 80;
-    const maxH = reader.clientHeight - 20;
-    
-    // 原始比例
+    const isMobile = window.innerWidth < 600;
+    const sidePad = isMobile ? 4 : 80;
+    const maxW = reader.clientWidth - sidePad;
+    const maxH = reader.clientHeight - (isMobile ? 4 : 20);
+
     const viewport0 = page.getViewport({scale:1});
     let scale = Math.min(maxW / viewport0.width, maxH / viewport0.height);
-    scale = Math.max(scale, 0.3); // 最小缩放
-    
-    const viewport = page.getViewport({scale: scale * (window.devicePixelRatio || 1)});
+    scale = Math.max(scale, 0.3);
+
+    const dpr = window.devicePixelRatio || 1;
+    const viewport = page.getViewport({scale: scale * dpr});
     canvas.width = viewport.width;
     canvas.height = viewport.height;
-    canvas.style.width = (viewport.width / (window.devicePixelRatio || 1)) + 'px';
-    canvas.style.height = (viewport.height / (window.devicePixelRatio || 1)) + 'px';
-    
+    canvas.style.width = (viewport.width / dpr) + 'px';
+    canvas.style.height = (viewport.height / dpr) + 'px';
+
     const renderCtx = { canvasContext: ctx, viewport: viewport };
     page.render(renderCtx).promise.then(function() {
       rendering = false;
       document.getElementById('loading').style.display = 'none';
-      
-      // 更新UI
+
       currentPage = num;
       document.getElementById('pageInput').value = num;
       const pct = Math.round(num / totalPages * 100);
       document.getElementById('progressFill').style.width = pct + '%';
       document.getElementById('progressThumb').style.left = pct + '%';
-      document.getElementById('progressText').textContent = pct + '%';
-      
-      // 更新按钮状态
+      document.getElementById('progressLabel').textContent = pct + '%';
+      document.getElementById('pageLabel').textContent = num + '/' + totalPages;
+
       document.getElementById('prevBtn').disabled = num <= 1;
       document.getElementById('nextBtn').disabled = num >= totalPages;
-      
-      // 处理待渲染
+
+      // 保存进度
+      saveProgress(num, pct);
+
       if (pendingPage !== null) {
         const p = pendingPage;
         pendingPage = null;
@@ -143,6 +190,26 @@ function renderPage(num) {
       }
     });
   });
+}
+
+// 保存进度到 localStorage
+function saveProgress(page, pct) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      page: page,
+      pct: pct,
+      total: totalPages,
+      time: Date.now()
+    }));
+  } catch(e) {}
+}
+
+// 继续阅读
+function resumeReading() {
+  if (savedProgress && savedProgress.page > 1) {
+    renderPage(savedProgress.page);
+  }
+  document.getElementById('resumeBanner').classList.add('hidden');
 }
 
 // 翻页
@@ -172,23 +239,40 @@ function seekTo(e) {
   renderPage(num);
 }
 
+// 进度条拖动
+let dragging = false;
+const bar = document.getElementById('progressBar');
+bar.addEventListener('touchstart', function(e){ dragging = true; seekTo(e.touches[0]); e.preventDefault(); }, {passive:false});
+bar.addEventListener('touchmove', function(e){ if(dragging) seekTo(e.touches[0]); e.preventDefault(); }, {passive:false});
+bar.addEventListener('touchend', function(){ dragging = false; });
+bar.addEventListener('mousedown', function(e){ dragging = true; });
+document.addEventListener('mousemove', function(e){ if(dragging) seekTo(e); });
+document.addEventListener('mouseup', function(){ dragging = false; });
+bar.addEventListener('mouseenter', function(){ document.getElementById('progressThumb').style.opacity = '1'; });
+bar.addEventListener('mouseleave', function(){ if(!dragging) document.getElementById('progressThumb').style.opacity = '0'; });
+
 // 键盘翻页
 document.addEventListener('keydown', function(e) {
   if (e.key === 'ArrowLeft') prevPage();
   if (e.key === 'ArrowRight') nextPage();
 });
 
-// 触摸滑动
-let touchStartX = 0;
+// 触摸滑动翻页
+let touchStartX = 0, touchStartY = 0, touchTime = 0;
 document.getElementById('reader').addEventListener('touchstart', function(e) {
   touchStartX = e.touches[0].clientX;
-});
+  touchStartY = e.touches[0].clientY;
+  touchTime = Date.now();
+}, {passive:true});
 document.getElementById('reader').addEventListener('touchend', function(e) {
   const dx = e.changedTouches[0].clientX - touchStartX;
-  if (Math.abs(dx) > 50) {
+  const dy = e.changedTouches[0].clientY - touchStartY;
+  const dt = Date.now() - touchTime;
+  // 水平滑动且时间短，翻页
+  if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5 && dt < 500) {
     if (dx > 0) prevPage(); else nextPage();
   }
-});
+}, {passive:true});
 
 // 窗口大小变化
 let resizeTimer;
@@ -204,9 +288,23 @@ pdfjsLib.getDocument(PDF_URL).promise.then(function(pdf) {
   pdfDoc = pdf;
   totalPages = pdf.numPages;
   document.getElementById('totalPages').textContent = totalPages;
-  renderPage(1);
+  document.getElementById('pageLabel').textContent = '1/' + totalPages;
+
+  // 检查是否有保存的进度
+  let startPage = 1;
+  if (savedProgress && savedProgress.page > 1 && savedProgress.page <= totalPages) {
+    startPage = savedProgress.page;
+    // 显示继续阅读提示
+    document.getElementById('resumePage').textContent = savedProgress.page;
+    const banner = document.getElementById('resumeBanner');
+    banner.classList.remove('hidden');
+    // 5秒后自动消失
+    setTimeout(function() { banner.classList.add('hidden'); }, 8000);
+  }
+
+  renderPage(startPage);
 }).catch(function(err) {
-  document.getElementById('loading').innerHTML = 
+  document.getElementById('loading').innerHTML =
     '<div style="color:#f87171;font-size:14px">❌ 加载失败: ' + err.message + '</div>';
 });
 </script>
