@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IE精益知识工作台 | 185篇专业文章合集</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #0f1117;
+  --card: #1a1d27;
+  --card-hover: #232733;
+  --border: #2d3142;
+  --text: #e4e6eb;
+  --text-dim: #8b8f9a;
+  --accent: #4a9eff;
+  --accent-dim: #2a6db5;
+  --green: #34c759;
+  --orange: #ff9500;
+  --red: #ff453a;
+  --purple: #bf5af2;
+  --pink: #ff375f;
+}
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, "Microsoft YaHei", "PingFang SC", sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* Header */
+.header {
+  background: linear-gradient(135deg, #1a1d27 0%, #0f1117 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 20px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+}
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.header h1 {
+  font-size: 20px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #4a9eff, #bf5af2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.header-sub {
+  color: var(--text-dim);
+  font-size: 12px;
+  margin-top: 2px;
+}
+.stats-bar {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+}
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-dim);
+}
+.stat-item .num {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.stat-item.read .num { color: var(--green); }
+.stat-item.fav .num { color: var(--orange); }
+
+/* Controls */
+.controls {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 24px 0;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.search-box {
+  flex: 1;
+  min-width: 200px;
+  position: relative;
+}
+.search-box input {
+  width: 100%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px 10px 36px;
+  color: var(--text);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search-box input:focus { border-color: var(--accent); }
+.search-box input::placeholder { color: var(--text-dim); }
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-dim);
+  font-size: 14px;
+}
+
+/* Category Tabs */
+.cat-tabs {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.cat-tab {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-dim);
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.cat-tab:hover { background: var(--card-hover); color: var(--text); }
+.cat-tab.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+.cat-tab .count {
+  font-size: 11px;
+  background: rgba(255,255,255,0.15);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+.cat-tab.active .count { background: rgba(255,255,255,0.25); }
+
+/* Filter chips */
+.filter-row {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px 8px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.filter-chip {
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  transition: all 0.2s;
+}
+.filter-chip:hover { border-color: var(--accent); color: var(--text); }
+.filter-chip.active {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* Article List */
+.article-list {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 8px 24px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.article-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.15s;
+  cursor: pointer;
+}
+.article-card:hover {
+  background: var(--card-hover);
+  border-color: var(--accent-dim);
+}
+.article-card.read {
+  opacity: 0.55;
+}
+.article-card.read .article-title {
+  text-decoration: line-through;
+  text-decoration-color: var(--text-dim);
+}
+.article-num {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-dim);
+  min-width: 32px;
+  text-align: center;
+}
+.article-cat-tag {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  font-weight: 600;
+}
+.cat-01 { background: rgba(74,158,255,0.15); color: #4a9eff; }
+.cat-02 { background: rgba(52,199,89,0.15); color: #34c759; }
+.cat-03 { background: rgba(255,149,0,0.15); color: #ff9500; }
+.cat-04 { background: rgba(191,90,242,0.15); color: #bf5af2; }
+.cat-05 { background: rgba(255,69,58,0.15); color: #ff453a; }
+
+.article-title {
+  flex: 1;
+  font-size: 14px;
+  color: var(--text);
+  text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.article-title:hover { color: var(--accent); }
+
+.article-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.action-btn {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  color: var(--text-dim);
+}
+.action-btn:hover { background: var(--border); }
+.action-btn.fav-active { color: var(--orange); }
+.action-btn.read-active { color: var(--green); }
+
+/* Category Section Headers */
+.cat-header {
+  max-width: 1200px;
+  margin: 16px auto 4px;
+  padding: 12px 24px 6px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cat-header .cat-icon {
+  font-size: 20px;
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-dim);
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 20px;
+  color: var(--text-dim);
+  font-size: 12px;
+  border-top: 1px solid var(--border);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #3a3f52; }
+
+/* Responsive */
+@media (max-width: 600px) {
+  .header-top { flex-direction: column; align-items: flex-start; }
+  .article-card { flex-wrap: wrap; }
+  .article-title { white-space: normal; width: 100%; order: 3; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div>
+      <h1>📚 IE精益知识工作台</h1>
+      <div class="header-sub">2025IE人必读干货合集 · 185篇专业文章 · 来源：工业工程师联盟</div>
+    </div>
+    <div class="stats-bar">
+      <div class="stat-item">
+        <span>总计</span>
+        <span class="num" id="stat-total">185</span>
+      </div>
+      <div class="stat-item read">
+        <span>已读</span>
+        <span class="num" id="stat-read">0</span>
+      </div>
+      <div class="stat-item fav">
+        <span>收藏</span>
+        <span class="num" id="stat-fav">0</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="controls">
+  <div class="search-box">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="search" placeholder="搜索文章标题..." oninput="filterArticles()">
+  </div>
+</div>
+
+<div class="cat-tabs" id="cat-tabs">
+  <div class="cat-tab active" data-cat="all" onclick="selectCat('all')">
+    全部 <span class="count">185</span>
+  </div>
+  <div class="cat-tab" data-cat="01" onclick="selectCat('01')">
+    <span>🔧</span> 工业工程 <span class="count">40</span>
+  </div>
+  <div class="cat-tab" data-cat="02" onclick="selectCat('02')">
+    <span>⚡</span> 精益生产 <span class="count">105</span>
+  </div>
+  <div class="cat-tab" data-cat="03" onclick="selectCat('03')">
+    <span>🏭</span> 工厂规划 <span class="count">20</span>
+  </div>
+  <div class="cat-tab" data-cat="04" onclick="selectCat('04')">
+    <span>👁</span> 目视化管理/5S <span class="count">11</span>
+  </div>
+  <div class="cat-tab" data-cat="05" onclick="selectCat('05')">
+    <span>🤖</span> 智能制造/质量/班组 <span class="count">9</span>
+  </div>
+</div>
+
+<div class="filter-row">
+  <div class="filter-chip active" data-filter="all" onclick="selectFilter('all')">全部</div>
+  <div class="filter-chip" data-filter="unread" onclick="selectFilter('unread')">未读</div>
+  <div class="filter-chip" data-filter="read" onclick="selectFilter('read')">已读</div>
+  <div class="filter-chip" data-filter="fav" onclick="selectFilter('fav')">收藏</div>
+  <div class="filter-chip" data-filter="pdf" onclick="selectFilter('pdf')">含PDF/PPT</div>
+</div>
+
+<div class="article-list" id="article-list"></div>
+
+<div class="footer">
+  <p>📚 IE精益知识工作台 | 数据来源：工业工程师联盟微信公众号</p>
+  <p style="margin-top:4px;">点击文章标题可在新窗口打开原文 · 阅读状态和收藏记录保存在本地浏览器</p>
+</div>
+
+<script>
+const articles = [{"title": "【IE知识】IE组织架构（原PDF档可免费下载）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247658388&idx=1&sn=adf16827b9a2e9cc3af45e18d5d0aa3f&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE人分享】自动化的烦恼（陈哥感言）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247657997&idx=1&sn=d1885965fadee3229a1044d21a462048&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】PIE工作总结及工作计划", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247662410&idx=1&sn=db7c4373b394b8285b47db89a2d782a9&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】IE工作开展计划", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247667256&idx=1&sn=729a3acae252d3f51d42372512809d9e&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】线平衡改善动画详解(原PPT可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247668025&idx=1&sn=76102b790dad7ee7b8c995c6d47ad135&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE人分享】IE大咖整理的“IE技能表”，IE人必看", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247668734&idx=5&sn=47553e9692c676529a549d1c63085207&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】八大浪费及IE七大手法（原PDF档可免费下载）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247658217&idx=1&sn=81e9e7e038c5a3531f703547a47bc575&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】IE现场改善专案报告(原PPT可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247663854&idx=1&sn=ac690b4c034c5f711d2a51606ae2f5f0&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】IE培训课件精华版（PPT可免费下载）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247672158&idx=1&sn=8351007f0c881897482c64fa9de0f50f&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE人分享】智造与变革经验谈-从IE到精益", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247662523&idx=1&sn=4aef033ceb9496904d1082e031539277&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】SOP介绍及编制要求(原PPT可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247668311&idx=1&sn=ca85ee4f4b93a3a7602091182c220a9b&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】IE七大手法经典版(原PDF可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247667583&idx=1&sn=e20b91e52658a9c8326c13d3fdaee41b&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】提案改善推进及案例(原PDF可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247664555&idx=1&sn=434ca295f6e674bf1562d4d67fd36269&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】动作改善的具体方法(原PDF可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247664440&idx=1&sn=b1a52149dc60c31babc83ed74ee2f51c&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】现场IE合理化改善(原PDF可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247669641&idx=1&sn=fcb4cbd42820406f344768330332bdc8&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】PE基础知识培训课件(原PDF可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247665759&idx=1&sn=1559809b94bd82b0e59840f0c761d368&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE人分享】质量问题中的“泡沫”", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247665656&idx=1&sn=bc4ad8ff5072d91d8e920db3bcef8845&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】IE实用技术与案例分享（原PDF档可免费下载）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247660653&idx=1&sn=8941f5ee78018d908a933d4f64573ede&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】工业工程人的综合素质(原PDF可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247669158&idx=1&sn=5cc03278a5e37105d49cafbf0c4f9af5&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】工业工程与工作研究", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247669217&idx=1&sn=9103bc5b957f0b72ef78a4308cb11acf&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】IE动作分析", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247671051&idx=5&sn=8a3a0f877e4bef4da248297a608cc24a&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "干货｜PFMEA-潜在失效模式分析（原PDF档可免费下载）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247659955&idx=1&sn=3134b6152fe6c723443fed7f4454965e&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】IE改进和标准化", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247663221&idx=3&sn=d1d15becebdf4e4f9a38afe7249ae95a&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】新时代的工业工程师（原PPT可免费下载）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247662711&idx=2&sn=4fafb99c16ba620cd4364c109c9b9def&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】作业改善实施案例(原PPT可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247666935&idx=1&sn=50a0984efd08de9f2b4dc4f694066b7c&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】生产线平衡的改善方法", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247664183&idx=4&sn=e95142c140f62d0b42d214d001118f9a&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】总装车间现场改善方法(原PPT可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247667391&idx=1&sn=8685a471e5026c7af33e23b3ff8e2359&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】标准工时制定与应用", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247658825&idx=5&sn=a65940f7a96ce694594bbe0ece0b871d&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】基于标准工时人力资源模型搭建", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247671267&idx=5&sn=70b67ffcfd055bd11ee5c1d2c41a61d2&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】PE工程师技能培训", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247672307&idx=3&sn=52bc137d6051da3c6ea3c85fca81b393&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】工业工程与生产效率改善(原PPT可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247670150&idx=3&sn=df5a5cb753361cfc31f52fb56fa48465&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】作业流程分析及应用", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247667858&idx=5&sn=75be06d252e0cc6d0fa558b0d96b189a&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】生产线平衡的改善方法", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247664183&idx=4&sn=e95142c140f62d0b42d214d001118f9a&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】标准工时在管理中的应用", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247666102&idx=4&sn=0a87ae6ae0f8069a650a88f282115938&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】什么是标准工时？", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247670494&idx=5&sn=fedfb0d3943fe4a32cd5b259a9ed8226&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】人因工程改善", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247670687&idx=3&sn=de2c9e20da2772675e77a3721e398614&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】人机工程-生产作业设计", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247670861&idx=3&sn=8ce7d95a38aeb25280949fccc91a777e&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】人因工程-作业空间设计", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247657997&idx=5&sn=ced2f73734b6c40188f23e8ed93965d7&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】工业工程的价值实践", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247671647&idx=5&sn=956c01b34f5196babbd3e8cf2045c2a9&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【IE知识】企业如何发挥IE职能", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247665057&idx=3&sn=8fbab97388a37bdcbb7ccd84d3586047&scene=21#wechat_redirect", "cat": "01", "catName": "工业工程"}, {"title": "【精益知识】工厂精益生产改善全攻略（从理论到实践）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247658825&idx=1&sn=742b321e24a11c6d1aa79ba326d6f197&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】价值流VSM详解版（原PDF可免费下载）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247661032&idx=1&sn=e7d0fdcc3228ce3fdb5521802b808cd3&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】手把手教你学价值流程图VSM（原PDF档可免费下载）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247660184&idx=1&sn=3ba720173638cba27454e12faf91faba&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】比亚迪车间精益改善前后对比，值得一看！", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247661627&idx=3&sn=fee96e566a8f82cdcd3d0fba14b308e7&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】八大浪费与改善(原PDF可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247666527&idx=1&sn=9b5886ca7d4be93b6cdf9002293154ee&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】安全库存设置及管理办法（原PDF可免费下载）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247661131&idx=1&sn=26481308e45d0fd410975b2a6f7e3e58&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】价值流图VSM（原PDF可免费下载）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247661335&idx=1&sn=fca969e52d0bcccb709e2b57b8e6d5c2&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】搞懂“一个流”生产方式(原PDF可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247669497&idx=1&sn=6e5f41a4f656e22cd37bbc9c249ea795&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】TPM设备管理案例分享(原PPT可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247668448&idx=1&sn=6aa5f5f0755747627b26c29eebbbf20e&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】现场改善案例分析(原PDF可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247665296&idx=1&sn=90ce70d20f4d0dbbd15d7d275e8790ba&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】精益生产之价值流分析系列-第1讲概述（原PPT可免费下载）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247662026&idx=1&sn=889328e15ab703cf9dac5ebc5ec36ec4&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】精益生产之价值流分析系列-第2讲选定题目（原PPT可免费下载）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247662200&idx=1&sn=17d7dbf485a12d2da9637a19273430c8&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】精益生产之价值流分析系列-第3讲确立现状价值流图（原PPT可免费下载）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247662298&idx=1&sn=59879150cf1dfe854b23ae6aa1c904b2&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】精益年度工作总结汇报", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247669825&idx=1&sn=31c9e802c94abffbb2d92faa13a1d6a6&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】XX工厂精益物流规划报告与线边站立式作业改善", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247670494&idx=1&sn=4abc5d5d3a1394e9d4266f1af643b67e&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】推行精益，建议看看这篇精益语录", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247660789&idx=1&sn=67cfdfa222b8bd7515882ef722db3292&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】TPM推行框架图（精华版）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247665353&idx=1&sn=91306870d3673503b2f96aa92f87288d&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】丰田工作方法(原PDF可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247664825&idx=1&sn=bcec50353e56a5f52aed48ca7df32bb0&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "干货｜问题分析与解决PPT课件", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247666233&idx=1&sn=a8ab7e5717a66f6162acf6c7a9eeb3ad&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】生产现场标准化体系建设", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247672307&idx=1&sn=728e547fb06caf6894a9e4376938ae91&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】标准作业制作基准及改善（原PDF档可免费下载）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247659644&idx=1&sn=4be6ae01375c31480d3b8e21e3b436a3&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】快速换模-SMED(原PDF可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247664673&idx=1&sn=67ac33dd97d14fef782c319b94108516&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】看板拉动实现JIT物料配送（原PDF档可免费下载）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247660282&idx=1&sn=b83f31c060167e76ca3d9f41e8b7059c&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】TPM微咨询推进方案", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247657634&idx=1&sn=47da7379c7eefd0ba798a259885ebe92&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】精益改善项目改善报告", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247670318&idx=1&sn=e5a32107064b657544e3edec83f6602e&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】TWI一线主管技能训练及工作指导", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247659193&idx=1&sn=412c1b5c4104c47c6cde6392b3cbe23c&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】精益生产推进规划(原PPT可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247671375&idx=1&sn=1c58994b415527d2617dd8c60b0cd7d0&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】改善专案实施方案（原PPT可免费下载）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247661520&idx=1&sn=45c0f267421e8f1eda2df3b7f9712c47&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】精益六西格玛黄带基础(原PDF可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247665919&idx=1&sn=b45d28b8998573e269b5302e4f4915ad&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】精益智造诊断方案报告(原PDF可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247665538&idx=1&sn=31c677e442f506bbf5139301081f6035&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】精益生产之SMED（原PDF可免费下载）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247661627&idx=1&sn=2faf00119cfa9353b8a0c80909fa7c1d&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】广州xx厂精益生产推动总结报告（原PDF可免费下载）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247672648&idx=1&sn=ade7dae216d5e6a8bde5eecf06da4260&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】TPS改善方法-精益求精(原PDF可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247663580&idx=1&sn=8e851cbf37c14536cb0499fddff0be30&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】精益项目管理实践", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247665057&idx=1&sn=69492fe377e4f899a9d93d2a832e24da&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】XX家电精益改善工具与员工发展", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247672500&idx=1&sn=788da13293b9c5d650d49b100d415212&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】运营转型项目开展的五个步骤(原PDF可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247664308&idx=1&sn=30fa8b3a1d6e27c37c6b17f57a6988de&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】精益制造三年规划(原PDF可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247669036&idx=1&sn=29454866d0c120da6f1e15f5065257c2&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】成本核算方法之目标成本法(原PDF可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247665039&idx=1&sn=0c08fb0c74cdfba58216ee01c1cb4242&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】精益运营模式搭建方案(原PPT可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247663720&idx=1&sn=511fa4469fd5fcb5b515312206ca6bac&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】八大浪费教学课件精华版(原PDF可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247666636&idx=1&sn=1f26b8c45f360442244560b429d6dff3&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】水蜘蛛管理", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247660495&idx=4&sn=a961f9a9bfd97ab8cf32614f226a89c1&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】挖掘现场的“金矿”-消除七大浪费(原PPT可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247663221&idx=1&sn=20884f3aa230cbf6435dee2c15897b8c&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】丰田精益人才培养课件(原PDF可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247663450&idx=1&sn=6b4cc329583e09b198333f7d8c597912&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "干货｜精益管理改善方案-电器组装柔性线与LCIA解决方案", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247671647&idx=1&sn=59688bf513f72aa1d55761f536ba5c6b&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】开关工厂现场精益改善报告", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247671267&idx=1&sn=329de4615db1211028d0ff98dc959347&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】精益生产培训课件（精华版）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247667391&idx=5&sn=08333cee590941e7182beacd9a8b4682&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【案例分享】品管圈PDCA获奖案例", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247667770&idx=3&sn=0bfcf606bd4e61c29e3e9928810bb366&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】汽车总装车间物流配送(原PDF可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247666394&idx=1&sn=083d8a008c765fa4219f0fe27eadbd1f&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】精益管理从评估到实施", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247671855&idx=1&sn=2e9a9737075208bed31bb9caaa359f2e&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】精益运营系统(原PPT可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247666102&idx=1&sn=f16b4f595f286165812de89412c8e44e&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】快速换线实战(原PDF可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247669355&idx=1&sn=0a1e0ea00d98df4a2e83c141b2e1d7a6&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】焊装车间标准工位建设(原PPT可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247669983&idx=1&sn=3757202c8d7622e1542f545a8590c343&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】精益标准化班组建设与管理(原PPT可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247667858&idx=1&sn=0477545561904703c8768acdfa9ff5cd&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】OPE效率体系（原PDF可免费下载）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247661795&idx=2&sn=9cc45481cb9f2c3b93e0c6cc0c27f1e7&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】精益项目的发现与选定", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247658624&idx=2&sn=8b255324d3a59f5de14e65e4669d94ba&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "干货｜精益人才培养培训（丰田）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247657634&idx=3&sn=7377acf8b52fe9d1fffdf470f97456f5&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】精益运营项目实施流程(原PDF可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247667137&idx=1&sn=35f25489b00bdddd00351d789f48034b&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "干货｜低成本自动化（LCIA）认知与实务", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247665296&idx=3&sn=4ecaa3fcc365be7a7a12a951271fefa5&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】丰田一页纸报告（完整版）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247669641&idx=5&sn=15fae7444eb3fee17f3b3bbc264374df&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【案例分享】OEE提升改善报告", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247663124&idx=4&sn=82c927612699d470b5e05057c35c4bb0&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【案例分享】洗衣机事业部精益降本总结及规划", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247659955&idx=3&sn=9b3c9226e70a6e444786d16634b863f6&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】六西格玛项目汇报实战案例(原PDF可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247670434&idx=1&sn=3adefdd48583457b3d7b4b157175fab7&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】标准作业基础知识", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247658510&idx=5&sn=c4f18f80d983c4ff7a556035f1687bd0&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】某企业2023年精益革新作战规划", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247657885&idx=2&sn=16327a667885efdb4b88f21e00b11cc2&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "干货｜精益体系宣传规划（附图例）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247669355&idx=3&sn=3d82aa5c8d129cfdab7273c41b9d4db4&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】基于精益价值流分析的浪费识别（原PDF可免费下载）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247660892&idx=2&sn=4b6e5370fc4f695d82f378b69216f1d8&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】质量月改善活动策划(原PPT可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247670687&idx=1&sn=614381cd540262d85de3ad1c29090a7a&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】仓库管理PPT课件", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247661032&idx=3&sn=3ae02e567757e7cdf881b55e3597fec0&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】精益改善周-快速改善", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247662523&idx=5&sn=d0daadfb47d180c5c2729f2515a6b969&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】精益生产实战课件(原PDF可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247663124&idx=2&sn=e09910b3223a32dd0bc76cd6e9b70b8e&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】VSM价值流程图培训教程", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247658217&idx=5&sn=7de36b18070efe1c8eee673d72131b2a&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】企业管理变革调研报告及改善方案/上", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247670861&idx=1&sn=d4e3389801ca8c0f141ea1ec40a87986&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】企业管理变革调研报告及改善方案/下", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247671051&idx=1&sn=a92c955f7a809b98f151ef586ec2b5f5&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】现场精益改善文化的建立", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247658217&idx=3&sn=6ab90ae4251ba4880113daab5bc1eac7&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】标准化作业实战版（原PDF档可免费下载）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247660495&idx=2&sn=47596e483b3ff14d750cfb400bcb81c1&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】家电工厂精益改善报告(原PDF可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247671701&idx=2&sn=88def7ac445533b2dc950ff69f64b34d&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】集团精益智能工厂数字化建设三年规划方案", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247658388&idx=3&sn=7e8f8f1a22752f02002f6a8c40fa4d22&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】项目精益化管理（原PDF档可免费下载）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247657997&idx=3&sn=f1a46376f197c3c4f2ad75090407c5c3&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】单元化物流打造(原PDF可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247671993&idx=2&sn=9672584d74a7e0657e7c8b0d4d3b31de&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】工位制节拍化生产指南", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247662200&idx=3&sn=a24528eeae3f47ea8243ffe7c09da578&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】精益管理课题报告模板", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247658624&idx=4&sn=a01b2ba1afa8be434b4eee4aeb8b795d&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】OEE分析与管理", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247664440&idx=5&sn=a069269974d88a8b5ac4b9b8f8203890&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】OEE管理（实用版）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247659012&idx=4&sn=b28d25a9d2f5f956c3a18a5c2f71d55d&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】改善周介绍及案例分享", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247670150&idx=5&sn=b7bb141a819910e6b32e99930aa1dd44&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】问题分析与解决", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247659193&idx=3&sn=063d71d18f7a65e8a4373ec7a325b1b3&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】美的精益之路分享", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247668734&idx=3&sn=e5406bab263b352fb2d166e0c21d2317&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】精益推行项目汇报（案例）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247672158&idx=3&sn=4eb7f62e561ace6168bd2fe94fcf7126&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】精益生产之QC七大工具", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247662026&idx=3&sn=9cdcf4bacac233f1a83e411dda1f0195&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】精益生产之配送", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247662410&idx=5&sn=ea7d9e9eaf02186ee0bd687862f17e38&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】丰田式人才育成方案", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247662711&idx=3&sn=0196faa11b54b163195f4102864bd2bf&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】标准作业三要素", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247664555&idx=5&sn=c83f1a0def28ef6852889b6dcf17983e&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】精益提升改善路径", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247665039&idx=3&sn=f8fe1dce907164dbf9141b54c2a403a1&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】全员提案改善管理", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247659955&idx=5&sn=d26109bba94d184cb5e0496da786df66&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "干货｜精益日常管理DM", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247660789&idx=5&sn=0742fa3090dd714c02e65c9b5c546c1a&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】TPM-PM支柱概述", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247661520&idx=3&sn=42f00a43846b7070e481a38feeba777a&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】精益物流方法论", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247660282&idx=3&sn=81fbe3a743d894fc6d89aa01e495482d&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】TPM基础认知（附案例）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247662957&idx=4&sn=bc84bfa107d28758acaa81eb868c1680&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】DMAIC改进的基本思想", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247664825&idx=3&sn=6a32b2009fc3e4208bdf54360d366df2&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】XX企业交期缩短改善方案", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247671647&idx=3&sn=a2dfd10a8f72f9d80375aa13ea16480e&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "干货｜TPS丰田精益生产模式培训资料", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247659644&idx=3&sn=df9a8f702599f28621ae4e58234ef9ce&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】精益物流创新项目案例分享", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247660892&idx=6&sn=9157152aa3efa44d26a6727c51edc97b&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "干货｜DFM提升产品力实战", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247665759&idx=5&sn=ea6c7629ba039e6c7e468590b3868f6d&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "干货｜内部问题解决之A3报告", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247660282&idx=5&sn=8d3887789c40b87503ae51e5bbb5b6fa&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】准时化生产（JIT）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247662026&idx=5&sn=c929bd8f2c81eef646d3d419004152cd&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】制造企业精益改善“三把剑”", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247671701&idx=4&sn=010fbab6ea33a1509bec4f54f1cfc0a7&scene=21#wechat_redirect", "cat": "02", "catName": "精益生产"}, {"title": "【精益知识】XX工厂精益工厂规划(原PDF可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247666754&idx=1&sn=4ce0d34be802c3836beeef6ad7df2a7f&scene=21#wechat_redirect", "cat": "03", "catName": "工厂规划"}, {"title": "【精益知识】精益布局理论与实战方法(原PDF可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247668734&idx=1&sn=d053a86211f69dc105841fe2b4ad32f9&scene=21#wechat_redirect", "cat": "03", "catName": "工厂规划"}, {"title": "【精益知识】XX精益工厂规划及小结(原PDF可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247668878&idx=1&sn=d9ad6d1dfa26261c179e3117e0f605ab&scene=21#wechat_redirect", "cat": "03", "catName": "工厂规划"}, {"title": "【精益知识】配送中心的布局规划(原PDF可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247667770&idx=1&sn=75a82c696b0b2692cd1d48f8d056d623&scene=21#wechat_redirect", "cat": "03", "catName": "工厂规划"}, {"title": "干货｜制药企业智能工厂建设整体解决方案", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247659376&idx=1&sn=308357c977e02a679f3eb835294daa87&scene=21#wechat_redirect", "cat": "03", "catName": "工厂规划"}, {"title": "【IE知识】生产线布局", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247665039&idx=5&sn=01ee55897dc6ad1718de00eeeb5a6dd6&scene=21#wechat_redirect", "cat": "03", "catName": "工厂规划"}, {"title": "【精益知识】精益新工厂整体布局规划", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247658510&idx=3&sn=9203543744328786e9c87736b82044fd&scene=21#wechat_redirect", "cat": "03", "catName": "工厂规划"}, {"title": "干货｜新工厂布局规划案例/上", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247668025&idx=3&sn=9c025883781b20c664b67103982649a8&scene=21#wechat_redirect", "cat": "03", "catName": "工厂规划"}, {"title": "干货｜新工厂布局规划案例/下", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247668207&idx=3&sn=02b75be02238644dad8f390179374034&scene=21#wechat_redirect", "cat": "03", "catName": "工厂规划"}, {"title": "干货｜智能工厂参观通道设计", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247663580&idx=5&sn=c89516933c7f06539aed55b35cf83eff&scene=21#wechat_redirect", "cat": "03", "catName": "工厂规划"}, {"title": "【精益知识】布局Layout规划方案", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247669036&idx=3&sn=a88847492aa4d0846f31cc020d7b4727&scene=21#wechat_redirect", "cat": "03", "catName": "工厂规划"}, {"title": "【精益知识】某企业精益工厂布局案例（原PPT可免费下载）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247659012&idx=2&sn=a938887f563ea6edda58d24b50e8457b&scene=21#wechat_redirect", "cat": "03", "catName": "工厂规划"}, {"title": "【IE知识】工厂规划布局设计与实施", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247662298&idx=5&sn=26035e3de164acbe0322fd3ff6e950e8&scene=21#wechat_redirect", "cat": "03", "catName": "工厂规划"}, {"title": "干货｜灯塔工厂规划建设及申报方案", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247657885&idx=4&sn=cdb7bedeb085a943fb6390838bd39ea3&scene=21#wechat_redirect", "cat": "03", "catName": "工厂规划"}, {"title": "【精益知识】仓库布局规划（精华版）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247671375&idx=3&sn=71db03e3a697a2901c1ed4f4bd0d327b&scene=21#wechat_redirect", "cat": "03", "catName": "工厂规划"}, {"title": "【精益知识】家电工厂成品物流布局优化提效方案", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247669825&idx=3&sn=b26953ccad203fb114954a3ce9db2bad&scene=21#wechat_redirect", "cat": "03", "catName": "工厂规划"}, {"title": "【精益知识】仓储规划设计", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247661335&idx=3&sn=b38312c9b8417a532c6df126f6a8f786&scene=21#wechat_redirect", "cat": "03", "catName": "工厂规划"}, {"title": "干货｜自动化立体仓库", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247669217&idx=3&sn=feb4c5fba62f68c3cfc5852d9f2743bf&scene=21#wechat_redirect", "cat": "03", "catName": "工厂规划"}, {"title": "【精益知识】精益工厂布局方案", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247663854&idx=3&sn=b4ae6be77c6d2acb205c09012ae301bd&scene=21#wechat_redirect", "cat": "03", "catName": "工厂规划"}, {"title": "【精益知识】某电梯生产车间布局", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247661795&idx=5&sn=5e3bd95f719d4089a050dadca5424092&scene=21#wechat_redirect", "cat": "03", "catName": "工厂规划"}, {"title": "干货｜5S管理与现场目视化管理培训课件（原PPT可免费下载）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247658825&idx=3&sn=405f85a372a3d50694545da304ed282d&scene=21#wechat_redirect", "cat": "04", "catName": "目视化管理/5S"}, {"title": "【精益知识】目视化管理手册", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247665192&idx=5&sn=d81260339c677809498658c889e9eb93&scene=21#wechat_redirect", "cat": "04", "catName": "目视化管理/5S"}, {"title": "【精益知识】5S及目视化标准案例", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247668878&idx=3&sn=19fe2a2d025e622b423a03e8ab64d72e&scene=21#wechat_redirect", "cat": "04", "catName": "目视化管理/5S"}, {"title": "干货｜精益现场标识管理(超全)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247663720&idx=5&sn=c2b488aa016d51cdd3a75e36a5449e8c&scene=21#wechat_redirect", "cat": "04", "catName": "目视化管理/5S"}, {"title": "【精益知识】目视化管理的三重境界", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247657634&idx=5&sn=e4b811b5e2d5a5d84c0c9d88f437103d&scene=21#wechat_redirect", "cat": "04", "catName": "目视化管理/5S"}, {"title": "【精益知识】公司目视化管理手册", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247658388&idx=5&sn=01a5584a3599b8f214854161a1e3ab3a&scene=21#wechat_redirect", "cat": "04", "catName": "目视化管理/5S"}, {"title": "【案例分享】6S活动之现场目视化管理方法", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247663221&idx=5&sn=b2067c44133ef46a85ac7f17cd8aaa0f&scene=21#wechat_redirect", "cat": "04", "catName": "目视化管理/5S"}, {"title": "【精益知识】企业安全管理目视化手册", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247659376&idx=4&sn=c21b653f6c3c52313dff53264f9322f6&scene=21#wechat_redirect", "cat": "04", "catName": "目视化管理/5S"}, {"title": "干货｜5S-现场精益密钥(原PPT可免费下载)", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247663343&idx=1&sn=6907a09218a229fcb533eda0e50b47c0&scene=21#wechat_redirect", "cat": "04", "catName": "目视化管理/5S"}, {"title": "【5S知识】5S方法与技巧（附图例）", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247661795&idx=4&sn=a13fd1d985beb3180ba61d43ca44d8df&scene=21#wechat_redirect", "cat": "04", "catName": "目视化管理/5S"}, {"title": "【精益知识】6S现场管理实施方法及技巧", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247670434&idx=5&sn=808df99575c4ca32df4cdeafaa8ce589&scene=21#wechat_redirect", "cat": "04", "catName": "目视化管理/5S"}, {"title": "【精益知识】智能制造工厂规划", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247669158&idx=3&sn=e84049b5894cc3a03bf15ab183bde2f3&scene=21#wechat_redirect", "cat": "05", "catName": "智能制造/质量/班组"}, {"title": "【精益知识】XXX公司智能工厂诊断报告", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247660892&idx=4&sn=3bd4e75203162ae97d82119b0f1355f4&scene=21#wechat_redirect", "cat": "05", "catName": "智能制造/质量/班组"}, {"title": "【精益知识】班组精细化管理的五大方法", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247660184&idx=6&sn=e75a9dec356787ffa920e9fc41758237&scene=21#wechat_redirect", "cat": "05", "catName": "智能制造/质量/班组"}, {"title": "【精益知识】智能工厂数字化管理解决方案", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247661131&idx=3&sn=9b526ed286ba0d42ac599f57350c138b&scene=21#wechat_redirect", "cat": "05", "catName": "智能制造/质量/班组"}, {"title": "【精益知识】班组长如何开早会", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247661131&idx=5&sn=52dad9785b5eb598274d69bc10deb489&scene=21#wechat_redirect", "cat": "05", "catName": "智能制造/质量/班组"}, {"title": "【案例分享】质量部半年度整体质量总结与规划", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247660184&idx=3&sn=17453423ad9e1724abbd5d882918a4bc&scene=21#wechat_redirect", "cat": "05", "catName": "智能制造/质量/班组"}, {"title": "【精益知识】精益班组长育成", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247661627&idx=5&sn=f31522498ea89fefe62b041037029726&scene=21#wechat_redirect", "cat": "05", "catName": "智能制造/质量/班组"}, {"title": "干货｜车企智能化转型总体规划设计方案", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247671183&idx=3&sn=15b9d0db9b59ad686a861bcc0bf13d4e&scene=21#wechat_redirect", "cat": "05", "catName": "智能制造/质量/班组"}, {"title": "干货｜乳品行业智能制造规划方案", "url": "https://mp.weixin.qq.com/s?__biz=MzA5MjM0Njg2OQ==&mid=2247667858&idx=3&sn=6b8303923b23a4bb97a3c88c0a5503ec&scene=21#wechat_redirect", "cat": "05", "catName": "智能制造/质量/班组"}];
+
+// Load state from localStorage
+let readState = JSON.parse(localStorage.getItem('ie_read_state') || '{}');
+let favState = JSON.parse(localStorage.getItem('ie_fav_state') || '{}');
+let currentCat = 'all';
+let currentFilter = 'all';
+let searchQuery = '';
+
+function selectCat(cat) {
+  currentCat = cat;
+  document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector('.cat-tab[data-cat="' + cat + '"]').classList.add('active');
+  renderArticles();
+}
+
+function selectFilter(filter) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  document.querySelector('.filter-chip[data-filter="' + filter + '"]').classList.add('active');
+  renderArticles();
+}
+
+function filterArticles() {
+  searchQuery = document.getElementById('search').value.toLowerCase();
+  renderArticles();
+}
+
+function toggleRead(idx) {
+  event.stopPropagation();
+  const key = String(idx);
+  readState[key] = !readState[key];
+  if (!readState[key]) delete readState[key];
+  localStorage.setItem('ie_read_state', JSON.stringify(readState));
+  renderArticles();
+  updateStats();
+}
+
+function toggleFav(idx) {
+  event.stopPropagation();
+  const key = String(idx);
+  favState[key] = !favState[key];
+  if (!favState[key]) delete favState[key];
+  localStorage.setItem('ie_fav_state', JSON.stringify(favState));
+  renderArticles();
+  updateStats();
+}
+
+function updateStats() {
+  const readCount = Object.keys(readState).length;
+  const favCount = Object.keys(favState).length;
+  document.getElementById('stat-read').textContent = readCount;
+  document.getElementById('stat-fav').textContent = favCount;
+}
+
+function renderArticles() {
+  const list = document.getElementById('article-list');
+  let filtered = articles.filter((a, i) => {
+    // Category filter
+    if (currentCat !== 'all' && a.cat !== currentCat) return false;
+    // Search filter
+    if (searchQuery && !a.title.toLowerCase().includes(searchQuery)) return false;
+    // Status filter
+    const idx = String(i);
+    if (currentFilter === 'read' && !readState[idx]) return false;
+    if (currentFilter === 'unread' && readState[idx]) return false;
+    if (currentFilter === 'fav' && !favState[idx]) return false;
+    if (currentFilter === 'pdf' && !a.title.includes('PDF') && !a.title.includes('PPT')) return false;
+    return true;
+  });
+
+  if (filtered.length === 0) {
+    list.innerHTML = '<div class="empty-state">📭 没有找到匹配的文章</div>';
+    return;
+  }
+
+  // Group by category if showing all
+  let html = '';
+  if (currentCat === 'all') {
+    const catNames = {'01':'🔧 工业工程','02':'⚡ 精益生产','03':'🏭 工厂规划','04':'👁 目视化管理/5S','05':'🤖 智能制造/质量/班组'};
+    let lastCat = '';
+    filtered.forEach((a) => {
+      const origIdx = articles.indexOf(a);
+      if (a.cat !== lastCat) {
+        lastCat = a.cat;
+        html += '<div class="cat-header"><span class="cat-icon">' + catNames[a.cat].split(' ')[0] + '</span>' + catNames[a.cat].substring(2) + '</div>';
+      }
+      html += renderCard(a, origIdx);
+    });
+  } else {
+    filtered.forEach((a) => {
+      const origIdx = articles.indexOf(a);
+      html += renderCard(a, origIdx);
+    });
+  }
+
+  list.innerHTML = html;
+}
+
+function renderCard(a, idx) {
+  const isRead = readState[String(idx)];
+  const isFav = favState[String(idx)];
+  const hasResource = a.title.includes('PDF') || a.title.includes('PPT');
+  return '<div class="article-card' + (isRead ? ' read' : '') + '" onclick="window.open(\''+a.url+'\', \'_blank\')">' +
+    '<span class="article-num">' + (idx + 1) + '</span>' +
+    '<span class="article-cat-tag cat-' + a.cat + '">' + a.catName + '</span>' +
+    '<a class="article-title" href="' + a.url + '" target="_blank" onclick="event.stopPropagation()">' + a.title + '</a>' +
+    (hasResource ? '<span style="font-size:11px;color:var(--orange);">📎</span>' : '') +
+    '<div class="article-actions">' +
+      '<button class="action-btn' + (isFav ? ' fav-active' : '') + '" onclick="toggleFav(' + idx + ')" title="收藏">' + (isFav ? '⭐' : '☆') + '</button>' +
+      '<button class="action-btn' + (isRead ? ' read-active' : '') + '" onclick="toggleRead(' + idx + ')" title="标记已读">' + (isRead ? '✅' : '○') + '</button>' +
+    '</div>' +
+  '</div>';
+}
+
+// Init
+updateStats();
+renderArticles();
+</script>
+</body>
+</html>
