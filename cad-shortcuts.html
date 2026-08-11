@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>CAD快捷键学习卡</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#1a1a2e;--card:#16213e;--accent:#0f3460;--hi:#e94560;--text:#eee;--muted:#8892b0;--green:#64ffda;--yellow:#ffd93d;--radius:12px}
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:80px}
+#app{max-width:600px;margin:0 auto;padding:12px}
+/* 顶部 */
+.header{text-align:center;padding:16px 0}
+.header h1{font-size:22px;font-weight:700}
+.header h1 span{color:var(--hi)}
+.header .sub{font-size:12px;color:var(--muted);margin-top:4px}
+/* 进度条 */
+.progress-bar{height:6px;background:var(--card);border-radius:3px;margin:10px 0;overflow:hidden}
+.progress-bar .fill{height:100%;background:linear-gradient(90deg,var(--green),var(--yellow));border-radius:3px;transition:width .4s}
+.progress-info{display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}
+/* 页面 */
+.page{display:none}
+.page.active{display:block}
+/* 导航 */
+.navbar{position:fixed;bottom:0;left:0;right:0;background:var(--card);display:flex;z-index:100;box-shadow:0 -2px 16px rgba(0,0,0,.3)}
+.navbar .nav-item{flex:1;text-align:center;padding:10px 0 8px;cursor:pointer;color:var(--muted);transition:color .2s}
+.navbar .nav-item.active{color:var(--hi)}
+.navbar .nav-item .icon{font-size:20px}
+.navbar .nav-item .label{font-size:10px;margin-top:2px}
+/* 分类标签 */
+.cat-bar{display:flex;gap:6px;overflow-x:auto;padding:10px 0;-webkit-overflow-scrolling:touch}
+.cat-bar .cat{white-space:nowrap;padding:6px 16px;border-radius:20px;font-size:12px;background:var(--card);color:var(--muted);cursor:pointer;border:1px solid transparent;transition:all .2s}
+.cat-bar .cat.active{background:var(--accent);color:var(--text);border-color:var(--hi)}
+/* 搜索 */
+.search-box{width:100%;padding:10px 14px;background:var(--card);border:1px solid var(--accent);border-radius:var(--radius);color:var(--text);font-size:14px;font-family:inherit;margin-bottom:10px}
+.search-box:focus{outline:none;border-color:var(--hi)}
+/* 快捷键卡片 */
+.key-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px}
+.key-card{background:var(--card);border-radius:var(--radius);padding:12px;position:relative;overflow:hidden;border:1px solid transparent;transition:border-color .2s}
+.key-card .known{position:absolute;top:6px;right:8px;font-size:14px;cursor:pointer;opacity:.4}
+.key-card .known.active{opacity:1}
+.key-card .keys{font-size:18px;font-weight:700;color:var(--green);margin-bottom:4px;font-family:'Consolas','Courier New',monospace}
+.key-card .cmd{font-size:13px;color:var(--text);margin-bottom:2px}
+.key-card .full{font-size:10px;color:var(--muted)}
+/* 测验 */
+.quiz-box{text-align:center}
+.quiz-q{font-size:16px;color:var(--muted);margin:20px 0 8px}
+.quiz-cmd{font-size:28px;font-weight:700;color:var(--text);margin-bottom:20px}
+.quiz-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.quiz-opt{background:var(--card);border:2px solid var(--accent);border-radius:var(--radius);padding:16px;font-size:16px;font-weight:700;color:var(--green);cursor:pointer;font-family:'Consolas','Courier New',monospace;transition:all .2s}
+.quiz-opt:active{transform:scale(.95)}
+.quiz-opt.correct{border-color:var(--green);background:rgba(100,255,218,.1)}
+.quiz-opt.wrong{border-color:var(--hi);background:rgba(233,69,96,.1)}
+.quiz-result{font-size:18px;font-weight:700;margin:10px 0}
+.quiz-score{font-size:14px;color:var(--muted)}
+.quiz-next{margin-top:12px}
+/* 闪卡 */
+.flash-box{text-align:center;padding:20px 0}
+.flashcard{width:280px;height:360px;margin:0 auto;perspective:800px;cursor:pointer}
+.flashcard .inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .6s}
+.flashcard.flipped .inner{transform:rotateY(180deg)}
+.flashcard .face{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+.flashcard .front{background:var(--card);border:2px solid var(--accent)}
+.flashcard .back{background:var(--accent);border:2px solid var(--hi);transform:rotateY(180deg)}
+.flashcard .front .label{font-size:12px;color:var(--muted);margin-bottom:8px}
+.flashcard .front .name{font-size:24px;font-weight:700;color:var(--text)}
+.flashcard .front .hint{font-size:11px;color:var(--muted);margin-top:16px}
+.flashcard .back .keys{font-size:32px;font-weight:700;color:var(--green);font-family:'Consolas',monospace;margin-bottom:8px}
+.flashcard .back .full{font-size:12px;color:var(--muted)}
+.flashcard .back .note{font-size:11px;color:var(--text);margin-top:12px;padding:0 10px;line-height:1.5}
+.flash-hint{margin-top:16px;font-size:12px;color:var(--muted)}
+.flash-ctrl{display:flex;gap:10px;justify-content:center;margin-top:14px}
+/* 按钮 */
+.btn{display:inline-block;padding:10px 24px;border:none;border-radius:20px;font-size:14px;cursor:pointer;font-family:inherit;transition:transform .15s}
+.btn:active{transform:scale(.95)}
+.btn-primary{background:var(--hi);color:#fff}
+.btn-green{background:var(--green);color:var(--bg);font-weight:700}
+.btn-outline{background:transparent;border:2px solid var(--accent);color:var(--text)}
+/* 统计卡片 */
+.stat-row{display:flex;gap:8px;margin-bottom:12px}
+.stat-card{flex:1;background:var(--card);border-radius:var(--radius);padding:12px;text-align:center}
+.stat-card .num{font-size:24px;font-weight:700;color:var(--green)}
+.stat-card .num.red{color:var(--hi)}
+.stat-card .num.yellow{color:var(--yellow)}
+.stat-card .lbl{font-size:11px;color:var(--muted);margin-top:2px}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="header">
+    <h1>CAD<span>快捷键</span>学习卡</h1>
+    <div class="sub">AutoCAD 常用命令 · 浏览/测验/闪卡</div>
+  </div>
+  <div class="progress-bar"><div class="fill" id="progFill" style="width:0"></div></div>
+  <div class="progress-info">
+    <span id="progText">已掌握 0 / 0</span>
+    <span id="progPct">0%</span>
+  </div>
+
+  <!-- 浏览学习 -->
+  <div class="page active" id="page-learn">
+    <input class="search-box" id="searchBox" placeholder="🔍 搜索命令名或快捷键..." oninput="renderLearn()">
+    <div class="cat-bar" id="catBar"></div>
+    <div class="key-grid" id="keyGrid"></div>
+  </div>
+
+  <!-- 测验 -->
+  <div class="page" id="page-quiz">
+    <div class="quiz-box" id="quizBox">
+      <p style="color:var(--muted);margin:10px 0">选择正确的快捷键</p>
+      <button class="btn btn-primary" onclick="startQuiz()">开始测验</button>
+    </div>
+  </div>
+
+  <!-- 闪卡 -->
+  <div class="page" id="page-flash">
+    <div class="stat-row">
+      <div class="stat-card"><div class="num" id="flashIdx">1</div><div class="lbl">当前</div></div>
+      <div class="stat-card"><div class="num yellow" id="flashTotal">0</div><div class="lbl">总数</div></div>
+      <div class="stat-card"><div class="num red" id="flashUnk">0</div><div class="lbl">未掌握</div></div>
+    </div>
+    <div class="flash-box">
+      <div class="flashcard" id="flashcard" onclick="flipCard()">
+        <div class="inner">
+          <div class="face front">
+            <div class="label">命令名称</div>
+            <div class="name" id="fcName">点击下方开始</div>
+            <div class="hint">点击卡片查看快捷键 👆</div>
+          </div>
+          <div class="face back">
+            <div class="keys" id="fcKeys">-</div>
+            <div class="full" id="fcFull">-</div>
+            <div class="note" id="fcNote"></div>
+          </div>
+        </div>
+      </div>
+      <div class="flash-hint" id="fcHint">点击「开始学习」翻卡</div>
+      <div class="flash-ctrl">
+        <button class="btn btn-outline" onclick="prevCard()">⬅ 上一张</button>
+        <button class="btn btn-primary" onclick="nextCard()">下一张 ➡</button>
+      </div>
+      <div style="margin-top:12px">
+        <button class="btn btn-green" onclick="markKnown()">✅ 标记已掌握</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 底部导航 -->
+<div class="navbar">
+  <div class="nav-item active" onclick="switchPage('learn')"><div class="icon">📚</div><div class="label">浏览</div></div>
+  <div class="nav-item" onclick="switchPage('quiz')"><div class="icon">✏️</div><div class="label">测验</div></div>
+  <div class="nav-item" onclick="switchPage('flash')"><div class="icon">🎴</div><div class="label">闪卡</div></div>
+</div>
+
+<script>
+// ===== 快捷键数据 =====
+var DATA = [
+  // 绘图
+  {cat:'绘图',keys:'L',cmd:'直线',full:'LINE',note:'最常用绘图命令，可连续画线'},
+  {cat:'绘图',keys:'C',cmd:'圆',full:'CIRCLE',note:'指定圆心和半径画圆'},
+  {cat:'绘图',keys:'REC',cmd:'矩形',full:'RECTANG',note:'指定两个对角点画矩形'},
+  {cat:'绘图',keys:'A',cmd:'圆弧',full:'ARC',note:'三点画弧：起点→端点→方向'},
+  {cat:'绘图',keys:'PL',cmd:'多段线',full:'PLINE',note:'整条线是一个整体，可设宽度'},
+  {cat:'绘图',keys:'SPL',cmd:'样条曲线',full:'SPLINE',note:'画平滑曲线'},
+  {cat:'绘图',keys:'EL',cmd:'椭圆',full:'ELLIPSE',note:'指定两个轴端点'},
+  {cat:'绘图',keys:'POL',cmd:'正多边形',full:'POLYGON',note:'3到1024条边的正多边形'},
+  {cat:'绘图',keys:'PO',cmd:'点',full:'POINT',note:'可设置点样式（DDPTYPE）'},
+  {cat:'绘图',keys:'H',cmd:'图案填充',full:'HATCH',note:'填充剖面线/图案'},
+  {cat:'绘图',keys:'T',cmd:'单行文字',full:'TEXT',note:'DT也可，多行文字用MT'},
+  {cat:'绘图',keys:'MT',cmd:'多行文字',full:'MTEXT',note:'可设置段落格式'},
+  {cat:'绘图',keys:'XL',cmd:'构造线',full:'XLINE',note:'无限长直线，做辅助线'},
+  {cat:'绘图',keys:'RAY',cmd:'射线',full:'RAY',note:'一端固定一端无限延伸'},
+  {cat:'绘图',keys:'B',cmd:'创建块',full:'BLOCK',note:'将图形定义为内部块'},
+  {cat:'绘图',keys:'I',cmd:'插入块',full:'INSERT',note:'插入已定义的块'},
+  {cat:'绘图',keys:'W',cmd:'写块',full:'WBLOCK',note:'将块保存为外部文件'},
+  // 编辑
+  {cat:'编辑',keys:'CO',cmd:'复制',full:'COPY',note:'CP也可以，复制选中对象'},
+  {cat:'编辑',keys:'M',cmd:'移动',full:'MOVE',note:'移动对象到新位置'},
+  {cat:'编辑',keys:'RO',cmd:'旋转',full:'ROTATE',note:'指定基点和角度旋转'},
+  {cat:'编辑',keys:'SC',cmd:'缩放',full:'SCALE',note:'按比例放大缩小对象'},
+  {cat:'编辑',keys:'TR',cmd:'修剪',full:'TRIM',note:'剪掉多余线段，选边界再选要剪的'},
+  {cat:'编辑',keys:'EX',cmd:'延伸',full:'EXTEND',note:'延伸到指定边界'},
+  {cat:'编辑',keys:'MI',cmd:'镜像',full:'MIRROR',note:'沿对称轴翻转复制'},
+  {cat:'编辑',keys:'O',cmd:'偏移',full:'OFFSET',note:'平行复制，画平行线常用'},
+  {cat:'编辑',keys:'AR',cmd:'阵列',full:'ARRAY',note:'矩形/环形/路径阵列'},
+  {cat:'编辑',keys:'E',cmd:'删除',full:'ERASE',note:'Delete键也可以'},
+  {cat:'编辑',keys:'F',cmd:'圆角',full:'FILLET',note:'两线之间倒圆角，R设半径'},
+  {cat:'编辑',keys:'CHA',cmd:'倒角',full:'CHAMFER',note:'两线之间倒斜角'},
+  {cat:'编辑',keys:'X',cmd:'分解',full:'EXPLODE',note:'把块/多段线拆散'},
+  {cat:'编辑',keys:'J',cmd:'合并',full:'JOIN',note:'合并线段为整体'},
+  {cat:'编辑',keys:'BR',cmd:'打断',full:'BREAK',note:'在指定点断开线段'},
+  {cat:'编辑',keys:'U',cmd:'撤销',full:'UNDO',note:'Ctrl+Z也可以'},
+  {cat:'编辑',keys:'PE',cmd:'编辑多段线',full:'PEDIT',note:'合并/闭合/改宽度'},
+  {cat:'编辑',keys:'S',cmd:'拉伸',full:'STRETCH',note:'交叉窗口选择拉伸'},
+  {cat:'编辑',keys:'LEN',cmd:'拉长',full:'LENGTHEN',note:'改变线长度'},
+  {cat:'编辑',keys:'AL',cmd:'对齐',full:'ALIGN',note:'三点对齐，旋转+移动一次完成'},
+  {cat:'编辑',keys:'MA',cmd:'特性匹配',full:'MATCHPROP',note:'格式刷，复制属性'},
+  // 标注
+  {cat:'标注',keys:'DLI',cmd:'线性标注',full:'DIMLINEAR',note:'水平/垂直标注'},
+  {cat:'标注',keys:'DAL',cmd:'对齐标注',full:'DIMALIGNED',note:'倾斜标注，平行于线段'},
+  {cat:'标注',keys:'DRA',cmd:'半径标注',full:'DIMRADIUS',note:'标注圆/弧半径'},
+  {cat:'标注',keys:'DDI',cmd:'直径标注',full:'DIMDIAMETER',note:'标注圆/弧直径'},
+  {cat:'标注',keys:'DAN',cmd:'角度标注',full:'DIMANGULAR',note:'标注两条线夹角'},
+  {cat:'标注',keys:'DCO',cmd:'连续标注',full:'DIMCONTINUE',note:'首尾相连连续标注'},
+  {cat:'标注',keys:'DBA',cmd:'基线标注',full:'DIMBASELINE',note:'同一起点基线标注'},
+  {cat:'标注',keys:'D',cmd:'标注样式',full:'DIMSTYLE',note:'设置标注格式'},
+  {cat:'标注',keys:'ED',cmd:'编辑标注',full:'DDEDIT',note:'修改标注文字'},
+  // 图层
+  {cat:'图层',keys:'LA',cmd:'图层管理',full:'LAYER',note:'打开图层特性管理器'},
+  {cat:'图层',keys:'LAYISO',cmd:'隔离图层',full:'LAYISO',note:'只显示选中对象的图层'},
+  {cat:'图层',keys:'LAYON',cmd:'全部打开',full:'LAYON',note:'打开所有关闭的图层'},
+  {cat:'图层',keys:'LAYOFF',cmd:'关闭图层',full:'LAYOFF',note:'点击对象关闭其图层'},
+  {cat:'图层',keys:'LAYLCK',cmd:'锁定图层',full:'LAYLCK',note:'锁定后不可编辑'},
+  {cat:'图层',keys:'LAYULK',cmd:'解锁图层',full:'LAYULK',note:'解除锁定'},
+  // 视图
+  {cat:'视图',keys:'Z',cmd:'缩放',full:'ZOOM',note:'Z+A全部缩放，Z+E范围缩放'},
+  {cat:'视图',keys:'P',cmd:'平移',full:'PAN',note:'拖动视图，鼠标中键也可'},
+  {cat:'视图',keys:'RE',cmd:'重生成',full:'REGEN',note:'刷新显示，圆弧更平滑'},
+  {cat:'视图',keys:'REA',cmd:'全部重生成',full:'REGENALL',note:'刷新所有视口'},
+  // 功能键
+  {cat:'功能键',keys:'F3',cmd:'对象捕捉',full:'OSNAP',note:'开关捕捉端点/中点等'},
+  {cat:'功能键',keys:'F8',cmd:'正交模式',full:'ORTHO',note:'限制水平/垂直方向'},
+  {cat:'功能键',keys:'F10',cmd:'极轴追踪',full:'POLAR',note:'按设定角度追踪'},
+  {cat:'功能键',keys:'F11',cmd:'对象追踪',full:'OTRACK',note:'从捕捉点延伸追踪'},
+  {cat:'功能键',keys:'F12',cmd:'动态输入',full:'DYNMODE',note:'光标旁显示输入框'},
+  {cat:'功能键',keys:'F7',cmd:'栅格',full:'GRID',note:'显示/隐藏栅格点'},
+  {cat:'功能键',keys:'F9',cmd:'捕捉',full:'SNAP',note:'光标按栅格步进'},
+  {cat:'功能键',keys:'F2',cmd:'文本窗口',full:'TEXTSCR',note:'查看命令历史'},
+  // 其他
+  {cat:'其他',keys:'OP',cmd:'选项',full:'OPTIONS',note:'系统设置'},
+  {cat:'其他',keys:'PR',cmd:'特性面板',full:'PROPERTIES',note:'Ctrl+1也可，查看修改属性'},
+  {cat:'其他',keys:'LI',cmd:'列表查询',full:'LIST',note:'查看对象详细信息'},
+  {cat:'其他',keys:'DI',cmd:'距离查询',full:'DIST',note:'测量两点距离'},
+  {cat:'其他',keys:'AA',cmd:'面积查询',full:'AREA',note:'计算面积和周长'},
+  {cat:'其他',keys:'ID',cmd:'坐标查询',full:'ID',note:'查看点坐标'},
+  {cat:'其他',keys:'PU',cmd:'清理',full:'PURGE',note:'删除未使用的图层/块等'},
+  {cat:'其他',keys:'UN',cmd:'单位设置',full:'UNITS',note:'设置绘图单位'},
+  {cat:'其他',keys:'LT',cmd:'线型管理',full:'LINETYPE',note:'加载/设置线型'},
+  {cat:'其他',keys:'TS',cmd:'文字样式',full:'STYLE',note:'设置字体样式'},
+  {cat:'其他',keys:'OS',cmd:'草图设置',full:'OSNAP',note:'设置捕捉模式'},
+  {cat:'其他',keys:'Ctrl+1',cmd:'特性面板',full:'PROPERTIES',note:'快捷打开特性面板'},
+  {cat:'其他',keys:'Ctrl+S',cmd:'保存',full:'SAVE',note:'保存文件'},
+  {cat:'其他',keys:'Ctrl+Z',cmd:'撤销',full:'UNDO',note:'撤销上一步'},
+  {cat:'其他',keys:'Ctrl+Y',cmd:'重做',full:'REDO',note:'恢复撤销的操作'},
+  {cat:'其他',keys:'Ctrl+0',cmd:'全屏',full:'CLEANSCREEN',note:'隐藏面板全屏绘图'},
+  {cat:'其他',keys:'Ctrl+9',cmd:'命令行',full:'COMMANDLINE',note:'显示/隐藏命令行'},
+  {cat:'其他',keys:'Esc',cmd:'取消',full:'CANCEL',note:'取消当前命令'},
+  {cat:'其他',keys:'Space',cmd:'重复',full:'REPEAT',note:'重复上一个命令'}
+];
+
+// ===== 状态 =====
+var ST = {filter:'全部',known:{},flashIdx:0,quiz:{q:0,score:0,total:0,opts:[],answered:false}};
+
+function load(){
+  var s = localStorage.getItem('cadKeysLearn');
+  if(s){try{var d=JSON.parse(s);ST.known=d.known||{}}catch(e){}}
+}
+function save(){localStorage.setItem('cadKeysLearn',JSON.stringify({known:ST.known}))}
+
+// ===== 进度 =====
+function updateProgress(){
+  var total = DATA.length;
+  var knownCount = 0;
+  DATA.forEach(function(d,i){if(ST.known[i])knownCount++});
+  var pct = Math.round(knownCount/total*100);
+  document.getElementById('progFill').style.width = pct+'%';
+  document.getElementById('progText').textContent = '已掌握 '+knownCount+' / '+total;
+  document.getElementById('progPct').textContent = pct+'%';
+}
+
+// ===== 页面切换 =====
+function switchPage(name){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active')});
+  document.getElementById('page-'+name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active')});
+  document.querySelectorAll('.nav-item')[{learn:0,quiz:1,flash:2}[name]].classList.add('active');
+  if(name==='learn') renderLearn();
+  if(name==='flash') renderFlash();
+}
+
+// ===== 浏览学习 =====
+function renderLearn(){
+  var cats = ['全部'];
+  DATA.forEach(function(d){if(cats.indexOf(d.cat)<0)cats.push(d.cat)});
+  var bh = '';
+  cats.forEach(function(c){
+    bh += '<div class="cat'+(ST.filter===c?' active':'')+'" onclick="setFilter(\''+c+'\')">'+c+'</div>';
+  });
+  document.getElementById('catBar').innerHTML = bh;
+
+  var kw = document.getElementById('searchBox').value.trim().toLowerCase();
+  var gh = '';
+  DATA.forEach(function(d,i){
+    if(ST.filter!=='全部'&&d.cat!==ST.filter) return;
+    if(kw && d.cmd.toLowerCase().indexOf(kw)<0 && d.keys.toLowerCase().indexOf(kw)<0 && d.full.toLowerCase().indexOf(kw)<0) return;
+    gh += '<div class="key-card">';
+    gh += '<span class="known'+(ST.known[i]?' active':'')+'" onclick="toggleKnown('+i+')">'+(ST.known[i]?'✅':'⭕')+'</span>';
+    gh += '<div class="keys">'+d.keys+'</div>';
+    gh += '<div class="cmd">'+d.cmd+'</div>';
+    gh += '<div class="full">'+d.full+'</div>';
+    gh += '</div>';
+  });
+  document.getElementById('keyGrid').innerHTML = gh || '<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:20px">没有匹配结果</div>';
+}
+
+function setFilter(c){ST.filter=c;renderLearn()}
+function toggleKnown(i){ST.known[i]=!ST.known[i];save();renderLearn();updateProgress()}
+
+// ===== 测验 =====
+function startQuiz(){
+  ST.quiz = {q:0,score:0,total:10,answered:false,cur:0,opts:[],correct:0};
+  nextQuestion();
+}
+
+function nextQuestion(){
+  var q = ST.quiz;
+  if(q.q>=q.total){showQuizResult();return}
+  q.q++;
+  q.answered = false;
+
+  // 随机选一道题
+  var idx = Math.floor(Math.random()*DATA.length);
+  q.cur = idx;
+  var ans = DATA[idx].keys;
+
+  // 生成3个错误选项
+  var wrong = [];
+  while(wrong.length<3){
+    var r = Math.floor(Math.random()*DATA.length);
+    if(r!==idx && DATA[r].keys!==ans && wrong.indexOf(DATA[r].keys)<0){
+      wrong.push(DATA[r].keys);
+    }
+  }
+
+  // 打乱选项
+  q.opts = wrong.concat([ans]);
+  for(var j=q.opts.length-1;j>0;j--){
+    var k = Math.floor(Math.random()*(j+1));
+    var t = q.opts[j];q.opts[j]=q.opts[k];q.opts[k]=t;
+  }
+  q.ans = ans;
+
+  var box = document.getElementById('quizBox');
+  var h = '<div class="quiz-q">第 '+q.q+' / '+q.total+' 题 · '+DATA[idx].cat+'</div>';
+  h += '<div class="quiz-cmd">'+DATA[idx].cmd+'</div>';
+  h += '<div style="font-size:11px;color:var(--muted);margin-bottom:16px">'+DATA[idx].full+'</div>';
+  h += '<div class="quiz-opts">';
+  q.opts.forEach(function(o){
+    h += '<div class="quiz-opt" onclick="answerQuiz(\''+o.replace(/'/g,"\\'")+'\')">'+o+'</div>';
+  });
+  h += '</div>';
+  h += '<div class="quiz-score">得分：'+q.score+' / '+(q.q-1)+'</div>';
+  box.innerHTML = h;
+}
+
+function answerQuiz(opt){
+  if(ST.quiz.answered)return;
+  ST.quiz.answered = true;
+  var correct = opt===ST.quiz.ans;
+  if(correct)ST.quiz.score++;
+
+  // 标记选项颜色
+  var opts = document.querySelectorAll('.quiz-opt');
+  opts.forEach(function(el){
+    if(el.textContent===ST.quiz.ans){
+      el.classList.add('correct');
+    } else if(el.textContent===opt){
+      el.classList.add('wrong');
+    }
+  });
+
+  // 标记掌握状态
+  var idx = ST.quiz.cur;
+  ST.known[idx] = correct;
+  save();
+  updateProgress();
+
+  setTimeout(function(){
+    if(ST.quiz.q < ST.quiz.total){
+      var btn = document.createElement('div');
+      btn.className = 'quiz-next';
+      btn.innerHTML = '<button class="btn btn-primary" onclick="nextQuestion()">下一题 ➡</button>';
+      document.getElementById('quizBox').appendChild(btn);
+    } else {
+      showQuizResult();
+    }
+  }, 600);
+}
+
+function showQuizResult(){
+  var q = ST.quiz;
+  var pct = Math.round(q.score/q.total*100);
+  var msg = pct>=80?'太棒了！🎉':pct>=60?'不错！继续加油 💪':pct>=40?'还需多练习 📖':'别灰心，多看几遍 💪';
+  var h = '<div class="quiz-result" style="color:'+(pct>=60?'var(--green)':'var(--hi)')+'">'+msg+'</div>';
+  h += '<div class="quiz-score" style="font-size:24px;color:var(--text);margin:12px 0">'+q.score+' / '+q.total+'</div>';
+  h += '<div class="quiz-score">正确率 '+pct+'%</div>';
+  h += '<div style="margin-top:20px"><button class="btn btn-primary" onclick="startQuiz()">再测一次</button></div>';
+  document.getElementById('quizBox').innerHTML = h;
+}
+
+// ===== 闪卡 =====
+function renderFlash(){
+  var knownCount = 0;
+  var unknown = 0;
+  DATA.forEach(function(d,i){if(ST.known[i])knownCount++;else unknown++});
+  document.getElementById('flashTotal').textContent = DATA.length;
+  document.getElementById('flashUnk').textContent = unknown;
+  document.getElementById('flashIdx').textContent = (ST.flashIdx+1);
+  showCard();
+}
+
+function showCard(){
+  var d = DATA[ST.flashIdx];
+  document.getElementById('fcName').textContent = d.cmd;
+  document.getElementById('fcKeys').textContent = d.keys;
+  document.getElementById('fcFull').textContent = d.full;
+  document.getElementById('fcNote').textContent = d.note;
+  document.getElementById('fcHint').textContent = '第 '+(ST.flashIdx+1)+' / '+DATA.length+' 张 · '+(ST.known[ST.flashIdx]?'✅ 已掌握':'⭕ 未掌握')+' · 点击翻转';
+  var fc = document.getElementById('flashcard');
+  fc.classList.remove('flipped');
+}
+
+function flipCard(){
+  document.getElementById('flashcard').classList.toggle('flipped');
+}
+
+function nextCard(){
+  ST.flashIdx = (ST.flashIdx+1)%DATA.length;
+  renderFlash();
+}
+
+function prevCard(){
+  ST.flashIdx = (ST.flashIdx-1+DATA.length)%DATA.length;
+  renderFlash();
+}
+
+function markKnown(){
+  ST.known[ST.flashIdx] = !ST.known[ST.flashIdx];
+  save();
+  updateProgress();
+  renderFlash();
+  toast(ST.known[ST.flashIdx]?'已标记掌握 ✅':'已取消标记');
+}
+
+// ===== Toast =====
+var toastTimer;
+function toast(msg){
+  var old = document.getElementById('toast');
+  if(old)old.remove();
+  var t = document.createElement('div');
+  t.id = 'toast';
+  t.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.8);color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;z-index:300';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){t.remove()},1500);
+}
+
+// ===== 初始化 =====
+load();
+updateProgress();
+renderLearn();
+</script>
+</body>
+</html>
