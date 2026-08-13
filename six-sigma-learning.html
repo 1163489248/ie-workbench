@@ -1,0 +1,1922 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no,viewport-fit=cover">
+<title>六西格玛学习中心</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--bg:#0f1525;--card:#1a2138;--card2:#222b48;--border:#2a3556;--accent:#38bdf8;--accent2:#818cf8;--green:#34d399;--yellow:#fbbf24;--red:#f87171;--text:#e2e8f0;--dim:#94a3b8;--dim2:#64748b}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Microsoft YaHei','PingFang SC',sans-serif;line-height:1.7;font-size:15px}
+a{color:var(--accent);text-decoration:none}
+.topbar{position:fixed;top:0;left:0;right:0;height:52px;background:var(--card);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 16px;z-index:100;padding-top:env(safe-area-inset-top,0)}
+.topbar h1{font-size:17px;font-weight:700}
+.topbar .btn{background:var(--card2);border:1px solid var(--border);color:var(--text);padding:6px 12px;border-radius:8px;font-size:13px;cursor:pointer;transition:all .2s}
+.topbar .btn:hover{border-color:var(--accent);color:var(--accent)}
+.sidebar{position:fixed;top:52px;left:0;bottom:0;width:250px;background:var(--card);border-right:1px solid var(--border);overflow-y:auto;z-index:90;transition:transform .3s}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.search-box{padding:10px 12px}
+.search-box input{width:100%;background:var(--card2);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:8px;font-size:13px;font-family:inherit;outline:none}
+.search-box input:focus{border-color:var(--accent)}
+.nav-group-title{padding:10px 16px 4px;font-size:11px;color:var(--dim2);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+.nav-item{display:block;padding:7px 16px 7px 24px;font-size:13px;color:var(--dim);cursor:pointer;transition:all .15s;border-left:3px solid transparent}
+.nav-item:hover{color:var(--text);background:var(--card2)}
+.nav-item.active{color:var(--accent);border-left-color:var(--accent);background:var(--card2)}
+.main{margin-left:250px;margin-top:52px;padding:20px 28px;max-width:1100px}
+.section{display:none;animation:fadeIn .3s}.section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+h2{font-size:22px;font-weight:700;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--border)}
+h3{font-size:18px;font-weight:600;margin:20px 0 10px;color:var(--accent)}
+h4{font-size:15px;font-weight:600;margin:16px 0 6px;color:var(--accent2)}
+p{margin:6px 0}ul,ol{margin:6px 0 6px 20px}li{margin:3px 0}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin:10px 0}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin:12px 0}
+.info-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;transition:all .2s}
+.info-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.info-card .icon{font-size:24px;margin-bottom:6px}.info-card .title{font-size:14px;font-weight:600;margin-bottom:4px}
+.info-card .desc{font-size:12px;color:var(--dim);line-height:1.5}
+.highlight{background:rgba(56,189,248,.08);border-left:3px solid var(--accent);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0}
+.warning{background:rgba(251,191,36,.08);border-left:3px solid var(--yellow);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0}
+.success{background:rgba(52,211,153,.08);border-left:3px solid var(--green);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0}
+.danger{background:rgba(248,113,113,.08);border-left:3px solid var(--red);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+th{background:var(--card2);color:var(--accent);padding:8px 10px;text-align:left;border:1px solid var(--border);font-weight:600}
+td{padding:7px 10px;border:1px solid var(--border)}tr:nth-child(even){background:rgba(42,53,86,.3)}
+.formula{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin:10px 0;font-family:'Courier New',monospace;font-size:14px;text-align:center;color:var(--green);overflow-x:auto}
+.formula .label{display:block;color:var(--dim);font-size:12px;font-family:'Microsoft YaHei',sans-serif;margin-bottom:4px}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;margin:2px;font-weight:500}
+.tag-green{background:rgba(52,211,153,.15);color:var(--green)}.tag-yellow{background:rgba(251,191,36,.15);color:var(--yellow)}
+.tag-red{background:rgba(248,113,113,.15);color:var(--red)}.tag-blue{background:rgba(56,189,248,.15);color:var(--accent)}
+.tag-purple{background:rgba(129,140,248,.15);color:var(--accent2)}
+.quiz-q{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin:10px 0}
+.quiz-q .q-text{font-size:14px;font-weight:600;margin-bottom:8px}.quiz-q .q-text .q-num{color:var(--accent);margin-right:4px}
+.quiz-options{list-style:none;margin:6px 0;padding:0}
+.quiz-options li{padding:7px 10px;margin:3px 0;background:var(--card2);border:1px solid var(--border);border-radius:6px;cursor:pointer;transition:all .15s;font-size:13px}
+.quiz-options li:hover{border-color:var(--accent)}
+.quiz-options li.correct{background:rgba(52,211,153,.15);border-color:var(--green);color:var(--green)}
+.quiz-options li.wrong{background:rgba(248,113,113,.15);border-color:var(--red);color:var(--red)}
+.quiz-answer{display:none;margin-top:6px;padding:8px 10px;background:var(--card2);border-radius:6px;font-size:12px;color:var(--dim)}
+.quiz-answer.show{display:block}.quiz-answer .ans-label{color:var(--green);font-weight:600}
+.process-flow{display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin:12px 0}
+.process-step{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;text-align:center;min-width:70px}
+.process-step.d{border-color:var(--accent);color:var(--accent)}.process-step.m{border-color:var(--green);color:var(--green)}
+.process-step.a{border-color:var(--yellow);color:var(--yellow)}.process-step.i{border-color:var(--accent2);color:var(--accent2)}
+.process-step.c{border-color:var(--red);color:var(--red)}.process-arrow{color:var(--dim2);font-size:16px}
+.collapse-title{cursor:pointer;padding:10px 14px;background:var(--card2);border:1px solid var(--border);border-radius:8px;margin:6px 0;font-weight:600;display:flex;justify-content:space-between;align-items:center;transition:all .15s;font-size:14px}
+.collapse-title:hover{border-color:var(--accent)}.collapse-title .arrow{transition:transform .2s}.collapse-title.open .arrow{transform:rotate(90deg)}
+.collapse-body{display:none;padding:10px 14px;background:var(--card);border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;margin-top:-6px}
+.collapse-body.show{display:block}
+.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:6px;font-size:12px;font-weight:600}
+.badge-green{background:rgba(52,211,153,.2);color:var(--green)}.badge-yellow{background:rgba(251,191,36,.2);color:var(--yellow)}
+.badge-blue{background:rgba(56,189,248,.2);color:var(--accent)}
+code{background:var(--card2);padding:2px 6px;border-radius:4px;font-size:13px;color:var(--green)}
+hr{border:none;border-top:1px solid var(--border);margin:16px 0}
+.back-top{position:fixed;bottom:16px;right:16px;width:40px;height:40px;background:var(--card2);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:80;opacity:0;transition:all .3s;font-size:18px}
+.back-top.show{opacity:1}.back-top:hover{border-color:var(--accent);color:var(--accent)}
+.overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:85}.overlay.show{display:block}
+@media(max-width:768px){
+.sidebar{transform:translateX(-100%);width:80%;max-width:280px}.sidebar.open{transform:translateX(0)}
+.main{margin-left:0;padding:14px}.card-grid{grid-template-columns:1fr}.process-flow{flex-direction:column}.process-arrow{transform:rotate(90deg)}
+table{font-size:11px}th,td{padding:5px 6px}
+}
+</style>
+</head>
+<body>
+<div class="topbar"><h1>📊 六西格玛学习中心</h1><button class="btn" onclick="toggleSidebar()" id="menuBtn">☰ 菜单</button></div>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+<div class="sidebar" id="sidebar">
+<div class="search-box"><input type="text" id="searchInput" placeholder="🔍 搜索内容..." oninput="searchContent()"></div>
+<div id="navContent">
+<div class="nav-group-title">基础</div>
+<div class="nav-item" onclick="showSection('overview')">📚 六西格玛概述</div>
+<div class="nav-item" onclick="showSection('dmaic')">🔄 DMAIC方法论</div>
+<div class="nav-item" onclick="showSection('statistics')">📊 统计学基础</div>
+<div class="nav-group-title">核心工具</div>
+<div class="nav-item" onclick="showSection('capability')">⚙️ 过程能力分析</div>
+<div class="nav-item" onclick="showSection('spc')">📈 SPC控制图</div>
+<div class="nav-item" onclick="showSection('msa')">📐 MSA测量系统</div>
+<div class="nav-item" onclick="showSection('doe')">🧪 DOE试验设计</div>
+<div class="nav-item" onclick="showSection('fmea')">⚠️ FMEA失效分析</div>
+<div class="nav-group-title">精益与工具</div>
+<div class="nav-item" onclick="showSection('lean')">🚀 精益六西格玛</div>
+<div class="nav-item" onclick="showSection('tools')">🛠️ 常用工具箱</div>
+<div class="nav-group-title">参考资料</div>
+<div class="nav-item" onclick="showSection('formulas')">📋 公式手册</div>
+<div class="nav-item" onclick="showSection('glossary')">📖 术语表</div>
+<div class="nav-group-title">考试题库</div>
+<div class="nav-item" onclick="showSection('quiz-green')">🟢 绿带题库</div>
+<div class="nav-item" onclick="showSection('quiz-black')">⚫ 黑带题库</div>
+</div>
+</div>
+<div class="main" id="main">
+
+<!-- ========== 六西格玛概述 ========== -->
+<div class="section" id="overview">
+<h2>📚 六西格玛概述</h2>
+
+<h3>一、什么是六西格玛</h3>
+<div class="card">
+<p><strong>六西格玛（Six Sigma）</strong>是一种以数据为基础、以客户需求为导向的过程改进方法论。其核心目标是通过<strong>减少变异和消除缺陷</strong>，使过程输出达到每百万次机会中不超过3.4个缺陷（3.4 DPMO）的质量水平。</p>
+<br>
+<p>六西格玛包含两个层面：</p>
+<ul>
+<li><strong>统计学层面</strong>：σ（西格玛）是标准差的符号。6σ水平意味着过程均值距离规格界限有6个标准差的距离，缺陷率仅为3.4ppm</li>
+<li><strong>管理层面</strong>：一套结构化的问题解决方法论（DMAIC），通过项目制推进，追求财务收益和客户满意度的持续提升</li>
+</ul>
+</div>
+
+<div class="highlight">
+<strong>核心理念：</strong>以客户为中心、以数据为驱动、以项目为载体、以财务为目标。六西格玛不是口号，而是"用数据说话"的科学方法。
+</div>
+
+<h3>二、六西格玛的历史发展</h3>
+<div class="card">
+<table>
+<tr><th>时间</th><th>里程碑</th><th>关键人物</th><th>贡献</th></tr>
+<tr><td>1920s</td><td>统计质量控制起源</td><td>Shewhart</td><td>发明控制图，提出过程变异概念</td></tr>
+<tr><td>1986</td><td>六西格玛诞生</td><td>Bill Smith（摩托罗拉）</td><td>提出"6σ"概念，追求百万分之3.4缺陷</td></tr>
+<tr><td>1988</td><td>摩托罗拉获马尔科姆·鲍德里奇奖</td><td>Bob Galvin</td><td>六西格玛为摩托罗拉节省数十亿美元</td></tr>
+<tr><td>1995</td><td>GE全面推行</td><td>Jack Welch</td><td>将六西格玛从制造扩展到全公司，5年节省100亿美元</td></tr>
+<tr><td>2000s</td><td>精益六西格玛</td><td>多家机构</td><td>融合精益（消除浪费）与六西格玛（减少变异）</td></tr>
+<tr><td>2010s+</td><td>数字化六西格玛</td><td>—</td><td>结合大数据、AI、IoT，实现实时过程监控与预测</td></tr>
+</table>
+</div>
+
+<h3>三、六西格玛的统计学原理</h3>
+<div class="card">
+<h4>3.1 正态分布与标准差</h4>
+<p>正态分布是六西格玛的统计基础。过程输出的质量特性服从正态分布 N(μ, σ²)，其中：</p>
+<ul>
+<li>μ（均值）：过程输出的中心位置</li>
+<li>σ（标准差）：过程输出的离散程度，σ越大变异越大</li>
+</ul>
+<div class="formula"><span class="label">正态分布概率密度函数</span>f(x) = (1 / (σ√(2π))) × e^(-(x-μ)² / (2σ²))</div>
+
+<h4>3.2 规格界限与西格玛水平</h4>
+<p>规格界限（Specification Limits）是客户要求的质量范围：</p>
+<ul>
+<li><strong>USL</strong>（Upper Specification Limit）：规格上限</li>
+<li><strong>LSL</strong>（Lower Specification Limit）：规格下限</li>
+<li><strong>T</strong>（Target）：目标值，通常为规格中心 (USL+LSL)/2</li>
+</ul>
+
+<h4>3.3 为什么是3.4ppm？</h4>
+<p>理论上，6σ水平（均值距规格界限6个标准差）的缺陷率应为0.001ppm。但实际中，过程均值会发生<strong>1.5σ的长期漂移</strong>（经验数据），因此：</p>
+<div class="formula"><span class="label">考虑1.5σ漂移后的单侧缺陷率</span>P(X > USL) = P(Z > 6 - 1.5) = P(Z > 4.5) ≈ 3.4ppm</div>
+<p>这就是"六西格玛=3.4DPMO"的由来。即长期来看，过程均值最多漂移1.5σ时，单侧超出规格的概率约为百万分之3.4。</p>
+
+<div class="warning">
+<strong>关键理解：</strong>短期6σ ≠ 长期6σ。短期数据计算的σ水平需要减去1.5才等于长期水平。这是六西格玛中最容易混淆的概念之一。
+</div>
+</div>
+
+<h3>四、西格玛水平对照表</h3>
+<table>
+<tr><th>σ水平</th><th>DPMO</th><th>合格率(%)</th><th>对应场景</th></tr>
+<tr><td>1σ</td><td>691,462</td><td>30.85%</td><td>日常邮件投递错误率</td></tr>
+<tr><td>2σ</td><td>308,538</td><td>69.15%</td><td>餐厅订单出错率</td></tr>
+<tr><td>3σ</td><td>66,807</td><td>93.32%</td><td>典型企业水平</td></tr>
+<tr><td>4σ</td><td>6,210</td><td>99.379%</td><td>优秀企业水平</td></tr>
+<tr><td>5σ</td><td>233</td><td>99.977%</td><td>航空业安全水平</td></tr>
+<tr><td>6σ</td><td><strong>3.4</strong></td><td>99.99966%</td><td>世界级水平</td></tr>
+</table>
+<div class="highlight">
+<strong>类比理解：</strong>3σ水平相当于每页270个错别字；6σ水平相当于整个图书馆只有1个错别字。
+</div>
+
+<h3>五、六西格玛组织架构</h3>
+<div class="card">
+<table>
+<tr><th>角色</th><th>英文</th><th>时间投入</th><th>职责</th><th>培训</th></tr>
+<tr><td>倡导者</td><td>Champion/Executive</td><td>10-20%</td><td>战略对齐、项目选择、资源保障、消除障碍</td><td>1-2天</td></tr>
+<tr><td>黑带大师</td><td>Master Black Belt (MBB)</td><td>100%</td><td>培训黑带/绿带、技术指导、项目评审、方法论创新</td><td>4-6周</td></tr>
+<tr><td>黑带</td><td>Black Belt (BB)</td><td>100%</td><td>领导复杂项目（年节省>50万）、指导绿带、数据分析</td><td>3-4周</td></tr>
+<tr><td>绿带</td><td>Green Belt (GB)</td><td>20-50%</td><td>领导部门级项目（年节省5-50万）、数据收集分析</td><td>1-2周</td></tr>
+<tr><td>黄带</td><td>Yellow Belt (YB)</td><td>5-10%</td><td>项目团队成员、基础工具使用、数据收集</td><td>2-3天</td></tr>
+<tr><td>白带</td><td>White Belt</td><td>—</td><td>六西格玛意识培训、支持项目工作</td><td>半天</td></tr>
+</table>
+</div>
+
+<h3>六、DMAIC vs DMADV vs DFSS</h3>
+<div class="card-grid">
+<div class="info-card"><div class="icon">🔄</div><div class="title">DMAIC</div><div class="desc"><strong>适用：</strong>改进现有过程/产品<br><strong>阶段：</strong>Define→Measure→Analyze→Improve→Control<br><strong>目标：</strong>减少缺陷、降低变异</div></div>
+<div class="info-card"><div class="icon">🆕</div><div class="title">DMADV</div><div class="desc"><strong>适用：</strong>设计新产品/过程<br><strong>阶段：</strong>Define→Measure→Analyze→Design→Verify<br><strong>目标：</strong>达到6σ水平的新设计</div></div>
+<div class="info-card"><div class="icon">🏗️</div><div class="title">DFSS</div><div class="desc"><strong>适用：</strong>六西格玛设计（Design for Six Sigma）<br><strong>方法：</strong>DMADV/IDDOV等<br><strong>目标：</strong>从设计源头保证质量</div></div>
+</div>
+
+<h3>七、六西格玛成功要素</h3>
+<div class="card">
+<ol>
+<li><strong>高层承诺</strong>：CEO和高层管理者的持续支持是第一成功要素</li>
+<li><strong>项目选择</strong>：选择与战略对齐、有明确财务收益的项目</li>
+<li><strong>人员培养</strong>：系统培训黑带/绿带，建立人才梯队</li>
+<li><strong>数据驱动</strong>：决策基于数据而非经验或直觉</li>
+<li><strong>项目制推进</strong>：每个项目4-6个月，有明确开始和结束</li>
+<li><strong>财务核算</strong>：每个项目都要量化财务收益</li>
+<li><strong>文化变革</strong>：建立"持续改进"的组织文化</li>
+<li><strong>奖励机制</strong>：将六西格玛成果纳入绩效考核和晋升通道</li>
+</ol>
+</div>
+</div>
+
+<!-- ========== DMAIC方法论 ========== -->
+<div class="section" id="dmaic">
+<h2>🔄 DMAIC方法论详解</h2>
+<div class="process-flow">
+<div class="process-step d">D 定义</div><span class="process-arrow">→</span>
+<div class="process-step m">M 测量</div><span class="process-arrow">→</span>
+<div class="process-step a">A 分析</div><span class="process-arrow">→</span>
+<div class="process-step i">I 改进</div><span class="process-arrow">→</span>
+<div class="process-step c">C 控制</div>
+</div>
+
+<!-- Define -->
+<h3 style="color:var(--accent)">D — Define 定义阶段</h3>
+<div class="card">
+<h4>🎯 阶段目标</h4>
+<p>明确要解决的问题是什么、为什么要解决、解决的范围和目标是什么。定义阶段回答三个核心问题：</p>
+<ul>
+<li>客户关心什么？（VOC → CTQ）</li>
+<li>当前状况有多差？（基线指标）</li>
+<li>项目目标是什么？（目标指标 + 财务收益）</li>
+</ul>
+
+<h4>📋 关键活动</h4>
+<ol>
+<li>识别客户需求（VOC收集）</li>
+<li>将VOC转化为CTQ（关键质量特性）</li>
+<li>撰写项目宪章（Project Charter）</li>
+<li>绘制SIPOC高阶流程图</li>
+<li>进行利益相关者分析</li>
+<li>定义项目范围和边界</li>
+</ol>
+
+<h4>🛠️ 核心工具</h4>
+<table>
+<tr><th>工具</th><th>用途</th><th>关键要素</th></tr>
+<tr><td>项目宪章</td><td>项目立项文件</td><td>问题陈述、目标陈述、范围、团队成员、时间线、预期收益</td></tr>
+<tr><td>SIPOC</td><td>高阶流程图</td><td>S供应商→I输入→P过程→O输出→C客户</td></tr>
+<tr><td>VOC→CTQ树</td><td>需求转化</td><td>客户语言→需求→CTQ→测量指标</td></tr>
+<tr><td>利益相关者分析</td><td>管理干系人</td><td>影响力×关注度矩阵，识别支持者/反对者</td></tr>
+<tr><td>鱼骨图</td><td>初步因果分析</td><td>6M分类：人/机/料/法/环/测</td></tr>
+</table>
+
+<div class="highlight">
+<strong>项目宪章模板要点：</strong>①问题陈述（什么事、多严重、何时开始）②目标陈述（SMART原则）③范围（包含/排除）④团队成员（黑带/绿带/成员）⑤时间线（各阶段里程碑）⑥预期收益（硬节省/软收益）
+</div>
+
+<div class="danger">
+<strong>常见陷阱：</strong>①问题陈述含糊（"质量不好"而非"7月不良率4.2%超标"）②范围太大（"改善全厂质量"）③目标不量化④忽视利益相关者⑤跳过SIPOC直接进入数据分析
+</div>
+</div>
+
+<!-- Measure -->
+<h3 style="color:var(--green)">M — Measure 测量阶段</h3>
+<div class="card">
+<h4>🎯 阶段目标</h4>
+<p>量化当前过程的表现，建立基线数据。核心是回答："我们的过程现在有多好/多差？"</p>
+<ul>
+<li>确定要测量什么（Y和X）</li>
+<li>验证测量系统是否可靠（MSA）</li>
+<li>收集基线数据</li>
+<li>计算当前过程能力</li>
+</ul>
+
+<h4>📋 关键活动</h4>
+<ol>
+<li>制定数据收集计划（What/Who/When/Where/How）</li>
+<li>确定数据类型：连续型（长度、重量、时间）vs 离散型（合格/不合格、计数）</li>
+<li>进行测量系统分析（MSA/GR&R）</li>
+<li>收集基线数据（至少30个数据点）</li>
+<li>计算当前σ水平和过程能力指数</li>
+<li>更新项目宪章中的基线数据</li>
+</ol>
+
+<h4>📊 数据类型与统计方法对照</h4>
+<table>
+<tr><th>数据类型</th><th>描述</th><th>适用图形</th><th>适用分析方法</th></tr>
+<tr><td>连续型（计量）</td><td>可取任意值，如温度25.3°C</td><td>直方图、箱线图、散点图</td><td>t检验、ANOVA、回归</td></tr>
+<tr><td>离散型（计数）</td><td>计件：合格/不合格</td><td>帕累托图、饼图</td><td>卡方检验、比例检验</td></tr>
+<tr><td>离散型（计点）</td><td>计点：缺陷数、瑕疵数</td><td>帕累托图、C图</td><td>泊松检验、U图</td></tr>
+</table>
+
+<h4>🛠️ 核心工具</h4>
+<table>
+<tr><th>工具</th><th>用途</th><th>验收标准</th></tr>
+<tr><td>MSA（GR&R）</td><td>验证测量系统</td><td>GR&R% < 10%可接受；10-30%有条件接受；>30%不可接受</td></tr>
+<tr><td>C&E矩阵</td><td>筛选关键输入变量</td><td>对每个X按相关性打分排序</td></tr>
+<tr><td>FMEA</td><td>风险分析</td><td>RPN = 严重度×频度×探测度，优先处理高分项</td></tr>
+<tr><td>流程图</td><td>可视化过程步骤</td><td>详细到每个操作步骤和决策点</td></tr>
+<tr><td>抽样计划</td><td>确定样本量</td><td>连续型：≥30个；离散型：按二项分布确定</td></tr>
+</table>
+
+<div class="warning">
+<strong>抽样策略要点：</strong>①子组内变异应只包含普通原因②子组间变异应包含特殊原因③连续型数据样本量≥30④对于属性数据，样本量n需满足np≥5且n(1-p)≥5
+</div>
+</div>
+
+<!-- Analyze -->
+<h3 style="color:var(--yellow)">A — Analyze 分析阶段</h3>
+<div class="card">
+<h4>🎯 阶段目标</h4>
+<p>找出导致过程变异和缺陷的<strong>根本原因（Root Cause）</strong>。从"是什么"到"为什么"。</p>
+<ul>
+<li>识别潜在的根本原因</li>
+<li>用数据验证哪些是真正的关键原因</li>
+<li>量化关键输入变量对输出的影响</li>
+</ul>
+
+<h4>📋 关键活动</h4>
+<ol>
+<li>多变量分析（位置变异、时间变异、单元间变异）</li>
+<li>假设检验验证根因</li>
+<li>回归分析建立Y=f(x)模型</li>
+<li>确认统计显著性和实际显著性</li>
+</ol>
+
+<h4>🛠️ 假设检验工具选择</h4>
+<table>
+<tr><th>场景</th><th>数据类型</th><th>方法</th><th>示例</th></tr>
+<tr><td>比较一组与目标值</td><td>连续</td><td>单样本t检验</td><td>平均重量是否=500g</td></tr>
+<tr><td>比较两组</td><td>连续</td><td>双样本t检验</td><td>设备A vs B良率差异</td></tr>
+<tr><td>比较多组</td><td>连续</td><td>ANOVA</td><td>3条产线平均工时差异</td></tr>
+<tr><td>比较两组比例</td><td>离散</td><td>比例检验(Z检验)</td><td>改善前后不良率差异</td></tr>
+<tr><td>检验独立性</td><td>离散×离散</td><td>卡方检验</td><td>班次与不良类型是否相关</td></tr>
+<tr><td>比较方差</td><td>连续</td><td>F检验/Bartlett</td><td>两台设备变异是否相同</td></tr>
+<tr><td>相关关系</td><td>连续×连续</td><td>皮尔逊相关</td><td>温度与强度的相关性</td></tr>
+<tr><td>因果模型</td><td>连续</td><td>回归分析</td><td>Y = f(x₁, x₂, ...)</td></tr>
+</table>
+
+<h4>📊 假设检验决策流程</h4>
+<div class="card">
+<p><strong>第一步：确定假设</strong></p>
+<ul>
+<li>H₀（原假设）：通常表示"没有差异/没有影响"</li>
+<li>H₁（备择假设）：通常表示"有差异/有影响"</li>
+</ul>
+<p><strong>第二步：选择检验方法</strong>（见上表）</p>
+<p><strong>第三步：设定显著性水平</strong></p>
+<ul>
+<li>α = 0.05（最常用）：有5%的风险误判</li>
+<li>α = 0.01：更严格，误判风险1%</li>
+</ul>
+<p><strong>第四步：计算p值并决策</strong></p>
+<ul>
+<li>p < α → 拒绝H₀ → 差异显著</li>
+<li>p ≥ α → 不拒绝H₀ → 差异不显著</li>
+</ul>
+</div>
+
+<div class="highlight">
+<strong>两类错误：</strong><br>
+第一类错误（α风险/生产者风险）：H₀为真但被拒绝 → 误判有差异<br>
+第二类错误（β风险/消费者风险）：H₀为假但未被拒绝 → 漏判有差异<br>
+检验功效（Power）= 1 - β，通常要求 ≥ 80%
+</div>
+
+<div class="danger">
+<strong>常见陷阱：</strong>①混淆统计显著性和实际显著性（p值小≠差异大）②多重比较不修正③忽视假设检验的前提条件（正态性、方差齐性）④过度依赖p值，忽略效应大小
+</div>
+</div>
+
+<!-- Improve -->
+<h3 style="color:var(--accent2)">I — Improve 改进阶段</h3>
+<div class="card">
+<h4>🎯 阶段目标</h4>
+<p>基于分析阶段找到的关键输入变量（X），设计并实施改进方案，优化过程输出（Y）。</p>
+<ul>
+<li>确定最优的X设置水平</li>
+<li>验证改进方案的有效性</li>
+<li>实施改进并量化收益</li>
+</ul>
+
+<h4>📋 关键活动</h4>
+<ol>
+<li>生成改进方案（头脑风暴、TRIZ）</li>
+<li>用DOE筛选和优化关键因子</li>
+<li>建立Y=f(x)预测模型</li>
+<li>寻找最优参数设置</li>
+<li>进行试点验证（Pilot Test）</li>
+<li>实施全面推广</li>
+</ol>
+
+<h4>🧪 DOE试验设计</h4>
+<table>
+<tr><th>DOE类型</th><th>适用阶段</th><th>因子数</th><th>试验次数</th><th>目的</th></tr>
+<tr><td>部分因子设计</td><td>筛选阶段</td><td>5-15个</td><td>8-32次</td><td>从众多因子中筛选关键少数</td></tr>
+<tr><td>全因子设计</td><td>优化阶段</td><td>2-4个</td><td>4-20次</td><td>量化因子效应和交互作用</td></tr>
+<tr><td>响应面设计(RSM)</td><td>精优化</td><td>2-3个</td><td>13-20次</td><td>寻找最优设置，建立曲面模型</td></tr>
+<tr><td>田口设计</td><td>稳健设计</td><td>3-10个</td><td>9-27次</td><td>提高抗干扰能力，信噪比分析</td></tr>
+</table>
+
+<div class="formula"><span class="label">全因子设计试验次数</span>试验次数 = 2^k × 重复次数 （k为因子数）<br>例：3因子2水平×2重复 = 2³×2 = 16次试验</div>
+
+<h4>🛡️ 防错（Poka-Yoke / Mistake Proofing）</h4>
+<table>
+<tr><th>层级</th><th>策略</th><th>示例</th></tr>
+<tr><td>消除</td><td>重新设计使错误不可能发生</td><td>USB Type-C接口正反可插</td></tr>
+<tr><td>替代</td><td>用更可靠的方法替代</td><td>自动送料替代手动称量</td></tr>
+<tr><td>控制</td><td>强制正确操作</td><td>安全门未关则设备不启动</td></tr>
+<tr><td>预防</td><td>在错误发生前警告</td><td>参数超限声光报警</td></tr>
+<tr><td>探测</td><td>错误发生后检测</td><td>称重检测少装零件</td></tr>
+</table>
+
+<div class="success">
+<strong>改进阶段产出：</strong>①验证有效的改进方案 ②Y=f(x)预测模型 ③最优参数设置 ④试点验证报告 ⑤更新的财务收益估算
+</div>
+</div>
+
+<!-- Control -->
+<h3 style="color:var(--red)">C — Control 控制阶段</h3>
+<div class="card">
+<h4>🎯 阶段目标</h4>
+<p>将改进成果<strong>固化</strong>，确保过程不会回退到原来的状态。回答："如何保持改进成果？"</p>
+<ul>
+<li>建立过程监控系统</li>
+<li>标准化改进后的操作方法</li>
+<li>移交过程所有权给过程所有者</li>
+</ul>
+
+<h4>📋 关键活动</h4>
+<ol>
+<li>建立控制图持续监控关键指标</li>
+<li>更新标准作业程序（SOP）</li>
+<li>制定控制计划（Control Plan）</li>
+<li>建立防错机制</li>
+<li>培训操作人员</li>
+<li>项目收益验证和审计</li>
+<li>经验教训总结和复制推广</li>
+</ol>
+
+<h4>🛠️ 控制计划模板</h4>
+<table>
+<tr><th>项目</th><th>内容</th></tr>
+<tr><td>过程步骤</td><td>改进后的操作步骤编号和名称</td></tr>
+<tr><td>控制特性</td><td>需要监控的输出Y和关键输入X</td></tr>
+<tr><td>规格/目标</td><td>USL/LSL/Target</td></tr>
+<tr><td>测量方法</td><td>量具、方法、MSA结果</td></tr>
+<tr><td>样本量/频率</td><td>n=5, 每小时一次</td></tr>
+<tr><td>控制方法</td><td>控制图类型、报警规则</td></tr>
+<tr><td>反应计划</td><td>超限时的处理流程</td></tr>
+<tr><td>责任人</td><td>操作员、检验员、工程师</td></tr>
+</table>
+
+<div class="highlight">
+<strong>控制阶段的核心原则：</strong>①不能只靠人来保证质量，要靠系统和机制 ②控制图是过程的语言，要持续监控 ③标准化是持续改进的基础 ④定期回顾控制计划有效性
+</div>
+
+<hr>
+<h3>DMAIC各阶段工具汇总</h3>
+<table>
+<tr><th>阶段</th><th>核心工具</th><th>关键产出</th></tr>
+<tr><td>D 定义</td><td>项目宪章、SIPOC、VOC/CTQ、利益相关者分析</td><td>项目宪章、SIPOC图、CTQ清单</td></tr>
+<tr><td>M 测量</td><td>MSA、数据收集计划、C&E矩阵、FMEA、流程图</td><td>基线数据、MSA报告、当前σ水平</td></tr>
+<tr><td>A 分析</td><td>假设检验、ANOVA、回归、多变量图、根因分析</td><td>验证的根因、Y=f(x)模型</td></tr>
+<tr><td>I 改进</td><td>DOE、响应面、优化、防错、试点验证</td><td>最优参数、改进方案、验证报告</td></tr>
+<tr><td>C 控制</td><td>控制图、控制计划、SOP、防错、可视化管控</td><td>控制计划、更新SOP、控制图、收益验证</td></tr>
+</table>
+</div>
+</div>
+
+<!-- ========== 统计学基础 ========== -->
+<div class="section" id="statistics">
+<h2>📊 统计学基础</h2>
+
+<h3>一、描述性统计</h3>
+<div class="card">
+<h4>1.1 集中趋势度量</h4>
+<table>
+<tr><th>指标</th><th>公式</th><th>特点</th></tr>
+<tr><td>均值（Mean）</td><td>x̄ = (Σxᵢ) / n</td><td>利用所有数据，受极端值影响大</td></tr>
+<tr><td>中位数（Median）</td><td>排序后中间值</td><td>不受极端值影响，适合偏态分布</td></tr>
+<tr><td>众数（Mode）</td><td>出现频率最高的值</td><td>可用于类别数据</td></tr>
+</table>
+
+<h4>1.2 离散程度度量</h4>
+<div class="formula"><span class="label">方差</span>σ² = Σ(xᵢ - μ)² / N （总体） &nbsp;|&nbsp; s² = Σ(xᵢ - x̄)² / (n-1) （样本）</div>
+<div class="formula"><span class="label">标准差</span>σ = √(σ²) &nbsp;|&nbsp; s = √(s²)</div>
+<div class="formula"><span class="label">极差（Range）</span>R = x_max - x_min</div>
+<div class="formula"><span class="label">四分位距（IQR）</span>IQR = Q3 - Q1</div>
+<div class="formula"><span class="label">变异系数（CV）</span>CV = (σ / μ) × 100%</div>
+
+<div class="highlight">
+<strong>样本方差为什么除以n-1？</strong>因为用样本均值x̄来估计总体均值μ会引入偏差，除以n-1（自由度修正）可以得到无偏估计。这就是贝塞尔校正（Bessel's Correction）。
+</div>
+</div>
+
+<h3>二、概率分布</h3>
+<div class="card">
+<h4>2.1 正态分布 N(μ, σ²)</h4>
+<p>最重要的连续分布。六西格玛的统计基础。</p>
+<table>
+<tr><th>区间</th><th>概率</th><th>σ水平</th></tr>
+<tr><td>μ ± 1σ</td><td>68.27%</td><td>1σ</td></tr>
+<tr><td>μ ± 2σ</td><td>95.45%</td><td>2σ</td></tr>
+<tr><td>μ ± 3σ</td><td>99.73%</td><td>3σ</td></tr>
+<tr><td>μ ± 4σ</td><td>99.9937%</td><td>4σ</td></tr>
+<tr><td>μ ± 5σ</td><td>99.999943%</td><td>5σ</td></tr>
+<tr><td>μ ± 6σ</td><td>99.9999998%</td><td>6σ</td></tr>
+</table>
+
+<h4>2.2 标准正态分布 Z</h4>
+<div class="formula"><span class="label">Z变换</span>Z = (x - μ) / σ</div>
+<p>Z分布是μ=0、σ=1的特殊正态分布。通过Z变换，任何正态分布都可以标准化，便于查表计算概率。</p>
+
+<h4>2.3 二项分布</h4>
+<p>描述n次独立试验中，成功次数为x的概率。适用于<strong>计件型数据</strong>（合格/不合格）。</p>
+<div class="formula"><span class="label">二项分布概率</span>P(x) = C(n,x) × p^x × (1-p)^(n-x)<br>均值 = np &nbsp;|&nbsp; 方差 = np(1-p)</div>
+
+<h4>2.4 泊松分布</h4>
+<p>描述单位时间/面积内，稀有事件发生次数的概率。适用于<strong>计点型数据</strong>（缺陷数）。</p>
+<div class="formula"><span class="label">泊松分布概率</span>P(x) = (λ^x × e^(-λ)) / x!<br>均值 = λ &nbsp;|&nbsp; 方差 = λ</div>
+
+<h4>2.5 t分布</h4>
+<p>当样本量小（n<30）且总体标准差未知时，用t分布代替正态分布进行假设检验。</p>
+<div class="formula"><span class="label">t统计量</span>t = (x̄ - μ₀) / (s / √n) &nbsp; 自由度df = n - 1</div>
+
+<h4>2.6 F分布</h4>
+<p>用于比较两个方差是否相等，是ANOVA和方差检验的基础。</p>
+<div class="formula"><span class="label">F统计量</span>F = s₁² / s₂² &nbsp;（较大的方差作分子）</div>
+
+<h4>2.7 卡方分布（χ²）</h4>
+<p>用于检验分类变量的独立性（卡方检验）和方差估计。</p>
+<div class="formula"><span class="label">卡方统计量</span>χ² = Σ(O-E)² / E &nbsp;（O=观察值, E=期望值）</div>
+</div>
+
+<h3>三、中心极限定理</h3>
+<div class="card">
+<div class="highlight">
+<strong>中心极限定理（CLT）：</strong>无论总体服从什么分布，当样本量n足够大时（通常n≥30），样本均值的分布趋近于正态分布，其均值为总体均值μ，标准差为 σ/√n。
+</div>
+<div class="formula"><span class="label">样本均值的标准差（标准误）</span>σ_x̄ = σ / √n</div>
+
+<div class="success">
+<strong>为什么中心极限定理如此重要？</strong><br>
+① 它是假设检验的理论基础（即使总体非正态，样本均值仍近似正态）<br>
+② 它解释了为什么控制图（X̄-R图）能工作<br>
+③ 它使得我们能够用小样本推断总体<br>
+④ 它是置信区间计算的基础
+</div>
+</div>
+
+<h3>四、置信区间</h3>
+<div class="card">
+<p>置信区间给出了总体参数可能落在的范围，附带一个置信水平。</p>
+<div class="formula"><span class="label">总体均值的置信区间（σ已知）</span>CI = x̄ ± Z(α/2) × (σ / √n)<br>例：95%置信区间 → Z = 1.96</div>
+<div class="formula"><span class="label">总体均值的置信区间（σ未知，小样本）</span>CI = x̄ ± t(α/2, n-1) × (s / √n)</div>
+<div class="formula"><span class="label">比例的置信区间</span>CI = p̂ ± Z(α/2) × √(p̂(1-p̂) / n)</div>
+
+<table>
+<tr><th>置信水平</th><th>Z值</th><th>含义</th></tr>
+<tr><td>90%</td><td>1.645</td><td>90%的区间会包含真实参数</td></tr>
+<tr><td>95%</td><td>1.96</td><td>最常用</td></tr>
+<tr><td>99%</td><td>2.576</td><td>更保守，区间更宽</td></tr>
+</table>
+</div>
+
+<h3>五、假设检验</h3>
+<div class="card">
+<h4>5.1 假设检验的步骤</h4>
+<ol>
+<li><strong>建立假设</strong>：H₀（原假设）vs H₁（备择假设）</li>
+<li><strong>选择检验方法</strong>：根据数据类型和问题类型</li>
+<li><strong>设定显著性水平α</strong>：通常α=0.05</li>
+<li><strong>计算检验统计量</strong>：t值、Z值、F值、χ²值</li>
+<li><strong>计算p值</strong>：在H₀为真的条件下，观察到当前或更极端结果的概率</li>
+<li><strong>决策</strong>：p < α → 拒绝H₀；p ≥ α → 不拒绝H₀</li>
+</ol>
+
+<h4>5.2 两类错误与功效</h4>
+<table>
+<tr><th></th><th>H₀为真</th><th>H₀为假</th></tr>
+<tr><td>不拒绝H₀</td><td>✅ 正确决策<br>置信度 = 1-α</td><td>❌ 第二类错误（β）<br>漏判</td></tr>
+<tr><td>拒绝H₀</td><td>❌ 第一类错误（α）<br>误判</td><td>✅ 正确决策<br>功效 = 1-β</td></tr>
+</table>
+
+<div class="formula"><span class="label">检验功效</span>Power = 1 - β<br>通常要求 Power ≥ 0.80</div>
+
+<div class="warning">
+<strong>α和β的关系：</strong>在样本量固定时，减小α会增加β（降低功效）。要同时降低α和β，必须增加样本量。
+</div>
+
+<h4>5.3 常用假设检验速查</h4>
+<table>
+<tr><th>问题</th><th>数据类型</th><th>检验方法</th><th>前提条件</th></tr>
+<tr><td>一组数据 vs 目标值</td><td>连续</td><td>1-sample t-test</td><td>近似正态或n≥30</td></tr>
+<tr><td>两组独立数据比较</td><td>连续</td><td>2-sample t-test</td><td>独立性、近似正态、方差齐性</td></tr>
+<tr><td>配对数据比较</td><td>连续</td><td>paired t-test</td><td>差值近似正态</td></tr>
+<tr><td>三组及以上比较</td><td>连续</td><td>ANOVA</td><td>独立性、正态性、方差齐性</td></tr>
+<tr><td>两组比例比较</td><td>离散(计件)</td><td>2-proportion Z-test</td><td>np≥5, n(1-p)≥5</td></tr>
+<tr><td>分类变量独立性</td><td>离散</td><td>Chi-square test</td><td>每格期望频数≥5</td></tr>
+<tr><td>两组方差比较</td><td>连续</td><td>F-test</td><td>正态性</td></tr>
+<tr><td>多组方差比较</td><td>连续</td><td>Bartlett/Levene</td><td>正态性(Bartlett)</td></tr>
+</table>
+</div>
+
+<h3>六、相关与回归</h3>
+<div class="card">
+<h4>6.1 相关分析</h4>
+<div class="formula"><span class="label">皮尔逊相关系数</span>r = Σ(xᵢ-x̄)(yᵢ-ȳ) / √[Σ(xᵢ-x̄)² × Σ(yᵢ-ȳ)²]<br>r ∈ [-1, 1]</div>
+<table>
+<tr><th>r值范围</th><th>相关性强度</th></tr>
+<tr><td>|r| < 0.3</td><td>弱相关</td></tr>
+<tr><td>0.3 ≤ |r| < 0.5</td><td>中等相关</td></tr>
+<tr><td>0.5 ≤ |r| < 0.8</td><td>较强相关</td></tr>
+<tr><td>|r| ≥ 0.8</td><td>强相关</td></tr>
+</table>
+<div class="danger"><strong>注意：</strong>相关性≠因果性。r只衡量线性关系，非线性关系可能r≈0但强相关。</div>
+
+<h4>6.2 简单线性回归</h4>
+<div class="formula"><span class="label">回归方程</span>Y = β₀ + β₁X + ε<br>估计：ŷ = b₀ + b₁x</div>
+<div class="formula"><span class="label">最小二乘法</span>min Σ(yᵢ - ŷᵢ)²<br>b₁ = Σ(xᵢ-x̄)(yᵢ-ȳ) / Σ(xᵢ-x̄)²<br>b₀ = ȳ - b₁x̄</div>
+<div class="formula"><span class="label">决定系数R²</span>R² = SSR/SST = 1 - SSE/SST<br>R² ∈ [0, 1]，越接近1拟合越好</div>
+
+<h4>6.3 多元线性回归</h4>
+<div class="formula"><span class="label">多元回归方程</span>Y = β₀ + β₁X₁ + β₂X₂ + ... + βₖXₖ + ε</div>
+<p>调整R²（Adjusted R²）考虑了自变量个数，防止过度拟合：</p>
+<div class="formula"><span class="label">调整R²</span>R²_adj = 1 - (1-R²)(n-1)/(n-k-1)</div>
+
+<div class="warning">
+<strong>回归分析注意事项：</strong>①检查残差的正态性、独立性和方差齐性 ②警惕多重共线性（VIF>10需处理） ③不要外推到数据范围之外 ④R²高不代表模型好，要看残差分析
+</div>
+</div>
+
+<h3>七、方差分析（ANOVA）</h3>
+<div class="card">
+<p>ANOVA用于比较3组及以上均值是否存在显著差异。将总变异分解为组间变异和组内变异。</p>
+<div class="formula"><span class="label">F统计量</span>F = MSB / MSW = (SSB/(k-1)) / (SSW/(N-k))<br>k=组数, N=总样本量</div>
+<table>
+<tr><th>变异来源</th><th>平方和</th><th>自由度</th><th>均方</th></tr>
+<tr><td>组间</td><td>SSB = Σnᵢ(x̄ᵢ-x̄)²</td><td>k-1</td><td>MSB = SSB/(k-1)</td></tr>
+<tr><td>组内</td><td>SSW = ΣΣ(xᵢⱼ-x̄ᵢ)²</td><td>N-k</td><td>MSW = SSW/(N-k)</td></tr>
+<tr><td>总计</td><td>SST = ΣΣ(xᵢⱼ-x̄)²</td><td>N-1</td><td>—</td></tr>
+</table>
+<div class="highlight">
+<strong>决策规则：</strong>计算F值 → 查F分布表得到p值 → 若p<α则拒绝H₀（至少有一组均值不同）。注意：ANOVA只告诉我们"有差异"，但不知道"哪组不同"，需要事后比较（Tukey/Dunnett等）。
+</div>
+</div>
+</div>
+
+<!-- ========== 过程能力分析 ========== -->
+<div class="section" id="capability">
+<h2>⚙️ 过程能力分析</h2>
+
+<h3>一、过程能力概述</h3>
+<div class="card">
+<p>过程能力是指过程在<strong>统计受控状态</strong>下，输出满足规格要求的能力。</p>
+<div class="highlight">
+<strong>前提条件：</strong>①过程必须处于统计受控状态（无特殊原因变异）②数据必须近似正态分布 ③规格界限已明确 ④测量系统已通过MSA验证
+</div>
+</div>
+
+<h3>二、过程能力指数</h3>
+<div class="card">
+<h4>2.1 Cp — 潜在过程能力指数</h4>
+<p>衡量过程变异与规格宽度的比值，不考虑过程中心是否偏移。</p>
+<div class="formula"><span class="label">Cp（潜在过程能力）</span>Cp = (USL - LSL) / (6σ̂)<br>σ̂ = R̄/d₂ （短期标准差估计）</div>
+<table>
+<tr><th>Cp值</th><th>评价</th><th>σ水平</th></tr>
+<tr><td>Cp < 1.00</td><td>❌ 不足</td><td><3σ</td></tr>
+<tr><td>1.00 ≤ Cp < 1.33</td><td>⚠️ 勉强</td><td>3-4σ</td></tr>
+<tr><td>1.33 ≤ Cp < 1.67</td><td>✅ 充足</td><td>4-5σ</td></tr>
+<tr><td>1.67 ≤ Cp < 2.00</td><td>✅ 优秀</td><td>5-6σ</td></tr>
+<tr><td>Cp ≥ 2.00</td><td>🌟 卓越</td><td>≥6σ</td></tr>
+</table>
+
+<h4>2.2 Cpk — 实际过程能力指数</h4>
+<p>考虑过程中心偏移的实际能力。Cpk ≤ Cp，当中心无偏移时Cpk = Cp。</p>
+<div class="formula"><span class="label">Cpk（实际过程能力）</span>Cpk = min[(USL - μ)/(3σ̂), (μ - LSL)/(3σ̂)]</div>
+<div class="formula"><span class="label">Cpk与Cp的关系</span>Cpk = Cp × (1 - |K|)<br>K = |μ - T| / (USL - LSL)/2 &nbsp;（偏移系数）</div>
+
+<div class="warning">
+<strong>Cp vs Cpk：</strong> Cp衡量"潜在能力"（变异够不够小），Cpk衡量"实际能力"（中心偏没偏）。Cp高Cpk低=变异小但中心偏了→需要调中心；Cp低=变异大→需要减变异。
+</div>
+
+<h4>2.3 Pp / Ppk — 过程性能指数</h4>
+<p>使用<strong>长期</strong>标准差计算，反映过程的实际长期表现。</p>
+<div class="formula"><span class="label">Pp</span>Pp = (USL - LSL) / (6s)<br>Ppk = min[(USL - μ)/(3s), (μ - LSL)/(3s)]<br>s = √[Σ(xᵢ-x̄)²/(n-1)]（长期标准差）</div>
+
+<h4>2.4 Cpk vs Ppk 的区别</h4>
+<table>
+<tr><th></th><th>Cpk</th><th>Ppk</th></tr>
+<tr><td>标准差来源</td><td>短期（子组内）R̄/d₂</td><td>长期（所有数据）s</td></tr>
+<tr><td>反映</td><td>过程固有能力（技术能力）</td><td>过程实际表现（含漂移）</td></tr>
+<tr><td>大小关系</td><td>通常 ≥ Ppk</td><td>通常 ≤ Cpk</td></tr>
+<tr><td>用途</td><td>评估设备/工艺潜力</td><td>评估客户实际感受</td></tr>
+</table>
+</div>
+
+<h3>三、DPMO计算</h3>
+<div class="card">
+<div class="formula"><span class="label">DPMO（每百万机会缺陷数）</span>DPMO = (缺陷总数 / (单位产品数 × 每单位机会数)) × 1,000,000</div>
+<p><strong>示例：</strong>1000个产品，每个有5个检验机会，共发现23个缺陷</p>
+<div class="formula">DPMO = (23 / (1000 × 5)) × 1,000,000 = 4,600</div>
+</div>
+
+<h3>四、Sigma Level换算</h3>
+<div class="card">
+<table>
+<tr><th>DPMO</th><th>σ水平(短期)</th><th>σ水平(长期)</th><th>合格率</th></tr>
+<tr><td>691,462</td><td>1σ</td><td>—</td><td>30.85%</td></tr>
+<tr><td>308,538</td><td>2σ</td><td>0.5σ</td><td>69.15%</td></tr>
+<tr><td>66,807</td><td>3σ</td><td>1.5σ</td><td>93.32%</td></tr>
+<tr><td>22,750</td><td>3.5σ</td><td>2σ</td><td>97.73%</td></tr>
+<tr><td>6,210</td><td>4σ</td><td>2.5σ</td><td>99.379%</td></tr>
+<tr><td>1,350</td><td>4.5σ</td><td>3σ</td><td>99.865%</td></tr>
+<tr><td>233</td><td>5σ</td><td>3.5σ</td><td>99.977%</td></tr>
+<tr><td>3.4</td><td><strong>6σ</strong></td><td><strong>4.5σ</strong></td><td>99.99966%</td></tr>
+</table>
+
+<div class="formula"><span class="label">σ水平与Cpk的关系（短期）</span>σ水平 = 3 × Cpk<br>例：Cpk=1.33 → σ水平=4.0</div>
+</div>
+
+<h3>五、过程能力分析的步骤</h3>
+<div class="card">
+<ol>
+<li><strong>验证正态性</strong>：Anderson-Darling检验，p>0.05则正态</li>
+<li><strong>验证稳定性</strong>：先做控制图，确认过程受控</li>
+<li><strong>计算能力指数</strong>：Cp、Cpk、Pp、Ppk</li>
+<li><strong>计算DPMO</strong>：将缺陷率转换为DPMO</li>
+<li><strong>查表得σ水平</strong>：DPMO→σ水平对照表</li>
+<li><strong>识别改进方向</strong>：中心偏移→调中心；变异过大→减变异</li>
+</ol>
+<div class="highlight">
+<strong>非正态数据怎么办？</strong>①Box-Cox变换 ②Johnson变换 ③使用非正态过程能力分析 ④按分布类型选择合适模型
+</div>
+</div>
+</div>
+
+<!-- ========== SPC控制图 ========== -->
+<div class="section" id="spc">
+<h2>📈 SPC统计过程控制</h2>
+
+<h3>一、SPC基本概念</h3>
+<div class="card">
+<p><strong>统计过程控制（Statistical Process Control）</strong>是利用控制图监控过程变异，区分普通原因和特殊原因变异的统计方法。</p>
+<div class="highlight">
+<strong>两类变异：</strong><br>
+<strong>普通原因变异</strong>：过程固有的、自然的、随机变异。只能通过改变过程系统来减少（如更换设备、改进工艺）。→ 系统问题<br>
+<strong>特殊原因变异</strong>：非随机的、异常的、可识别的变异。可以通过消除特定原因来消除（如操作错误、设备故障）。→ 局部问题
+</div>
+</div>
+
+<h3>二、控制图原理</h3>
+<div class="card">
+<p>控制图以时间序列图为基础，加入三条控制线：</p>
+<div class="formula"><span class="label">控制图三线</span>UCL = μ + 3σ （控制上限）<br>CL = μ （中心线）<br>LCL = μ - 3σ （控制下限）</div>
+<div class="warning">
+<strong>控制限 vs 规格限：</strong>控制限来自过程数据（过程能做什么），规格限来自客户要求（客户要什么）。控制限在规格限之内=过程有能力；超出=无能力。
+</div>
+</div>
+
+<h3>三、控制图类型选择</h3>
+<div class="card">
+<h4>3.1 连续型数据控制图</h4>
+<table>
+<tr><th>控制图</th><th>适用场景</th><th>子组大小</th><th>特点</th></tr>
+<tr><td>X̄-R图</td><td>均值与极差监控</td><td>2-9</td><td>最常用，简单直观</td></tr>
+<tr><td>X̄-S图</td><td>均值与标准差监控</td><td>≥10</td><td>大子组时更精确</td></tr>
+<tr><td>I-MR图</td><td>单值与移动极差</td><td>1</td><td>每次只取一个数据</td></tr>
+</table>
+
+<h4>3.2 离散型数据控制图</h4>
+<table>
+<tr><th>控制图</th><th>数据类型</th><th>子组大小</th><th>监控对象</th></tr>
+<tr><td>NP图</td><td>计件（不合格品数）</td><td>固定</td><td>不合格品数</td></tr>
+<tr><td>P图</td><td>计件（不合格品率）</td><td>可变</td><td>不合格品率</td></tr>
+<tr><td>C图</td><td>计点（缺陷数）</td><td>固定</td><td>单位缺陷数</td></tr>
+<tr><td>U图</td><td>计点（单位缺陷率）</td><td>可变</td><td>单位面积缺陷率</td></tr>
+</table>
+
+<div class="highlight">
+<strong>选择口诀：</strong><br>
+连续数据→子组=1用I-MR，2-9用X̄-R，≥10用X̄-S<br>
+计件数据→子组固定用NP，子组变化用P<br>
+计点数据→子组固定用C，子组变化用U
+</div>
+</div>
+
+<h3>四、X̄-R控制图计算</h3>
+<div class="card">
+<h4>4.1 计算步骤</h4>
+<ol>
+<li>收集数据：至少25个子组，每组n=4-5个样本</li>
+<li>计算每组均值x̄和极差R</li>
+<li>计算总均值x̄̄和平均极差R̄</li>
+<li>查控制图系数表（d₂, A₂, D₃, D₄）</li>
+<li>计算控制限</li>
+</ol>
+
+<div class="formula"><span class="label">X̄图控制限</span>UCL_x̄ = x̄̄ + A₂ × R̄<br>CL_x̄ = x̄̄<br>LCL_x̄ = x̄̄ - A₂ × R̄</div>
+
+<div class="formula"><span class="label">R图控制限</span>UCL_R = D₄ × R̄<br>CL_R = R̄<br>LCL_R = D₃ × R̄</div>
+
+<h4>4.2 控制图系数表</h4>
+<table>
+<tr><th>n</th><th>A₂</th><th>D₃</th><th>D₄</th><th>d₂</th></tr>
+<tr><td>2</td><td>1.880</td><td>0</td><td>3.267</td><td>1.128</td></tr>
+<tr><td>3</td><td>1.023</td><td>0</td><td>2.574</td><td>1.693</td></tr>
+<tr><td>4</td><td>0.729</td><td>0</td><td>2.282</td><td>2.059</td></tr>
+<tr><td>5</td><td>0.577</td><td>0</td><td>2.114</td><td>2.326</td></tr>
+<tr><td>6</td><td>0.483</td><td>0</td><td>2.004</td><td>2.534</td></tr>
+<tr><td>7</td><td>0.419</td><td>0.076</td><td>1.924</td><td>2.704</td></tr>
+<tr><td>8</td><td>0.373</td><td>0.136</td><td>1.864</td><td>2.847</td></tr>
+<tr><td>9</td><td>0.337</td><td>0.184</td><td>1.816</td><td>2.970</td></tr>
+<tr><td>10</td><td>0.308</td><td>0.223</td><td>1.777</td><td>3.078</td></tr>
+</table>
+</div>
+
+<h3>五、判异规则</h3>
+<div class="card">
+<table>
+<tr><th>规则</th><th>描述</th><th>含义</th></tr>
+<tr><td>规则1</td><td>1点超出3σ控制限</td><td>突发异常</td></tr>
+<tr><td>规则2</td><td>连续9点在中心线同一侧</td><td>过程均值偏移</td></tr>
+<tr><td>规则3</td><td>连续6点递增或递减</td><td>趋势性变化</td></tr>
+<tr><td>规则4</td><td>连续14点交替上下</td><td>数据非随机</td></tr>
+<tr><td>规则5</td><td>连续3点中有2点在2σ外（同侧）</td><td>小幅均值偏移</td></tr>
+<tr><td>规则6</td><td>连续5点中有4点在1σ外（同侧）</td><td>中幅均值偏移</td></tr>
+<tr><td>规则7</td><td>连续15点在1σ内</td><td>分层或数据有问题</td></tr>
+<tr><td>规则8</td><td>连续8点在1σ外（两侧都有）</td><td>变异增大</td></tr>
+</table>
+<div class="warning">
+<strong>注意事项：</strong>规则7看似"好"（点集中在中心线附近），实际可能是测量系统问题（分辨率不足）或数据分层不当。不要高兴太早！
+</div>
+</div>
+</div>
+
+<!-- ========== MSA测量系统分析 ========== -->
+<div class="section" id="msa">
+<h2>📐 MSA测量系统分析</h2>
+
+<h3>一、MSA概述</h3>
+<div class="card">
+<p><strong>测量系统分析（Measurement System Analysis）</strong>是评估测量系统是否可靠的方法。垃圾数据进去，垃圾结论出来——在分析过程之前，必须先验证测量系统。</p>
+<div class="highlight">
+<strong>测量系统的5项统计特性：</strong><br>
+① <strong>偏倚（Bias）</strong>：测量值与基准值的系统性差异<br>
+② <strong>线性（Linearity）</strong>：偏倚随量程变化的程度<br>
+③ <strong>稳定性（Stability）</strong>：偏倚随时间变化的一致性<br>
+④ <strong>重复性（Repeatability）</strong>：同一操作者、同一量具多次测量的变异（设备变异 EV）<br>
+⑤ <strong>再现性（Reproducibility）</strong>：不同操作者用同一量具测量的变异（操作者变异 AV）
+</div>
+</div>
+
+<h3>二、GR&R研究</h3>
+<div class="card">
+<p>GR&R（量具重复性和再现性）是MSA中最常用的方法。</p>
+<h4>2.1 研究设计</h4>
+<ul>
+<li>操作者：≥2人（通常3人）</li>
+<li>零件：≥5个（通常10个），覆盖整个规格范围</li>
+<li>重复次数：≥2次（通常3次）</li>
+<li>总测量次数 = 操作者数 × 零件数 × 重复次数（如3×10×3=90次）</li>
+</ul>
+
+<h4>2.2 计算方法</h4>
+<div class="formula"><span class="label">GR&R%</span>%GR&R = (σ_GR&R / σ_total) × 100%<br>σ_GR&R = √(σ_EV² + σ_AV²)<br>σ_EV = R̄_eq / d₂ （重复性）<br>σ_AV = √[(R̄_op/d₂)² - σ_EV²/(nr)] （再现性）</div>
+
+<div class="formula"><span class="label">NDC（区分度）</span>NDC = 1.41 × (σ_part / σ_GR&R)<br>NDC应 ≥ 5，表示测量系统能区分足够多的类别</div>
+
+<h4>2.3 验收标准</h4>
+<table>
+<tr><th>%GR&R</th><th>NDC</th><th>评价</th><th>决策</th></tr>
+<tr><td>< 10%</td><td>> 14</td><td>✅ 优秀</td><td>可接受</td></tr>
+<tr><td>10% - 30%</td><td>5 - 14</td><td>⚠️ 有条件接受</td><td>视重要性而定</td></tr>
+<tr><td>> 30%</td><td>< 5</td><td>❌ 不可接受</td><td>必须改进</td></tr>
+</table>
+</div>
+
+<h3>三、偏倚与线性分析</h3>
+<div class="card">
+<h4>3.1 偏倚</h4>
+<div class="formula"><span class="label">偏倚</span>偏倚 = 测量均值 - 基准值<br>%偏倚 = (偏倚 / 过程变异) × 100%</div>
+<p>用t检验判断偏倚是否显著（p<0.05则偏倚显著）。</p>
+
+<h4>3.2 线性</h4>
+<p>评估偏倚在整个量程内是否一致。用回归分析计算偏倚与基准值的关系。</p>
+<div class="formula"><span class="label">线性度</span>%线性 = (|斜率b| × 过程变异) / (过程变异 × 100%) × 100%</div>
+</div>
+
+<h3>四、改进测量系统</h3>
+<div class="card">
+<table>
+<tr><th>问题</th><th>可能原因</th><th>改进措施</th></tr>
+<tr><td>重复性差(EV大)</td><td>量具磨损、夹具松动、设备老化</td><td>维护/更换量具、改善夹具</td></tr>
+<tr><td>再现性差(AV大)</td><td>操作方法不一致、培训不足</td><td>标准化操作SOP、培训操作员</td></tr>
+<tr><td>偏倚大</td><td>量具未校准、基准值错误</td><td>校准量具、修正基准</td></tr>
+<tr><td>线性差</td><td>量程两端精度不同</td><td>分段使用不同量具</td></tr>
+<tr><td>稳定性差</td><td>环境变化、量具漂移</td><td>增加校准频率、控制环境</td></tr>
+</table>
+</div>
+</div>
+
+<!-- ========== DOE试验设计 ========== -->
+<div class="section" id="doe">
+<h2>🧪 DOE试验设计</h2>
+
+<h3>一、DOE概述</h3>
+<div class="card">
+<p><strong>试验设计（Design of Experiments）</strong>是系统地规划和分析试验，以最高效率获取最大信息量的统计方法。OFAT（一次一因子法）效率低且无法发现交互作用，DOE可以同时研究多个因子。</p>
+<div class="highlight">
+<strong>DOE vs OFAT：</strong><br>
+OFAT：每次只变一个因子，需要3^(k-1)次试验才能找到最优<br>
+DOE：同时变化多个因子，用2^k次试验即可，且能发现交互作用
+</div>
+</div>
+
+<h3>二、DOE术语</h3>
+<table>
+<tr><th>术语</th><th>含义</th></tr>
+<tr><td>因子（Factor）</td><td>影响输出的输入变量X</td></tr>
+<tr><td>水平（Level）</td><td>因子的取值，如温度的高(-1)/低(+1)</td></tr>
+<tr><td>响应（Response）</td><td>试验的输出结果Y</td></tr>
+<tr><td>主效应（Main Effect）</td><td>因子变化对响应的独立影响</td></tr>
+<tr><td>交互效应（Interaction）</td><td>两个因子组合产生的额外影响</td></tr>
+<tr><td>重复（Replicate）</td><td>同一试验条件重复执行多次</td></tr>
+<tr><td>随机化（Randomization）</td><td>试验顺序随机，消除时间趋势</td></tr>
+<tr><td>区组化（Blocking）</td><td>将同质条件分组，消除噪声因子</td></tr>
+</table>
+
+<h3>三、2^k全因子设计</h3>
+<div class="card">
+<p>最常用的DOE设计，k个因子各2个水平，共2^k次试验。</p>
+<h4>3.1 试验矩阵（2³ = 8次试验）</h4>
+<table>
+<tr><th>试验</th><th>A</th><th>B</th><th>C</th><th>AB</th><th>AC</th><th>BC</th><th>ABC</th></tr>
+<tr><td>1</td><td>-</td><td>-</td><td>-</td><td>+</td><td>+</td><td>+</td><td>-</td></tr>
+<tr><td>2</td><td>+</td><td>-</td><td>-</td><td>-</td><td>-</td><td>+</td><td>+</td></tr>
+<tr><td>3</td><td>-</td><td>+</td><td>-</td><td>-</td><td>+</td><td>-</td><td>+</td></tr>
+<tr><td>4</td><td>+</td><td>+</td><td>-</td><td>+</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>5</td><td>-</td><td>-</td><td>+</td><td>+</td><td>-</td><td>-</td><td>+</td></tr>
+<tr><td>6</td><td>+</td><td>-</td><td>+</td><td>-</td><td>+</td><td>-</td><td>-</td></tr>
+<tr><td>7</td><td>-</td><td>+</td><td>+</td><td>-</td><td>-</td><td>+</td><td>-</td></tr>
+<tr><td>8</td><td>+</td><td>+</td><td>+</td><td>+</td><td>+</td><td>+</td><td>+</td></tr>
+</table>
+
+<h4>3.2 效应计算</h4>
+<div class="formula"><span class="label">主效应</span>Effect_A = 2 × (ȳ_A+ - ȳ_A-)<br>ȳ_A+ = A为+1时的平均响应<br>ȳ_A- = A为-1时的平均响应</div>
+<div class="formula"><span class="label">交互效应</span>Effect_AB = 2 × (ȳ_AB+ - ȳ_AB-)</div>
+
+<h4>3.3 ANOVA分解</h4>
+<div class="formula"><span class="label">总平方和分解</span>SST = SSA + SSB + SSC + SSAB + SSAC + SSBC + SSABC + SSE</div>
+</div>
+
+<h3>四、部分因子设计</h3>
+<div class="card">
+<p>当因子较多时，全因子设计试验次数爆炸。部分因子设计牺牲高阶交互（通常不显著），大幅减少试验次数。</p>
+<table>
+<tr><th>因子数k</th><th>全因子2^k</th><th>1/2部分</th><th>1/4部分</th></tr>
+<tr><td>4</td><td>16</td><td>8</td><td>—</td></tr>
+<tr><td>5</td><td>32</td><td>16</td><td>8</td></tr>
+<tr><td>6</td><td>64</td><td>32</td><td>16</td></tr>
+<tr><td>7</td><td>128</td><td>64</td><td>32</td></tr>
+</table>
+<div class="formula"><span class="label">分辨率</span>分辨率III：主效应与2阶交互混杂（最低可接受）<br>分辨率IV：主效应清晰，2阶交互互相混杂<br>分辨率V：主效应和2阶交互都清晰（推荐）</div>
+</div>
+
+<h3>五、响应面方法（RSM）</h3>
+<div class="card">
+<p>当因子已经筛选到2-3个关键因子后，用RSM找到最优设置。</p>
+<h4>5.1 中心复合设计（CCD）</h4>
+<ul>
+<li>2^k个角点（全因子）</li>
+<li>2k个轴向点（±α）</li>
+<li>n₀个中心点（重复）</li>
+<li>总试验次数 = 2^k + 2k + n₀</li>
+</ul>
+<h4>5.2 二阶模型</h4>
+<div class="formula"><span class="label">响应面模型</span>Y = β₀ + Σβᵢxᵢ + Σβᵢᵢxᵢ² + ΣΣβᵢⱼxᵢxⱼ + ε</div>
+<h4>5.3 优化方法</h4>
+<ul>
+<li><strong>最速上升法</strong>：沿梯度方向逐步寻优</li>
+<li><strong>脊分析</strong>：在响应面上寻找最优路径</li>
+<li><strong>期望函数（Desirability）</strong>：多响应优化</li>
+</ul>
+</div>
+
+<h3>六、田口方法</h3>
+<div class="card">
+<p>田口玄一提出的稳健参数设计方法，核心思想是<strong>降低变异而非控制变异</strong>。</p>
+<h4>6.1 信噪比（SNR）</h4>
+<div class="formula"><span class="label">望目特性SNR</span>SNR = 10 × log10(ȳ² / s²) （越大越好）</div>
+<div class="formula"><span class="label">望大特性SNR</span>SNR = -10 × log10(Σ(1/yᵢ²)/n) （越大越好）</div>
+<div class="formula"><span class="label">望小特性SNR</span>SNR = -10 × log10(Σyᵢ²/n) （越大越好）</div>
+<h4>6.2 正交表</h4>
+<table>
+<tr><th>正交表</th><th>因子数</th><th>水平</th><th>试验次数</th></tr>
+<tr><td>L4(2³)</td><td>3</td><td>2</td><td>4</td></tr>
+<tr><td>L8(2⁷)</td><td>7</td><td>2</td><td>8</td></tr>
+<tr><td>L9(3⁴)</td><td>4</td><td>3</td><td>9</td></tr>
+<tr><td>L16(2¹⁵)</td><td>15</td><td>2</td><td>16</td></tr>
+<tr><td>L27(3¹³)</td><td>13</td><td>3</td><td>27</td></tr>
+</table>
+</div>
+</div>
+
+<!-- ========== FMEA ========== -->
+<div class="section" id="fmea">
+<h2>⚠️ FMEA失效模式与效应分析</h2>
+
+<h3>一、FMEA概述</h3>
+<div class="card">
+<p><strong>FMEA（Failure Mode and Effects Analysis）</strong>是一种系统化的风险分析方法，用于识别潜在的失效模式、评估其影响和风险优先级，并制定预防措施。</p>
+<table>
+<tr><th>FMEA类型</th><th>关注点</th><th>适用阶段</th></tr>
+<tr><td>DFMEA（设计FMEA）</td><td>产品设计缺陷</td><td>设计阶段</td></tr>
+<tr><td>PFMEA（过程FMEA）</td><td>制造过程缺陷</td><td>工艺规划阶段</td></tr>
+<tr><td>SFMEA（系统FMEA）</td><td>系统级故障</td><td>概念阶段</td></tr>
+</table>
+</div>
+
+<h3>二、FMEA分析步骤</h3>
+<div class="card">
+<ol>
+<li><strong>列出过程步骤/功能</strong>：用流程图分解</li>
+<li><strong>识别潜在失效模式</strong>：每个步骤可能出什么问题？</li>
+<li><strong>描述失效后果</strong>：对客户/下工序的影响</li>
+<li><strong>评定严重度（S）</strong>：后果有多严重（1-10分）</li>
+<li><strong>识别潜在失效原因</strong>：为什么会发生？</li>
+<li><strong>评定频度（O）</strong>：发生概率（1-10分）</li>
+<li><strong>识别现有控制</strong>：如何预防？如何探测？</li>
+<li><strong>评定探测度（D）</strong>：能否及时发现（1-10分）</li>
+<li><strong>计算RPN</strong>：RPN = S × O × D</li>
+<li><strong>制定改进措施</strong>：优先处理高RPN项</li>
+</ol>
+</div>
+
+<h3>三、评分标准</h3>
+<div class="card">
+<h4>3.1 严重度（Severity）</h4>
+<table>
+<tr><th>分数</th><th>标准</th><th>描述</th></tr>
+<tr><td>10</td><td>极严重</td><td>涉及安全/法规，无预警失效</td></tr>
+<tr><td>9</td><td>极严重</td><td>涉及安全/法规，有预警失效</td></tr>
+<tr><td>7-8</td><td>严重</td><td>功能丧失，客户极度不满</td></tr>
+<tr><td>5-6</td><td>中等</td><td>功能退化，客户不满</td></tr>
+<tr><td>3-4</td><td>轻微</td><td>轻微影响，部分客户察觉</td></tr>
+<tr><td>1-2</td><td>无影响</td><td>客户无法察觉</td></tr>
+</table>
+
+<h4>3.2 频度（Occurrence）</h4>
+<table>
+<tr><th>分数</th><th>标准</th><th>概率</th></tr>
+<tr><td>10</td><td>极高</td><td>>1/2</td></tr>
+<tr><td>8-9</td><td>高</td><td>1/3 ~ 1/100</td></tr>
+<tr><td>6-7</td><td>中等</td><td>1/100 ~ 1/1000</td></tr>
+<tr><td>4-5</td><td>低</td><td>1/1000 ~ 1/10000</td></tr>
+<tr><td>2-3</td><td>很低</td><td>1/10000 ~ 1/100000</td></tr>
+<tr><td>1</td><td>极低</td><td><1/100000</td></tr>
+</table>
+
+<h4>3.3 探测度（Detection）</h4>
+<table>
+<tr><th>分数</th><th>标准</th><th>描述</th></tr>
+<tr><td>10</td><td>无法探测</td><td>无控制手段</td></tr>
+<tr><td>7-9</td><td>探测困难</td><td>靠人工目检，漏检率高</td></tr>
+<tr><td>5-6</td><td>一般</td><td>统计过程控制SPC</td></tr>
+<tr><td>3-4</td><td>较好</td><td>自动检测+报警</td></tr>
+<tr><td>1-2</td><td>几乎确定</td><td>防错设计，错误不可能流出</td></tr>
+</table>
+</div>
+
+<h3>四、RPN与行动优先级</h3>
+<div class="card">
+<div class="formula"><span class="label">风险优先数</span>RPN = S × O × D<br>RPN范围：1 ~ 1000</div>
+<table>
+<tr><th>RPN范围</th><th>行动级别</th><th>要求</th></tr>
+<tr><td>> 200 或 S≥9</td><td>🔴 高优先级</td><td>必须立即行动</td></tr>
+<tr><td>100 - 200</td><td>🟡 中优先级</td><td>应制定改进计划</td></tr>
+<tr><td>< 100</td><td>🟢 低优先级</td><td>持续监控</td></tr>
+</table>
+<div class="warning">
+<strong>注意：</strong>RPN不是唯一标准。S=10（安全风险）即使RPN较低也必须处理。新版FMEA（AIAG-VDA）已用AP（行动优先级）替代RPN，按S→O→D顺序判断H/M/L。
+</div>
+</div>
+</div>
+
+<!-- ========== 精益六西格玛 ========== -->
+<div class="section" id="lean">
+<h2>🚀 精益六西格玛</h2>
+
+<h3>一、精益与六西格玛的融合</h3>
+<div class="card">
+<table>
+<tr><th></th><th>精益</th><th>六西格玛</th></tr>
+<tr><td>核心目标</td><td>消除浪费，提高速度</td><td>减少变异，提高质量</td></tr>
+<tr><td>关注点</td><td>流程效率</td><td>过程能力</td></tr>
+<tr><td>方法论</td><td>价值流分析、连续流</td><td>DMAIC、统计工具</td></tr>
+<tr><td>数据使用</td><td>较少（定性为主）</td><td>大量（定量为主）</td></tr>
+<tr><td>改进速度</td><td>快（Kaizen事件）</td><td>慢（项目4-6月）</td></tr>
+</table>
+<div class="highlight">
+<strong>融合优势：</strong>精益解决"快"的问题（速度），六西格玛解决"好"的问题（质量）。精益六西格玛=既快又好。
+</div>
+</div>
+
+<h3>二、八大浪费</h3>
+<div class="card">
+<table>
+<tr><th>浪费</th><th>英文</th><th>描述</th><th>制造业案例</th></tr>
+<tr><td>过量生产</td><td>Overproduction</td><td>生产过多/过早</td><td>客户只要100件，生产了150件</td></tr>
+<tr><td>等待</td><td>Waiting</td><td>人等料/料等人</td><td>等上工序来料、等设备维修</td></tr>
+<tr><td>运输</td><td>Transportation</td><td>不必要的搬运</td><td>仓库到产线来回3次搬运</td></tr>
+<tr><td>过度加工</td><td>Overprocessing</td><td>超出客户要求的加工</td><td>客户不需要的额外抛光</td></tr>
+<tr><td>库存</td><td>Inventory</td><td>过多原材料/WIP/成品</td><td>仓库堆满3个月用量</td></tr>
+<tr><td>动作</td><td>Motion</td><td>不必要的动作</td><td>操作员转身取料、弯腰作业</td></tr>
+<tr><td>缺陷</td><td>Defects</td><td>不合格品返工/报废</td><td>不良率5%需返工</td></tr>
+<tr><td>未充分利用人才</td><td>Talent</td><td>员工潜力未发挥</td><td>熟练工做简单重复操作</td></tr>
+</table>
+<div class="highlight"><strong>记忆口诀（TIMWOODS）：</strong>T-Transport, I-Inventory, M-Motion, W-Waiting, O-Overproduction, O-Overprocessing, D-Defects, S-Skills</div>
+</div>
+
+<h3>三、价值流图（VSM）</h3>
+<div class="card">
+<h4>3.1 VSM关键指标</h4>
+<table>
+<tr><th>指标</th><th>定义</th><th>公式</th></tr>
+<tr><td>周期时间（CT）</td><td>完成一个产品的时间</td><td>直接测量</td></tr>
+<tr><td>增值时间（VA）</td><td>客户愿意付费的时间</td><td>各工序加工时间之和</td></tr>
+<tr><td>前置时间（LT）</td><td>从原材料到成品总时间</td><td>含等待和库存时间</td></tr>
+<tr><td>流程效率</td><td>增值时间占比</td><td>VA / LT × 100%</td></tr>
+</table>
+<div class="formula"><span class="label">流程效率</span>流程效率 = 增值时间 / 前置时间 × 100%<br>通常<5%，改进目标>20%</div>
+</div>
+
+<h3>四、5S管理</h3>
+<div class="card">
+<table>
+<tr><th>步骤</th><th>日语</th><th>中文</th><th>内容</th></tr>
+<tr><td>1S</td><td>Seiri</td><td>整理</td><td>区分要与不要，清除不要的</td></tr>
+<tr><td>2S</td><td>Seiton</td><td>整顿</td><td>需要的物品定点定量放置</td></tr>
+<tr><td>3S</td><td>Seiso</td><td>清扫</td><td>清洁工作场所，发现异常</td></tr>
+<tr><td>4S</td><td>Seiketsu</td><td>清洁</td><td>标准化前3S，制度化</td></tr>
+<tr><td>5S</td><td>Shitsuke</td><td>素养</td><td>养成习惯，持续遵守</td></tr>
+</table>
+</div>
+
+<h3>五、其他精益工具</h3>
+<div class="card">
+<div class="card-grid">
+<div class="info-card"><div class="icon">🔄</div><div class="title">看板（Kanban）</div><div class="desc">拉动式生产信号，按需生产，减少WIP</div></div>
+<div class="info-card"><div class="icon">⏱️</div><div class="title">节拍时间（Takt）</div><div class="desc">客户需求速率：Takt=可用时间/需求量</div></div>
+<div class="info-card"><div class="icon">🔀</div><div class="title">连续流</div><div class="desc">消除批量等待，一件一流</div></div>
+<div class="info-card"><div class="icon">🔄</div><div class="title">SMED</div><div class="desc">快速换模，10分钟内完成换型</div></div>
+<div class="info-card"><div class="icon">🎯</div><div class="title">自働化（Jidoka）</div><div class="desc">异常时自动停机，内置质量</div></div>
+<div class="info-card"><div class="icon">📈</div><div class="title">Kaizen</div><div class="desc">持续改善，小步快跑，人人参与</div></div>
+</div>
+</div>
+</div>
+
+<!-- ========== 常用工具箱 ========== -->
+<div class="section" id="tools">
+<h2>🛠️ 常用工具箱</h2>
+
+<h3>一、帕累托图（80/20法则）</h3>
+<div class="card">
+<p>识别"关键少数"问题。80%的问题由20%的原因造成。</p>
+<div class="formula"><span class="label">帕累托原则</span>80%的缺陷来自20%的原因<br>优先解决排名靠前的少数问题</div>
+<p><strong>制作步骤：</strong>①收集各类缺陷数据 ②按频次降序排列 ③计算累计百分比 ④画柱状图+累计折线</p>
+</div>
+
+<h3>二、鱼骨图（因果图/石川图）</h3>
+<div class="card">
+<p>系统化分析问题根因的工具。从6个维度展开：</p>
+<table>
+<tr><th>维度</th><th>英文</th><th>检查方向</th></tr>
+<tr><td>人（Man）</td><td>人员</td><td>技能、培训、经验、疲劳</td></tr>
+<tr><td>机（Machine）</td><td>设备</td><td>维护、精度、能力、稳定性</td></tr>
+<tr><td>料（Material）</td><td>物料</td><td>供应商、批次、规格、存储</td></tr>
+<tr><td>法（Method）</td><td>方法</td><td>SOP、工艺参数、流程设计</td></tr>
+<tr><td>环（Environment）</td><td>环境</td><td>温度、湿度、洁净度、照明</td></tr>
+<tr><td>测（Measurement）</td><td>测量</td><td>量具、方法、MSA、抽样</td></tr>
+</table>
+</div>
+
+<h3>三、直方图</h3>
+<div class="card">
+<p>展示数据分布形状的柱状图。</p>
+<div class="formula"><span class="label">组数确定</span>组数 k ≈ √n （n为数据量）<br>组宽 w = (max - min) / k</div>
+<p>通过直方图判断：①正态性 ②中心偏移 ③变异大小 ④是否有双峰（多过程混合）</p>
+</div>
+
+<h3>四、散点图</h3>
+<div class="card">
+<p>展示两个连续变量之间关系的图形。</p>
+<table>
+<tr><th>图形模式</th><th>含义</th></tr>
+<tr><td>左下→右上趋势</td><td>正相关</td></tr>
+<tr><td>左上→右下趋势</td><td>负相关</td></tr>
+<tr><td>无明显趋势</td><td>无相关</td></tr>
+<tr><td>曲线趋势</td><td>非线性关系</td></tr>
+<tr><td>离散点群</td><td>可能存在分组</td></tr>
+</table>
+</div>
+
+<h3>五、SIPOC</h3>
+<div class="card">
+<table>
+<tr><th>字母</th><th>含义</th><th>问题</th></tr>
+<tr><td>S</td><td>Supplier 供应商</td><td>谁提供输入？</td></tr>
+<tr><td>I</td><td>Input 输入</td><td>需要什么资源/材料？</td></tr>
+<tr><td>P</td><td>Process 过程</td><td>关键步骤是什么？(4-7步)</td></tr>
+<tr><td>O</td><td>Output 输出</td><td>产出什么？</td></tr>
+<tr><td>C</td><td>Customer 客户</td><td>谁接收输出？</td></tr>
+</table>
+</div>
+
+<h3>六、5 Why分析</h3>
+<div class="card">
+<p>连续追问"为什么"，层层深入到根本原因。</p>
+<div class="highlight">
+<strong>示例：</strong><br>
+问题：机器停机<br>
+Why1 → 保险丝断了 → Why2 → 轴承过热 → Why3 → 润滑不足 → Why4 → 油泵滤网堵塞 → Why5 → 没有定期更换滤网<br>
+<strong>根因：</strong>缺少滤网定期更换制度 → <strong>措施：</strong>建立PM计划，每月更换滤网
+</div>
+<div class="warning">注意：不要停留在"操作员失误"层面，要追到系统/制度层面的根因。3-5个Why通常足够，但也可能需要更多。</div>
+</div>
+
+<h3>七、CTQ树</h3>
+<div class="card">
+<p>将客户需求（VOC）转化为可测量的质量特性（CTQ）。</p>
+<div class="card">
+<p><strong>VOC：</strong>"手机电池要耐用"<br>↓<br><strong>需求：</strong>续航时间长<br>↓<br><strong>CTQ1：</strong>待机时间 ≥ 72小时<br><strong>CTQ2：</strong>视频播放时间 ≥ 10小时<br><strong>CTQ3：</strong>充电循环 ≥ 500次（容量≥80%）</p>
+</div>
+</div>
+
+<h3>八、甘特图与项目时间线</h3>
+<div class="card">
+<table>
+<tr><th>DMAIC阶段</th><th>典型时长</th><th>关键里程碑</th></tr>
+<tr><td>D 定义</td><td>2-4周</td><td>项目宪章批准</td></tr>
+<tr><td>M 测量</td><td>4-6周</td><td>基线数据确认</td></tr>
+<tr><td>A 分析</td><td>4-6周</td><td>根因验证</td></tr>
+<tr><td>I 改进</td><td>6-8周</td><td>试点验证通过</td></tr>
+<tr><td>C 控制</td><td>4-6周</td><td>控制计划移交</td></tr>
+<tr><td><strong>总计</strong></td><td><strong>4-6个月</strong></td><td>项目关闭审计</td></tr>
+</table>
+</div>
+</div>
+
+<!-- ========== 公式手册 ========== -->
+<div class="section" id="formulas">
+<h2>📋 公式手册</h2>
+
+<h3>一、描述性统计</h3>
+<div class="formula"><span class="label">均值</span>x̄ = (Σxᵢ) / n</div>
+<div class="formula"><span class="label">方差</span>s² = Σ(xᵢ - x̄)² / (n - 1)</div>
+<div class="formula"><span class="label">标准差</span>s = √(s²)</div>
+<div class="formula"><span class="label">极差</span>R = x_max - x_min</div>
+<div class="formula"><span class="label">标准误</span>SE = s / √n</div>
+<div class="formula"><span class="label">变异系数</span>CV = (s / x̄) × 100%</div>
+
+<h3>二、概率分布</h3>
+<div class="formula"><span class="label">Z变换</span>Z = (x - μ) / σ</div>
+<div class="formula"><span class="label">二项分布</span>P(x) = C(n,x) × p^x × (1-p)^(n-x), 均值=np, 方差=np(1-p)</div>
+<div class="formula"><span class="label">泊松分布</span>P(x) = (λ^x × e^(-λ)) / x!, 均值=λ, 方差=λ</div>
+
+<h3>三、置信区间</h3>
+<div class="formula"><span class="label">均值置信区间(σ已知)</span>CI = x̄ ± Z(α/2) × σ/√n</div>
+<div class="formula"><span class="label">均值置信区间(σ未知)</span>CI = x̄ ± t(α/2,n-1) × s/√n</div>
+<div class="formula"><span class="label">比例置信区间</span>CI = p̂ ± Z(α/2) × √(p̂(1-p̂)/n)</div>
+<table>
+<tr><th>置信水平</th><th>90%</th><th>95%</th><th>99%</th></tr>
+<tr><td>Z值</td><td>1.645</td><td>1.96</td><td>2.576</td></tr>
+</table>
+
+<h3>四、假设检验</h3>
+<div class="formula"><span class="label">单样本t检验</span>t = (x̄ - μ₀) / (s / √n), df = n-1</div>
+<div class="formula"><span class="label">双样本t检验</span>t = (x̄₁ - x̄₂) / √(s₁²/n₁ + s₂²/n₂)</div>
+<div class="formula"><span class="label">配对t检验</span>t = d̄ / (s_d / √n), dᵢ = xᵢ_before - xᵢ_after</div>
+<div class="formula"><span class="label">卡方检验</span>χ² = Σ(O-E)² / E</div>
+<div class="formula"><span class="label">F检验</span>F = s₁² / s₂² （s₁ > s₂）</div>
+<div class="formula"><span class="label">ANOVA的F统计量</span>F = MSB / MSW = [SSB/(k-1)] / [SSW/(N-k)]</div>
+
+<h3>五、回归分析</h3>
+<div class="formula"><span class="label">简单线性回归</span>ŷ = b₀ + b₁x</div>
+<div class="formula"><span class="label">斜率</span>b₁ = Σ(xᵢ-x̄)(yᵢ-ȳ) / Σ(xᵢ-x̄)²</div>
+<div class="formula"><span class="label">截距</span>b₀ = ȳ - b₁x̄</div>
+<div class="formula"><span class="label">相关系数</span>r = Σ(xᵢ-x̄)(yᵢ-ȳ) / √[Σ(xᵢ-x̄)² × Σ(yᵢ-ȳ)²]</div>
+<div class="formula"><span class="label">决定系数</span>R² = 1 - SSE/SST = SSR/SST</div>
+<div class="formula"><span class="label">调整R²</span>R²_adj = 1 - (1-R²)(n-1)/(n-k-1)</div>
+
+<h3>六、过程能力</h3>
+<div class="formula"><span class="label">Cp</span>Cp = (USL - LSL) / (6σ̂)</div>
+<div class="formula"><span class="label">Cpk</span>Cpk = min[(USL-μ)/(3σ̂), (μ-LSL)/(3σ̂)]</div>
+<div class="formula"><span class="label">Pp</span>Pp = (USL - LSL) / (6s)</div>
+<div class="formula"><span class="label">Ppk</span>Ppk = min[(USL-μ)/(3s), (μ-LSL)/(3s)]</div>
+<div class="formula"><span class="label">DPMO</span>DPMO = (缺陷数 / (产品数 × 机会数)) × 1,000,000</div>
+<div class="formula"><span class="label">σ水平与Cpk关系</span>σ水平 = 3 × Cpk（短期）</div>
+
+<h3>七、控制图</h3>
+<div class="formula"><span class="label">X̄图控制限</span>UCL = x̄̄ + A₂R̄, CL = x̄̄, LCL = x̄̄ - A₂R̄</div>
+<div class="formula"><span class="label">R图控制限</span>UCL = D₄R̄, CL = R̄, LCL = D₃R̄</div>
+<div class="formula"><span class="label">σ估计</span>σ̂ = R̄ / d₂</div>
+<div class="formula"><span class="label">I-MR图</span>UCL_MR = D₄MR̄, CL = MR̄, LCL = D₃MR̄ (d₂=1.128 for n=2)</div>
+<div class="formula"><span class="label">P图</span>UCL = p̄ + 3√(p̄(1-p̄)/n), LCL = p̄ - 3√(p̄(1-p̄)/n)</div>
+<div class="formula"><span class="label">C图</span>UCL = c̄ + 3√c̄, LCL = c̄ - 3√c̄</div>
+
+<h3>八、MSA</h3>
+<div class="formula"><span class="label">%GR&R</span>%GR&R = (σ_GR&R / σ_total) × 100%</div>
+<div class="formula"><span class="label">σ_GR&R</span>σ_GR&R = √(σ_EV² + σ_AV²)</div>
+<div class="formula"><span class="label">NDC</span>NDC = 1.41 × (σ_part / σ_GR&R) ≥ 5</div>
+
+<h3>九、DOE</h3>
+<div class="formula"><span class="label">主效应</span>Effect_A = 2 × (ȳ_A+ - ȳ_A-)</div>
+<div class="formula"><span class="label">2^k全因子试验数</span>N = 2^k × 重复次数</div>
+<div class="formula"><span class="label">响应面模型</span>Y = β₀ + Σβᵢxᵢ + Σβᵢᵢxᵢ² + ΣΣβᵢⱼxᵢxⱼ + ε</div>
+<div class="formula"><span class="label">田口望目SNR</span>SNR = 10log₁₀(ȳ²/s²)</div>
+
+<h3>十、FMEA</h3>
+<div class="formula"><span class="label">风险优先数</span>RPN = S × O × D (1~1000)</div>
+
+<h3>十一、精益</h3>
+<div class="formula"><span class="label">节拍时间</span>Takt = 可用时间 / 客户需求量</div>
+<div class="formula"><span class="label">流程效率</span>流程效率 = 增值时间 / 前置时间 × 100%</div>
+<div class="formula"><span class="label">OEE</span>OEE = 可用率 × 性能率 × 质量率</div>
+
+<h3>十二、样本量计算</h3>
+<div class="formula"><span class="label">估计均值所需样本量</span>n = (Z(α/2) × σ / E)²<br>E为可接受的误差范围</div>
+<div class="formula"><span class="label">估计比例所需样本量</span>n = Z²(α/2) × p(1-p) / E²</div>
+<div class="formula"><span class="label">双样本t检验样本量</span>n = 2 × (Z(α/2) + Z(β))² × σ² / Δ²<br>Δ为可检测的最小差异</div>
+</div>
+
+<!-- ========== 术语表 ========== -->
+<div class="section" id="glossary">
+<h2>📖 术语表（中英对照）</h2>
+
+<div class="card">
+<table>
+<tr><th>缩写</th><th>英文全称</th><th>中文</th><th>简要说明</th></tr>
+<tr><td>ANOVA</td><td>Analysis of Variance</td><td>方差分析</td><td>比较多组均值差异的统计方法</td></tr>
+<tr><td>BB</td><td>Black Belt</td><td>黑带</td><td>六西格玛高级专家，全职领导项目</td></tr>
+<tr><td>CCD</td><td>Central Composite Design</td><td>中心复合设计</td><td>响应面法常用试验设计</td></tr>
+<tr><td>CE Matrix</td><td>Cause and Effect Matrix</td><td>因果矩阵</td><td>筛选关键输入变量的工具</td></tr>
+<tr><td>CL</td><td>Center Line</td><td>中心线</td><td>控制图中心参考线</td></tr>
+<tr><td>CLT</td><td>Central Limit Theorem</td><td>中心极限定理</td><td>样本均值趋近正态分布的定理</td></tr>
+<tr><td>Cp</td><td>Process Capability Index</td><td>过程能力指数</td><td>衡量潜在过程能力</td></tr>
+<tr><td>Cpk</td><td>Process Capability Index</td><td>实际过程能力指数</td><td>考虑中心偏移的过程能力</td></tr>
+<tr><td>CTQ</td><td>Critical to Quality</td><td>关键质量特性</td><td>客户最关心的质量指标</td></tr>
+<tr><td>DFSS</td><td>Design for Six Sigma</td><td>六西格玛设计</td><td>从设计阶段达到六西格玛水平</td></tr>
+<tr><td>DMAIC</td><td>Define-Measure-Analyze-Improve-Control</td><td>定义-测量-分析-改进-控制</td><td>改进现有过程的方法论</td></tr>
+<tr><td>DMADV</td><td>Define-Measure-Analyze-Design-Verify</td><td>定义-测量-分析-设计-验证</td><td>设计新过程的方法论</td></tr>
+<tr><td>DOE</td><td>Design of Experiments</td><td>试验设计</td><td>系统规划试验的统计方法</td></tr>
+<tr><td>DPMO</td><td>Defects Per Million Opportunities</td><td>每百万机会缺陷数</td><td>六西格玛核心度量指标</td></tr>
+<tr><td>DPO</td><td>Defects Per Opportunity</td><td>每机会缺陷数</td><td>DPMO/1,000,000</td></tr>
+<tr><td>DPU</td><td>Defects Per Unit</td><td>每单位缺陷数</td><td>缺陷总数/产品数</td></tr>
+<tr><td>EV</td><td>Equipment Variation</td><td>设备变异</td><td>MSA中的重复性</td></tr>
+<tr><td>FMEA</td><td>Failure Mode and Effects Analysis</td><td>失效模式与效应分析</td><td>风险分析工具</td></tr>
+<tr><td>GB</td><td>Green Belt</td><td>绿带</td><td>六西格玛中级，兼职做项目</td></tr>
+<tr><td>GR&R</td><td>Gage Repeatability & Reproducibility</td><td>量具重复性和再现性</td><td>MSA核心方法</td></tr>
+<tr><td>H₀</td><td>Null Hypothesis</td><td>原假设</td><td>假设检验中的默认假设</td></tr>
+<tr><td>H₁</td><td>Alternative Hypothesis</td><td>备择假设</td><td>与原假设对立的假设</td></tr>
+<tr><td>I-MR</td><td>Individuals & Moving Range</td><td>单值-移动极差图</td><td>子组n=1时使用的控制图</td></tr>
+<tr><td>IRR</td><td>Interquartile Range</td><td>四分位距</td><td>Q3-Q1，衡量离散程度</td></tr>
+<tr><td>Kaizen</td><td>Continuous Improvement</td><td>持续改善</td><td>精益的核心理念</td></tr>
+<tr><td>LSL</td><td>Lower Specification Limit</td><td>规格下限</td><td>客户要求的最低值</td></tr>
+<tr><td>MBB</td><td>Master Black Belt</td><td>黑带大师</td><td>六西格玛最高级别</td></tr>
+<tr><td>MSA</td><td>Measurement System Analysis</td><td>测量系统分析</td><td>评估测量系统可靠性</td></tr>
+<tr><td>NDC</td><td>Number of Distinct Categories</td><td>区分度</td><td>MSA中测量系统区分能力</td></tr>
+<tr><td>OEE</td><td>Overall Equipment Effectiveness</td><td>设备综合效率</td><td>可用率×性能率×质量率</td></tr>
+<tr><td>OFAT</td><td>One Factor At a Time</td><td>一次一因子法</td><td>效率低于DOE的传统方法</td></tr>
+<tr><td>Pareto</td><td>—</td><td>帕累托图</td><td>80/20法则可视化工具</td></tr>
+<tr><td>PM</td><td>Preventive Maintenance</td><td>预防性维护</td><td>定期维护防故障</td></tr>
+<tr><td>Poka-Yoke</td><td>Mistake Proofing</td><td>防错</td><td>使错误不可能发生的装置</td></tr>
+<tr><td>PPM</td><td>Parts Per Million</td><td>百万分之</td><td>缺陷率单位</td></tr>
+<tr><td>RPN</td><td>Risk Priority Number</td><td>风险优先数</td><td>FMEA中S×O×D</td></tr>
+<tr><td>RSM</td><td>Response Surface Methodology</td><td>响应面方法</td><td>DOE优化方法</td></tr>
+<tr><td>SIPOC</td><td>Supplier-Input-Process-Output-Customer</td><td>高阶流程图</td><td>过程概览工具</td></tr>
+<tr><td>SMED</td><td>Single Minute Exchange of Die</td><td>快速换模</td><td>10分钟内完成换型</td></tr>
+<tr><td>SNR</td><td>Signal-to-Noise Ratio</td><td>信噪比</td><td>田口方法中的稳健性指标</td></tr>
+<tr><td>SPC</td><td>Statistical Process Control</td><td>统计过程控制</td><td>用控制图监控过程</td></tr>
+<tr><td>SST</td><td>Sum of Squares Total</td><td>总平方和</td><td>ANOVA中的总变异</td></tr>
+<tr><td>USL</td><td>Upper Specification Limit</td><td>规格上限</td><td>客户要求的最高值</td></tr>
+<tr><td>VOC</td><td>Voice of Customer</td><td>客户之声</td><td>收集客户需求的方法</td></tr>
+<tr><td>VSM</td><td>Value Stream Mapping</td><td>价值流图</td><td>可视化流程分析工具</td></tr>
+<tr><td>YB</td><td>Yellow Belt</td><td>黄带</td><td>六西格玛入门级</td></tr>
+<tr><td>5S</td><td>Sort-Set-Shine-Standardize-Sustain</td><td>整理-整顿-清扫-清洁-素养</td><td>工作场所管理基础</td></tr>
+<tr><td>5 Why</td><td>—</td><td>5个为什么</td><td>根因分析工具</td></tr>
+</table>
+</div>
+</div>
+
+<!-- ========== 绿带题库 ========== -->
+<div class="section" id="quiz-green">
+<h2>🟢 绿带题库（30题）</h2>
+<p style="color:var(--dim)">点击选项查看答案</p>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q1.</span>六西格玛的缺陷率目标是多少DPMO？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,0)">
+<li data-correct="false">A. 66,807</li>
+<li data-correct="true">B. 3.4</li>
+<li data-correct="false">C. 233</li>
+<li data-correct="false">D. 6,210</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 六西格玛的目标是每百万次机会中不超过3.4个缺陷（3.4 DPMO），这考虑了1.5σ的长期漂移。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q2.</span>DMAIC方法论中，"M"代表什么？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,1)">
+<li data-correct="false">A. Manage 管理</li>
+<li data-correct="true">B. Measure 测量</li>
+<li data-correct="false">C. Monitor 监控</li>
+<li data-correct="false">D. Maintain 维护</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> DMAIC = Define(定义) → Measure(测量) → Analyze(分析) → Improve(改进) → Control(控制)</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q3.</span>正态分布中，均值±3σ包含的数据比例约为？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,2)">
+<li data-correct="false">A. 95.45%</li>
+<li data-correct="false">B. 68.27%</li>
+<li data-correct="true">C. 99.73%</li>
+<li data-correct="false">D. 99.99%</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：C</span> 1σ=68.27%, 2σ=95.45%, 3σ=99.73%, 6σ=99.9999998%</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q4.</span>假设检验中，p值的含义是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,3)">
+<li data-correct="false">A. 原假设为假的概率</li>
+<li data-correct="false">B. 备择假设为真的概率</li>
+<li data-correct="true">C. 在原假设为真时，观察到当前或更极端结果的概率</li>
+<li data-correct="false">D. 犯第二类错误的概率</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：C</span> p值不是H₀为假的概率，而是在H₀为真的条件下，得到当前或更极端观察结果的概率。p<α时拒绝H₀。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q5.</span>Cp和Cpk的主要区别是什么？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,4)">
+<li data-correct="false">A. Cp用于连续型数据，Cpk用于离散型数据</li>
+<li data-correct="false">B. Cp是短期能力，Cpk是长期能力</li>
+<li data-correct="true">C. Cp不考虑中心偏移，Cpk考虑</li>
+<li data-correct="false">D. 没有区别</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：C</span> Cp衡量"潜在能力"（变异是否足够小），Cpk衡量"实际能力"（中心是否偏移）。Cpk ≤ Cp。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q6.</span>MSA中%GR&R为25%时，应如何处理？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,5)">
+<li data-correct="false">A. 可接受，无需改进</li>
+<li data-correct="true">B. 有条件接受，视测量重要性决定</li>
+<li data-correct="false">C. 不可接受，必须改进</li>
+<li data-correct="false">D. 需要重新设计产品</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> %GR&R < 10%可接受，10-30%有条件接受（视测量重要性），>30%不可接受。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q7.</span>第一类错误（α错误）是什么？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,6)">
+<li data-correct="true">A. H₀为真但被拒绝（误判有差异）</li>
+<li data-correct="false">B. H₀为假但未被拒绝（漏判）</li>
+<li data-correct="false">C. 样本量不足</li>
+<li data-correct="false">D. 测量误差</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：A</span> 第一类错误（α/生产者风险）：H₀为真但被拒绝，即"误判有差异"。第二类错误（β/消费者风险）：H₀为假但未被拒绝，即"漏判"。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q8.</span>控制图中，连续6点递增表示什么？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,7)">
+<li data-correct="false">A. 过程正常</li>
+<li data-correct="true">B. 过程出现趋势性变化（特殊原因）</li>
+<li data-correct="false">C. 测量系统有问题</li>
+<li data-correct="false">D. 规格限需要调整</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 连续6点递增或递减是判异规则之一，表示过程存在趋势性变化，可能由工具磨损、温度渐变等引起。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q9.</span>FMEA中RPN的计算公式是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,8)">
+<li data-correct="false">A. S + O + D</li>
+<li data-correct="true">B. S × O × D</li>
+<li data-correct="false">C. (S + O + D) / 3</li>
+<li data-correct="false">D. S × O + D</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> RPN = 严重度(S) × 频度(O) × 探测度(D)，范围1~1000，值越大风险越高。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q10.</span>帕累托图的核心原则是什么？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,9)">
+<li data-correct="false">A. 所有问题同等重要</li>
+<li data-correct="true">B. 80%的问题由20%的原因造成</li>
+<li data-correct="false">C. 数据必须正态分布</li>
+<li data-correct="false">D. 先解决最难的问题</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 帕累托原则（80/20法则）：优先解决排名靠前的少数关键问题，可获得最大的改进效果。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q11.</span>SIPOC中的"P"代表什么？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,10)">
+<li data-correct="false">A. Product 产品</li>
+<li data-correct="false">B. Plan 计划</li>
+<li data-correct="true">C. Process 过程</li>
+<li data-correct="false">D. People 人员</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：C</span> SIPOC = Supplier → Input → Process → Output → Customer，是Define阶段的高阶流程图工具。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q12.</span>当样本量n≥30时，根据什么定理，样本均值近似正态分布？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,11)">
+<li data-correct="false">A. 大数定律</li>
+<li data-correct="true">B. 中心极限定理</li>
+<li data-correct="false">C. 切比雪夫不等式</li>
+<li data-correct="false">D. 贝叶斯定理</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 中心极限定理：无论总体分布如何，当n≥30时，样本均值的分布趋近正态分布。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q13.</span>比较3条产线的平均产量差异，应使用哪种检验方法？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,12)">
+<li data-correct="false">A. 双样本t检验</li>
+<li data-correct="true">B. ANOVA（方差分析）</li>
+<li data-correct="false">C. 卡方检验</li>
+<li data-correct="false">D. F检验</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 比较3组及以上均值差异时使用ANOVA。t检验只适用于2组比较。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q14.</span>控制限和规格限的主要区别是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,13)">
+<li data-correct="false">A. 没有区别</li>
+<li data-correct="true">B. 控制限来自过程数据，规格限来自客户要求</li>
+<li data-correct="false">C. 控制限更宽</li>
+<li data-correct="false">D. 规格限由操作员设定</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 控制限（UCL/LCL）反映过程自然变异（过程能做什么），规格限（USL/LSL）反映客户要求（客户要什么）。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q15.</span>精益生产中的八大浪费，下列哪个不属于？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,14)">
+<li data-correct="false">A. 过量生产</li>
+<li data-correct="false">B. 等待</li>
+<li data-correct="true">C. 创新</li>
+<li data-correct="false">D. 缺陷</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：C</span> 八大浪费：过量生产、等待、运输、过度加工、库存、动作、缺陷、未充分利用人才。创新不是浪费。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q16.</span>DOE相比OFAT（一次一因子法）的主要优势是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,15)">
+<li data-correct="false">A. 更简单</li>
+<li data-correct="false">B. 需要更少数据</li>
+<li data-correct="true">C. 能发现交互效应且效率更高</li>
+<li data-correct="false">D. 不需要随机化</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：C</span> DOE能同时研究多个因子及其交互作用，且试验次数更少、信息量更大。OFAT无法发现交互效应。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q17.</span>样本方差除以(n-1)而不是n的原因是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,16)">
+<li data-correct="true">A. 贝塞尔校正，获得无偏估计</li>
+<li data-correct="false">B. 数学惯例</li>
+<li data-correct="false">C. 使方差更大</li>
+<li data-correct="false">D. 便于计算</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：A</span> 用样本均值估计总体均值引入了偏差，除以n-1（自由度修正）可获得无偏估计，即贝塞尔校正。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q18.</span>Cpk=1.33对应多少σ水平？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,17)">
+<li data-correct="false">A. 3σ</li>
+<li data-correct="true">B. 4σ</li>
+<li data-correct="false">C. 5σ</li>
+<li data-correct="false">D. 6σ</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> σ水平 = 3 × Cpk = 3 × 1.33 ≈ 4σ</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q19.</span>5Why分析法通常需要追问几次？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,18)">
+<li data-correct="false">A. 3次</li>
+<li data-correct="true">B. 3-5次，直到找到系统性根因</li>
+<li data-correct="false">C. 必须恰好5次</li>
+<li data-correct="false">D. 越多越好</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 通常3-5次足够，关键是要追到系统性/制度性根因，而不是停留在"操作员失误"层面。不必须恰好5次。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q20.</span>测量系统分析中，"再现性"指什么？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,19)">
+<li data-correct="false">A. 同一操作者多次测量的变异</li>
+<li data-correct="true">B. 不同操作者用同一量具测量的变异</li>
+<li data-correct="false">C. 量具的校准误差</li>
+<li data-correct="false">D. 量具的分辨率</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 重复性(EV)=同一操作者多次测量的变异；再现性(AV)=不同操作者之间的变异。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q21.</span>置信水平95%对应的Z值约为？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,20)">
+<li data-correct="false">A. 1.645</li>
+<li data-correct="true">B. 1.96</li>
+<li data-correct="false">C. 2.576</li>
+<li data-correct="false">D. 3.00</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 90%→1.645, 95%→1.96, 99%→2.576</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q22.</span>下列哪个是控制图判异规则之一？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,21)">
+<li data-correct="false">A. 连续2点在2σ外</li>
+<li data-correct="true">B. 连续9点在中心线同一侧</li>
+<li data-correct="false">C. 连续3点递增</li>
+<li data-correct="false">D. 5点中有3点在1σ外</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 8条判异规则包括：1点超3σ、连续9点同侧、连续6点递增/递减、连续14点交替等。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q23.</span>在DMAIC中，建立基线数据是在哪个阶段？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,22)">
+<li data-correct="false">A. Define 定义</li>
+<li data-correct="true">B. Measure 测量</li>
+<li data-correct="false">C. Analyze 分析</li>
+<li data-correct="false">D. Improve 改进</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> Measure阶段的核心任务之一就是收集基线数据，量化当前过程表现。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q24.</span>R²=0.85的含义是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,23)">
+<li data-correct="false">A. 相关系数为0.85</li>
+<li data-correct="true">B. 回归模型解释了85%的变异</li>
+<li data-correct="false">C. p值为0.85</li>
+<li data-correct="false">D. 残差为0.85</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> R²（决定系数）表示回归模型解释的总变异比例。R²=0.85意味着自变量解释了因变量85%的变异。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q25.</span>泊松分布适用于什么类型的数据？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,24)">
+<li data-correct="false">A. 计件数据（合格/不合格）</li>
+<li data-correct="true">B. 计点数据（缺陷数/瑕疵数）</li>
+<li data-correct="false">C. 连续数据（长度/重量）</li>
+<li data-correct="false">D. 类别数据（颜色/型号）</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 泊松分布描述单位时间/面积内稀有事件发生次数，适用于计点型数据。计件用二项分布，连续用正态分布。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q26.</span>节拍时间（Takt Time）的计算公式是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,25)">
+<li data-correct="true">A. 可用时间 / 客户需求量</li>
+<li data-correct="false">B. 客户需求量 / 可用时间</li>
+<li data-correct="false">C. 加工时间 + 等待时间</li>
+<li data-correct="false">D. 总产量 / 总工时</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：A</span> Takt = 可用时间/需求量。例：480分钟/天 ÷ 240件/天 = 2分钟/件。表示每2分钟必须产出1件才能满足客户需求。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q27.</span>OEE的计算公式是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,26)">
+<li data-correct="false">A. 产量 / 目标产量</li>
+<li data-correct="true">B. 可用率 × 性能率 × 质量率</li>
+<li data-correct="false">C. 运行时间 / 计划时间</li>
+<li data-correct="false">D. 合格品 / 总产量</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> OEE = 可用率(时间) × 性能率(速度) × 质量率(良率)。世界级OEE>85%。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q28.</span>3σ水平对应的DPMO约为？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,27)">
+<li data-correct="false">A. 3.4</li>
+<li data-correct="false">B. 6,210</li>
+<li data-correct="true">C. 66,807</li>
+<li data-correct="false">D. 308,538</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：C</span> 1σ=691,462, 2σ=308,538, 3σ=66,807, 4σ=6,210, 5σ=233, 6σ=3.4</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q29.</span>防错（Poka-Yoke）的最高层级是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,28)">
+<li data-correct="true">A. 消除：重新设计使错误不可能发生</li>
+<li data-correct="false">B. 控制：强制正确操作</li>
+<li data-correct="false">C. 预防：错误前警告</li>
+<li data-correct="false">D. 探测：错误后检测</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：A</span> 防错层级从高到低：消除→替代→控制→预防→探测。消除是最高层级，使错误根本不可能发生。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q30.</span>六西格玛项目的典型周期是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,29)">
+<li data-correct="false">A. 1-2周</li>
+<li data-correct="false">B. 1-2个月</li>
+<li data-correct="true">C. 4-6个月</li>
+<li data-correct="false">D. 1年以上</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：C</span> 六西格玛项目通常4-6个月完成。Define(2-4周)→Measure(4-6周)→Analyze(4-6周)→Improve(6-8周)→Control(4-6周)。</div></div>
+</div>
+
+<!-- ========== 黑带题库 ========== -->
+<div class="section" id="quiz-black">
+<h2>⚫ 黑带题库（20题）</h2>
+<p style="color:var(--dim)">黑带级别需要更深入的统计学理解和综合应用能力</p>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q1.</span>2³全因子设计加3个中心点，共需要多少次试验（重复1次）？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,30)">
+<li data-correct="false">A. 8</li>
+<li data-correct="true">B. 11</li>
+<li data-correct="false">C. 16</li>
+<li data-correct="false">D. 19</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 2³=8个角点 + 3个中心点 = 11次试验。中心点用于检测曲率和估计纯误差。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q2.</span>在2^4全因子设计中，ABC交互效应的自由度是多少？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,31)">
+<li data-correct="false">A. 1</li>
+<li data-correct="true">B. 1</li>
+<li data-correct="false">C. 3</li>
+<li data-correct="false">D. 4</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 任何交互效应在2水平设计中自由度都是1（2水平-1=1）。总自由度=试验次数-1=16-1=15。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q3.</span>过程能力分析显示Cp=2.0, Cpk=1.0，这说明什么？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,32)">
+<li data-correct="false">A. 过程变异太大</li>
+<li data-correct="true">B. 过程变异可接受但中心严重偏移</li>
+<li data-correct="false">C. 过程完全不可接受</li>
+<li data-correct="false">D. 测量系统有问题</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> Cp=2.0说明潜在能力很好（变异足够小），但Cpk=1.0远低于Cp，说明中心严重偏移。改进方向：调整过程中心而非减小变异。偏移系数K=1-1.0/2.0=0.5，即偏移了半个规格宽度。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q4.</span>方差齐性检验中，Levene检验相比Bartlett检验的优势是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,33)">
+<li data-correct="true">A. 不要求正态性假设</li>
+<li data-correct="false">B. 检验功效更高</li>
+<li data-correct="false">C. 适用于成对数据</li>
+<li data-correct="false">D. 不需要样本量</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：A</span> Bartlett检验对正态性敏感，数据非正态时结果不可靠。Levene检验基于绝对偏差，对非正态数据更稳健。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q5.</span>响应面设计中，α（轴向点距离）在可旋转CCD中的计算公式是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,34)">
+<li data-correct="false">A. α = 1</li>
+<li data-correct="false">B. α = k</li>
+<li data-correct="true">C. α = (2^k)^(1/4)</li>
+<li data-correct="false">D. α = k²</div>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：C</span> 可旋转CCD要求α=(2^k)^(1/4)。如k=3时α=(8)^(1/4)≈1.682；k=2时α=(4)^(1/4)≈1.414。可旋转性保证各方向预测方差相等。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q6.</span>Box-Cox变换中λ=0对应什么变换？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,35)">
+<li data-correct="false">A. 无变换 y'=y</li>
+<li data-correct="true">B. 对数变换 y'=ln(y)</li>
+<li data-correct="false">C. 平方根变换 y'=√y</li>
+<li data-correct="false">D. 倒数变换 y'=1/y</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> Box-Cox: λ=1→无变换, λ=0→对数变换ln(y), λ=0.5→平方根变换, λ=-1→倒数变换。用于将非正态数据转为近似正态。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q7.</span>多元回归中VIF（方差膨胀因子）的阈值通常设为多少表示严重多重共线性？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,36)">
+<li data-correct="false">A. VIF > 1</li>
+<li data-correct="false">B. VIF > 5</li>
+<li data-correct="true">C. VIF > 10</li>
+<li data-correct="false">D. VIF > 100</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：C</span> VIF>10表示严重多重共线性，会导致回归系数不稳定、标准误增大。处理方法：删除高VIF变量、PCA降维、岭回归等。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q8.</span>部分因子设计中，分辨率IV意味着什么？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,37)">
+<li data-correct="false">A. 主效应与2阶交互混杂</li>
+<li data-correct="true">B. 主效应清晰，2阶交互互相混杂</li>
+<li data-correct="false">C. 主效应和2阶交互都清晰</li>
+<li data-correct="false">D. 3阶交互清晰</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 分辨率IV：主效应不与任何2阶交互混杂（清晰），但2阶交互之间互相混杂。分辨率V：主效应和2阶交互都清晰（推荐）。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q9.</span>一个过程Cpk=1.67, Ppk=1.33，最可能的原因是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,38)">
+<li data-correct="true">A. 过程存在子组间的漂移/变异</li>
+<li data-correct="false">B. 测量系统不准确</li>
+<li data-correct="false">C. 数据非正态</li>
+<li data-correct="false">D. 规格限设置错误</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：A</span> Cpk用短期标准差（子组内变异），Ppk用长期标准差（所有变异）。Cpk>Ppk说明子组间存在额外变异（如不同班次、不同设备间的漂移）。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q10.</span>检验功效（Power）=0.80，β=0.05，α=0.05，这意味着什么？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,39)">
+<li data-correct="true">A. 此条件不可能同时成立</li>
+<li data-correct="false">B. 检验过于保守</li>
+<li data-correct="false">C. 样本量足够大</li>
+<li data-correct="false">D. 第一类和第二类错误概率相同</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：A</span> Power=1-β。如果Power=0.80则β=0.20，不可能同时β=0.05。题目描述的条件互相矛盾。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q11.</span>田口方法中，望目特性的SNR公式为？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,40)">
+<li data-correct="true">A. SNR = 10log₁₀(ȳ²/s²)</li>
+<li data-correct="false">B. SNR = -10log₁₀(Σy²/n)</li>
+<li data-correct="false">C. SNR = -10log₁₀(Σ(1/y²)/n)</li>
+<li data-correct="false">D. SNR = 10log₁₀(ȳ/s)</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：A</span> 望目（目标值最优）：SNR=10log(ȳ²/s²)，同时考虑均值和变异。望大（越大越好）：B。望小（越小越好）：C。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q12.</span>GR&R研究中，NDC=3意味着什么？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,41)">
+<li data-correct="false">A. 测量系统优秀</li>
+<li data-correct="false">B. 测量系统可接受</li>
+<li data-correct="true">C. 测量系统不可接受，区分能力不足</li>
+<li data-correct="false">D. 需要增加操作者数量</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：C</span> NDC（区分度）应≥5。NDC=3意味着测量系统只能区分3个不同类别，无法有效区分零件间的差异，必须改进。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q13.</span>在假设检验中，如果p=0.04（α=0.05），以下哪个说法正确？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,42)">
+<li data-correct="true">A. 拒绝H₀，但有4%的概率犯第一类错误</li>
+<li data-correct="false">B. H₀为假的概率是96%</li>
+<li data-correct="false">C. 备择假设为真的概率是96%</li>
+<li data-correct="false">D. 结果一定有实际意义</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：A</span> p<α拒绝H₀。但p=0.04只表示在H₀为真时得到此结果的概率为4%，不等于H₀为假的概率为96%。统计显著≠实际显著。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q14.</span>X̄-R图中，子组大小n=5时，A₂系数是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,43)">
+<li data-correct="false">A. 0.729</li>
+<li data-correct="true">B. 0.577</li>
+<li data-correct="false">C. 0.483</li>
+<li data-correct="false">D. 1.023</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> n=2→1.880, n=3→1.023, n=4→0.729, n=5→0.577, n=6→0.483</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q15.</span>2^3全因子设计重复2次，SSE的自由度是多少？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,44)">
+<li data-correct="true">A. 8</li>
+<li data-correct="false">B. 7</li>
+<li data-correct="false">C. 15</li>
+<li data-correct="false">D. 16</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 总试验次数=8×2=16。总自由度=16-1=15。模型自由度=2³-1=7（含3主效应+3二阶交互+1三阶交互）。SSE自由度=15-7=8。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q16.</span>某过程DPMO=6210，对应的σ水平（短期）约为？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,45)">
+<li data-correct="false">A. 3σ</li>
+<li data-correct="true">B. 4σ</li>
+<li data-correct="false">C. 5σ</li>
+<li data-correct="false">D. 6σ</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> DPMO=6,210对应4σ水平（短期）。注意：考虑1.5σ漂移后长期水平为2.5σ。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q17.</span>在Regression中，如果残差呈"喇叭口"形状（漏斗形），应如何处理？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,46)">
+<li data-correct="false">A. 增加自变量</li>
+<li data-correct="true">B. 对Y做Box-Cox变换（如log变换）</li>
+<li data-correct="false">C. 删除异常点</li>
+<li data-correct="false">D. 使用非参数检验</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 残差呈喇叭口表示方差齐性不满足（异方差）。对Y做变换（如log/√Y）可以稳定方差。也可以使用加权最小二乘(WLS)。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q18.</span>ANOVA事后比较中，Tukey法和Dunnett法的区别是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,47)">
+<li data-correct="true">A. Tukey比较所有两两组合，Dunnett只与对照组比较</li>
+<li data-correct="false">B. Tukey更保守</li>
+<li data-correct="false">C. Dunnett功效更低</li>
+<li data-correct="false">D. 两者完全相同</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：A</span> Tukey：所有两两组合比较。Dunnett：每组只与对照组比较，比较次数少所以功效更高、更灵敏。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q19.</span>卡方检验中，每个单元格的期望频数应满足什么条件？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,48)">
+<li data-correct="false">A. ≥1</li>
+<li data-correct="true">B. ≥5</li>
+<li data-correct="false">C. ≥10</li>
+<li data-correct="false">D. ≥30</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 卡方检验要求每个单元格期望频数E≥5，否则近似不准确。如果E<5，可合并类别或使用Fisher精确检验。</div></div>
+
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q20.</span>六西格玛项目中，"软节省"（Soft Savings）指的是什么？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,49)">
+<li data-correct="false">A. 不计入财务的节省</li>
+<li data-correct="true">B. 难以直接量化的收益，如客户满意度提升、员工士气改善</li>
+<li data-correct="false">C. 间接的物料成本节省</li>
+<li data-correct="false">D. 未来可能的收益</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 硬节省=可直接量化的财务收益（减少报废、降低成本）。软节省=难以直接量化的收益（客户满意度、品牌形象、员工士气）。六西格玛项目主要核算硬节省。</div></div>
+</div>
+
+</div><!-- end main -->
+
+<div class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</div>
+
+<script>
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function showSection(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('main').scrollTo({top:0,behavior:'smooth'});
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(window.innerWidth<=768){
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('overlay').classList.remove('show');
+  }
+}
+function checkQuiz(e,idx){
+  const lis=e.target.closest('ul').querySelectorAll('li');
+  lis.forEach(li=>{
+    li.onclick=null;
+    if(li.dataset.correct==='true') li.classList.add('correct');
+    else if(li===e.target) li.classList.add('wrong');
+  });
+  const ans=e.target.closest('.quiz-q').querySelector('.quiz-answer');
+  ans.classList.add('show');
+}
+function searchContent(){
+  const q=document.getElementById('searchInput').value.toLowerCase();
+  if(!q){
+    document.querySelectorAll('.nav-item').forEach(n=>n.style.display='');
+    return;
+  }
+  document.querySelectorAll('.section').forEach(s=>{
+    if(s.textContent.toLowerCase().includes(q)){
+      const id=s.id;
+      document.querySelectorAll('.nav-item').forEach(n=>{
+        if(n.getAttribute('onclick')&&n.getAttribute('onclick').includes(id)) n.style.display='';
+        else n.style.display='none';
+      });
+    }
+  });
+}
+// Back to top
+window.addEventListener('scroll',function(){
+  document.getElementById('backTop').classList.toggle('show',window.scrollY>300);
+});
+// Show first section
+document.getElementById('overview').classList.add('active');
+document.querySelector('.nav-item').classList.add('active');
+</script>
+</body>
+</html>
