@@ -113,6 +113,7 @@ body{font-family:'Segoe UI','Microsoft YaHei',sans-serif;background:var(--bg);co
   </div>
   <div class="nav" id="navBar">
     <button class="nav-btn active" data-cat="all">📚 全部</button>
+    <button class="nav-btn" data-cat="essential">🧭 IE必学</button>
     <button class="nav-btn" data-cat="abbr">🔤 IE缩写库</button>
     <button class="nav-btn" data-cat="formula">📐 公式手册</button>
     <button class="nav-btn" data-cat="theory">🎓 基础理论</button>
@@ -168,6 +169,16 @@ const ABBR = [
   {abbr:"WBS",full:"Work Breakdown Structure",cn:"工作分解结构",cat:"管理",desc:"将项目逐层分解为可管理的工作包，用于项目计划和控制。",formula:"无",example:"新产品导入项目→设计/试产/量产三大模块→各模块细分任务"},
   {abbr:"ROI",full:"Return on Investment",cn:"投资回报率",cat:"管理",desc:"投资收益与投资成本的比率，用于评估改善方案的经济性。",formula:"ROI = (收益 - 投资成本) / 投资成本 × 100%",example:"投入10万，年节约15万→ROI=(15-10)/10=50%"},
   {abbr:"PMP",full:"Project Management Professional",cn:"项目管理专业人士",cat:"管理",desc:"国际认证的项目管理知识体系，包含五大过程组和十大知识领域。",formula:"无",example:"启动→规划→执行→监控→收尾"},
+  {abbr:"MES",full:"Manufacturing Execution System",cn:"制造执行系统",cat:"管理",desc:"连接ERP与车间控制层的执行系统，管理工单、报工、追溯、质量数据。",formula:"无",example:"MES扫码报工，任务绩效自动核算"},
+  {abbr:"WMS",full:"Warehouse Management System",cn:"仓储管理系统",cat:"管理",desc:"管理库位、批次、出入库作业和库存盘点的系统，是仓库数字化的核心。",formula:"无",example:"RFID扫码入库、库位自动分配、库龄自动统计"},
+  {abbr:"APS",full:"Advanced Planning and Scheduling",cn:"高级计划与排程",cat:"生产",desc:"考虑物料、产能、换型时间等约束，自动生成最优排产计划的系统。",formula:"无",example:"换型时间最短化排产，减少洗机损失"},
+  {abbr:"MPS",full:"Master Production Schedule",cn:"主生产计划",cat:"生产",desc:"确定最终产品在具体时段内的产出计划，是MRP的输入。",formula:"无",example:"月度MPS分解为周计划，驱动物料采购"},
+  {abbr:"S&OP",full:"Sales and Operations Planning",cn:"销售与运营计划",cat:"管理",desc:"平衡需求与供应的中长期决策流程，通常按月滚动召开会议对齐。",formula:"无",example:"月度S&OP会议对齐销售预测与产能"},
+  {abbr:"TPS",full:"Toyota Production System",cn:"丰田生产方式",cat:"精益",desc:"精益生产的源头体系，两大支柱：JIT准时制+自働化(Jidoka)。",formula:"无",example:"看板拉动+安灯停线+标准作业"},
+  {abbr:"QCC",full:"Quality Control Circle",cn:"品管圈/品质圈",cat:"质量",desc:"一线员工自发组成的小组，围绕现场问题开展持续改善活动。",formula:"无",example:"圈长带6人小组，3个月降低不良率20%"},
+  {abbr:"RTY",full:"Rolled Throughput Yield",cn:"滚动直通率",cat:"质量",desc:"各工序一次合格率的连乘积，反映全流程质量真实水平。",formula:"RTY = FPY₁ × FPY₂ × … × FPYₙ",example:"三道工序各98% → RTY=0.98³=94.1%"},
+  {abbr:"NPI",full:"New Product Introduction",cn:"新产品导入",cat:"管理",desc:"从设计验证到量产爬坡的完整流程，IE负责工时/线体/SOP。",formula:"无",example:"EVT→DVT→PVT→MP四阶段"},
+  {abbr:"OPE",full:"Overall Personnel Effectiveness",cn:"人员综合效率",cat:"生产",desc:"仿照OEE衡量人员效率：可用率×直接作业率×绩效率。",formula:"OPE = 可用率 × 作业率 × 绩效率",example:"出勤95%×直接作业85%×绩效110% → OPE=88.8%"},
 ];
 
 const FORMULA = [
@@ -186,6 +197,12 @@ const FORMULA = [
   {name:"效率提升率",cat:"方法",formula:"提升率 = (改善前工时 - 改善后工时) / 改善前工时 × 100%",desc:"衡量改善效果的标准计算方式。",example:"改善前60s→改善后48s→提升率=(60-48)/60=20%"},
   {name:"设备故障停机率",cat:"设备",formula:"故障停机率 = 故障停机时间 / (天数 × 24h × 设备台数) × 100%",desc:"衡量设备可靠性的综合指标。",example:"月故障累计120h，30天×24h×50台=36000h→停机率=0.33%"},
   {name:"宽放率构成",cat:"时间",formula:"宽放率 = 私事宽放(5%) + 疲劳宽放(5-10%) + 延迟宽放(3-5%)",desc:"标准工时的重要组成部分，需根据作业环境调整。",example:"站立作业+重物→疲劳宽放取10%→总宽放=5%+10%+3%=18%"},
+  {name:"产能计算",cat:"生产",formula:"产能 = 可用工作时间 ÷ 瓶颈工序CT",desc:"线体产能由瓶颈工序决定，改善非瓶颈工序不增加产能。",example:"可用450min，瓶颈CT=1.2min → 产能=375件/班"},
+  {name:"人员需求计算",cat:"生产",formula:"人员需求 = 日总标准工时 ÷（人均可用工时 × 出勤率 × 直接作业率）",desc:"PMC排人前的基本功，出勤率和直接作业率会放大需求人数。",example:"日总标准工时800h ÷ (10h×95%×85%) ≈ 99人"},
+  {name:"生产达成率",cat:"生产",formula:"达成率 = 实际产量 ÷ 计划产量 × 100%",desc:"衡量计划执行情况，连续偏低说明产能不足或计划不准。",example:"计划1000件，实际950件 → 达成率95%"},
+  {name:"滚动直通率RTY",cat:"质量",formula:"RTY = FPY₁ × FPY₂ × … × FPYₙ",desc:"全流程各工序一次合格率连乘，比最终检验合格率更能暴露过程损失。",example:"三道工序98%/97%/99% → RTY=94.1%"},
+  {name:"材料利用率",cat:"管理",formula:"利用率 = 理论用料量 ÷ 实际投料量 × 100%",desc:"衡量原料消耗水平，损耗率=1-利用率，是成本分析核心指标。",example:"理论需950kg，实际投1000kg → 利用率95%，损耗5%"},
+  {name:"盈亏平衡点",cat:"管理",formula:"BEP产量 = 固定成本 ÷（单价 - 单位变动成本）",desc:"产量超过BEP才开始盈利，IE改善通过降成本左移盈亏平衡点。",example:"固定成本100万，单价200元，单位变动成本150元 → BEP=2万件"},
 ];
 
 const THEORY = [
@@ -216,6 +233,22 @@ const SOFT = [
   {name:"项目管理",desc:"IE改善项目本质上是一个个小型项目，需掌握项目管理方法。",tips:["WBS分解：将项目拆成可管理的工作包","关键路径法：识别决定项目周期的关键工序","里程碑管理：设置阶段性检查点","风险预案：提前识别风险制定Plan B","收尾复盘：总结经验教训形成知识库"]},
 ];
 
+// ============ IE必学 ============
+const ESSENTIAL = [
+  {name:"IE概论：什么是工业工程",desc:"工业工程是对人员、物料、设备、能源和信息组成的集成系统进行设计、改善与设置的学科，目标：低成本、高效率、高质量。",points:["起源：1911年泰勒《科学管理原理》奠定科学管理；吉尔布雷斯夫妇开创动作研究","核心特征：系统工程思维+数据驱动，追求整体最优而非局部最优","知识体系：工作研究(基础IE)→设施规划、人因工程、生产计划、质量管理、物流工程","IE工程师三大职能：规划(产能/布局)、改善(降本增效)、评价(标准/绩效)","一句口诀：IE就是'用工程技术的方法解决管理问题'"]},
+  {name:"人机料法环测（4M1E/5M1E）",desc:"分析任何质量/效率问题的万能维度框架，也是鱼骨图的标准分支。",points:["人(Man)：技能、培训、疲劳、责任心","机(Machine)：设备状态、精度、保养、故障","料(Material)：来料批次、材质、稳定性","法(Method)：SOP、工艺参数、作业顺序","环(Environment)：温湿度、照度、粉尘、布局","测(Measurement)：量具精度、抽样方法、判定标准","用途：异常分析、鱼骨图、8D报告、FMEA均以此为骨架"]},
+  {name:"QC七大手法",desc:"质量改进最经典的七种统计工具，IE/QC岗位面试必考。口诀：查层柏，因散直控。",points:["检查表：系统收集数据，一切分析的起点","层别法：按人/机/料/班次分类对比，找出差异","柏拉图：按80/20法则抓主要问题（关键的少数）","因果图(鱼骨图)：围绕结果沿4M1E找根因","散布图：判断两个变量的相关性强弱","直方图：看数据分布形态，判断过程能力","控制图：区分普通原因/特殊原因，监控过程稳定性"]},
+  {name:"程序分析五大符号与四大工具",desc:"用标准符号记录整个生产流程，是方法研究的第一步。",points:["五大符号：○加工 ▽储存 D等待 →搬运 □检验","工艺程序图：只保留加工和检验，看总体流程合理性","流程程序图：含全部五种符号，重点分析搬运/等待","线路图：在厂区平面图上画物流路线，找交叉迂回","改善重点：优先消灭等待和搬运（不增值且占比最大）","配合ECRS：先问能否取消搬运/等待，再考虑合并重排"]},
+  {name:"人机作业分析",desc:"研究人与机器的时间配合，挖掘闲余能力，提高人机利用率。",points:["人机操作图：1人操作1台或多台机器的时间配合图","联合操作分析：多人共同操作1台设备/任务","双手操作图：研究单手空闲和双手不平衡","关键指标：人员利用率、机器利用率","一人多机计算：机器数 ≤ (机器自动时间 ÷ 人手动时间) + 1","改善方向：人闲时安排另一台机、机闲时安排检验等工作"]},
+  {name:"5×5W1H提问技术",desc:"对每个工序从目的/地点/时间/人员/方法逐项提问，是发现改善点的系统方法。",points:["目的(Why)：为什么做？能否取消？","地点(Where)：为什么在这做？换地点更好？","时间(When)：为什么这时做？调整顺序更好？","人员(Who)：为什么这人做？别人更合适？","方法(How)：为什么这样做？有更简单的方法？","每个维度连问5次为什么，逼近真正原因（5Why）","提问之后用ECRS四大原则落地改善"]},
+  {name:"工作抽样（抽查法）",desc:"随机瞬间观测现场，用统计比例推算各类活动时间构成，省时省力。",points:["原理：大数定律，观测次数足够多时频率≈概率","用途：间接人员工时、设备开动率、宽放率设定","样本量：n = 4×(1-P) ÷ (E²×P)（95%置信度）","例：预估开动率P=70%，允许误差E=±5% → n≈686次","实施步骤：定义活动分类→定观测次数→随机时刻→记录汇总","优点：不需连续观测、多对象同时进行；局限：无法测单项作业时间"]},
+  {name:"生产线布置形式对比",desc:"不同线体布局适用场景不同，选对形式是线体规划第一步。",points:["一字型：结构简单，物流直进直出，适合大件少工序","U型线：进出口同侧，一人可管首尾工序，人员弹性最大","S型/蛇形：充分利用空间，适合小件多工序","细胞(Cell)式：多能工围成小单元，独立性最强","U型线三大优点：①适应产量波动增减人 ②首尾衔接减少走动 ③视野开阔便于互助","布置原则：物流距离最短、避免交叉迂回、便于目视化管理"]},
+  {name:"产能与人员需求计算",desc:"PMC/IE日常最常用的两类计算，做计划前必算。",points:["线体产能 = 可用工作时间 ÷ 瓶颈工序CT","理论最少工位数 = Σ各工序时间 ÷ 节拍TT（向上取整）","人员需求 = 日总标准工时 ÷（人均可用工时 × 出勤率 × 直接作业率）","设备需求 = 日产量 × 单件CT ÷ 可用时间 ÷ 目标稼动率","算完做负荷平衡：产能>负荷→消化库存/培训；产能<负荷→加班/外协/改善瓶颈"]},
+  {name:"制造成本结构",desc:"IE改善最终都要落到钱上，必须懂成本构成。",points:["直接材料：原料+辅料（通常占比60-80%，降本空间最大）","直接人工：产线工人工资（IE提效率直接摊薄）","制造费用：设备折旧、能耗、间接人工、维修、耗材","单位成本 = 总成本 ÷ 合格产量","IE降本三抓手：提效率→降人工、降不良→省料、提稼动→摊薄折旧","改善收益 = (改善前单位成本 - 改善后单位成本) × 年产量"]},
+  {name:"新产品导入NPI流程",desc:"从设计到量产的标准路径，IE是NPI团队核心成员。",points:["EVT工程验证：验证功能设计，小批量手工样","DVT设计验证：验证可靠性，小批量试产","PVT生产验证：验证量产工艺，接近正式产线","MP量产：正式爬坡到目标产能","IE在NPI中的工作：工时预估、线体/工装规划、SOP编制、标准成本核算、产能爬坡跟踪"]},
+  {name:"IE工程师成长路径",desc:"从入门到资深的技能地图，规划职业发展。",points:["第1阶段·现场改善：5S、ECRS、标准工时、SOP（0-2年）","第2阶段·体系搭建：线平衡、作业测定体系、绩效体系（2-4年）","第3阶段·系统规划：设施规划SLP、精益体系、PMC体系（4-6年）","第4阶段·数字化：MES/数据驱动改善、仿真、智能排程（6年+）","证书加分：六西格玛绿带/黑带、PMP、IE工程师职称","硬技能：Excel/SQL数据分析、CAD布局图、仿真工具"]},
+];
+
 // ============ 每日一学 ============
 const DAILY = [
   {title:"OEE的三个乘数",content:"OEE = <b>可用率</b> × <b>性能率</b> × <b>良品率</b>。可用率关注设备是否在运行，性能率关注运行速度是否达标，良品率关注产出的产品是否合格。三者相乘才是真实的设备效率。世界级标准≥85%。",formula:"OEE = 可用率 × 性能率 × 良品率"},
@@ -238,10 +271,16 @@ const DAILY = [
   {title:"甘特图与关键路径",content:"项目管理中，<b>关键路径</b>是耗时最长的任务链，决定了项目最短工期。非关键路径有浮动时间。IE改善项目要重点关注关键路径上的任务，缩短它们才能缩短总工期。",formula:"项目工期 = 关键路径长度"},
   {title:"5S是改善起点",content:"5S不是大扫除，而是管理基础。通过整理减少障碍物→整顿减少寻找时间→清扫发现异常→清洁标准化→素养养成习惯。5S做不好的现场，IE改善方案也难以落地。",formula:"5S → 标准化 → 改善"},
   {title:"动作经济22原则精要",content:"①双手同时动作且反向对称；②动作距离最短；③减少动作等级（手指>手腕>前臂>上臂）；④利用重力/惯性/弹力；⑤物料工具定点定量；⑥利用夹具/导轨定位。核心：省力省时省空间。",formula:"减少动作等级 = 降低疲劳"},
+  {title:"人机料法环测",content:"遇到任何异常先按<b>4M1E</b>分层：人（技能/疲劳）、机（设备状态）、料（批次）、法（SOP参数）、环（温湿度）、测（量具方法）。每层问一次'有数据证明吗'，避免拍脑袋归因。鱼骨图的六大分支就是它。",formula:"4M1E + 测 = 5M1E"},
+  {title:"QC七大手法怎么选",content:"收集数据用<b>检查表</b>；分类对比用<b>层别法</b>；抓主要矛盾用<b>柏拉图</b>（80/20）；找根因用<b>鱼骨图</b>；看两变量关系用<b>散布图</b>；看分布形态用<b>直方图</b>；监控过程稳定性用<b>控制图</b>。口诀：查层柏、因散直控。",formula:"先层别 → 再柏拉图 → 后鱼骨图"},
+  {title:"U型线为什么好",content:"①<b>进出口同侧</b>：一人完成首尾工序，减少走动；②<b>弹性应对产量波动</b>：需求降时一人多工序，需求升时增员分工；③<b>视野开阔</b>：整条线状态一目了然，便于互助和目视化。适合多品种小批量。",formula:"U型线 = 弹性 + 单件流"},
+  {title:"人员需求怎么算",content:"<b>人员需求 = 日总标准工时 ÷（人均可用工时 × 出勤率 × 直接作业率）</b>。注意：出勤率和直接作业率都小于1，会放大需求人数。例如出勤95%、直接作业85%，日总标准工时800h → 约需99人。",formula:"人数 = ΣST ÷ (T × 出勤率 × 直接率)"},
+  {title:"程序分析五大符号",content:"○<b>加工</b>（改变性质，增值）、→<b>搬运</b>（改变位置）、□<b>检验</b>（判定质量）、D<b>等待</b>（滞留）、▽<b>储存</b>（受控存放）。统计发现：加工时间占比通常不足30%，搬运+等待常超50%——这就是改善金矿。",formula:"增值比 = 加工时间 ÷ 总时间"},
+  {title:"IE降本三抓手",content:"①提效率：标准工时改善、线平衡 → 摊薄<b>人工成本</b>；②降不良：提升FPY → 省<b>材料+返工成本</b>；③提稼动：减少停机换型 → 摊薄<b>折旧能耗</b>。所有改善最终换算成金额才有说服力。",formula:"收益 = Δ单位成本 × 年产量"},
 ];
 
 // ============ 渲染 ============
-const catNames = {abbr:"IE缩写库",formula:"公式手册",theory:"基础理论",soft:"软技能"};
+const catNames = {essential:"IE必学",abbr:"IE缩写库",formula:"公式手册",theory:"基础理论",soft:"软技能"};
 let currentCat = 'all';
 let searchTerm = '';
 
@@ -287,6 +326,16 @@ function renderTheory(list){
   `).join('');
 }
 
+function renderEssential(list){
+  return list.map(t=>`
+    <div class="theory-card">
+      <h3>🧭 ${t.name}</h3>
+      <div class="t-desc">${t.desc}</div>
+      <ul>${t.points.map(p=>`<li>${p}</li>`).join('')}</ul>
+    </div>
+  `).join('');
+}
+
 function renderSoft(list){
   return list.map(s=>`
     <div class="soft-card">
@@ -302,11 +351,19 @@ function filterData(){
   const match = (text)=> !s || text.toLowerCase().includes(s);
   let html = '';
   
+  const showEssential = currentCat==='all'||currentCat==='essential';
   const showAbbr = currentCat==='all'||currentCat==='abbr';
   const showFormula = currentCat==='all'||currentCat==='formula';
   const showTheory = currentCat==='all'||currentCat==='theory';
   const showSoft = currentCat==='all'||currentCat==='soft';
 
+  if(showEssential){
+    const list = ESSENTIAL.filter(t=>match(t.name)||match(t.desc)||t.points.some(p=>match(p)));
+    if(list.length){
+      html += `<div class="section-title">🧭 IE必学 <span class="count">${list.length}条</span></div>`;
+      html += `<div class="card-grid" style="grid-template-columns:repeat(auto-fill,minmax(380px,1fr))">${renderEssential(list)}</div>`;
+    }
+  }
   if(showAbbr){
     const list = ABBR.filter(a=>match(a.abbr)||match(a.full)||match(a.cn)||match(a.desc)||match(a.cat));
     if(list.length){
