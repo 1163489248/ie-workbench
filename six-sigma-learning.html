@@ -92,6 +92,9 @@ table{font-size:11px}th,td{padding:5px 6px}
 <div class="nav-item" onclick="showSection('overview')">📚 六西格玛概述</div>
 <div class="nav-item" onclick="showSection('dmaic')">🔄 DMAIC方法论</div>
 <div class="nav-item" onclick="showSection('statistics')">📊 统计学基础</div>
+<div class="nav-item" onclick="showSection('hypothesis')">🎲 假设检验</div>
+<div class="nav-item" onclick="showSection('regression')">📈 回归分析</div>
+<div class="nav-item" onclick="showSection('sampling')">🎯 抽样与样本量</div>
 <div class="nav-group-title">核心工具</div>
 <div class="nav-item" onclick="showSection('capability')">⚙️ 过程能力分析</div>
 <div class="nav-item" onclick="showSection('spc')">📈 SPC控制图</div>
@@ -101,6 +104,7 @@ table{font-size:11px}th,td{padding:5px 6px}
 <div class="nav-group-title">精益与工具</div>
 <div class="nav-item" onclick="showSection('lean')">🚀 精益六西格玛</div>
 <div class="nav-item" onclick="showSection('tools')">🛠️ 常用工具箱</div>
+<div class="nav-item" onclick="showSection('8d')">🧭 8D问题解决法</div>
 <div class="nav-group-title">参考资料</div>
 <div class="nav-item" onclick="showSection('formulas')">📋 公式手册</div>
 <div class="nav-item" onclick="showSection('glossary')">📖 术语表</div>
@@ -659,6 +663,171 @@ table{font-size:11px}th,td{padding:5px 6px}
 </div>
 
 <!-- ========== 过程能力分析 ========== -->
+<!-- ========== 假设检验详解 ========== -->
+<div class="section" id="hypothesis">
+<h2>🎲 假设检验详解</h2>
+
+<h3>一、基本原理</h3>
+<div class="card">
+<h4>1.1 两类假设</h4>
+<table>
+<tr><th>符号</th><th>名称</th><th>含义</th><th>默认立场</th></tr>
+<tr><td>H₀</td><td>原假设</td><td>没有差异/没有影响/相等</td><td>默认成立，除非证据充分</td></tr>
+<tr><td>H₁</td><td>备择假设</td><td>有差异/有影响/不相等</td><td>需要证据支持</td></tr>
+</table>
+<h4>1.2 两类错误</h4>
+<table>
+<tr><th>错误类型</th><th>定义</th><th>别称</th><th>控制方法</th></tr>
+<tr><td>第一类错误（α）</td><td>H₀为真却拒绝</td><td>生产者风险/误报</td><td>显著性水平，常取0.05</td></tr>
+<tr><td>第二类错误（β）</td><td>H₀为假却未拒绝</td><td>消费者风险/漏报</td><td>功效Power=1-β，目标≥0.80</td></tr>
+</table>
+<div class="highlight"><strong>记忆口诀：</strong>α是"冤枉好人"，β是"放过坏人"。降低α会升高β，除非增加样本量n。</div>
+</div>
+
+<h3>二、p值与判定规则</h3>
+<div class="card">
+<div class="formula"><span class="label">p值定义</span>在H₀为真的前提下，出现当前样本结果或更极端结果的概率</div>
+<div class="formula"><span class="label">判定规则</span>p &lt; α → 拒绝H₀（差异显著）；p ≥ α → 不能拒绝H₀</div>
+<div class="highlight"><strong>p值三大误区：</strong>①p值不是"H₀为真的概率"；②p&gt;0.05不等于"两者相同"，只是证据不足；③统计显著≠实际重要（大样本时微小差异也会显著）。</div>
+</div>
+
+<h3>三、检验方法选择路径</h3>
+<div class="card">
+<table>
+<tr><th>数据类型</th><th>比较对象</th><th>参数方法</th><th>非参数替代</th></tr>
+<tr><td rowspan="3">连续型（正态）</td><td>单组 vs 标准值</td><td>单样本t检验</td><td>符号检验 / Wilcoxon</td></tr>
+<tr><td>两组独立</td><td>独立双样本t检验</td><td>Mann-Whitney U</td></tr>
+<tr><td>两组配对</td><td>配对t检验</td><td>Wilcoxon符号秩</td></tr>
+<tr><td>连续型</td><td>三组及以上均值</td><td>ANOVA（F检验）</td><td>Kruskal-Wallis</td></tr>
+<tr><td>计数型（频数）</td><td>比例/关联性</td><td>卡方检验</td><td>Fisher精确检验</td></tr>
+<tr><td>连续型</td><td>方差齐性</td><td>Bartlett检验</td><td>Levene检验（非正态稳健）</td></tr>
+</table>
+<div class="highlight"><strong>选择三问：</strong>①数据是连续还是计数？②几组比较？③正态吗？方差齐吗？→ 正态用参数检验，非正态先试Box-Cox变换，仍不行用非参数检验。</div>
+</div>
+
+<h3>四、t检验实务</h3>
+<div class="card">
+<div class="formula"><span class="label">单样本t</span>t = (x̄ - μ₀) / (s/√n)，自由度df = n-1</div>
+<div class="formula"><span class="label">双样本t</span>t = (x̄₁ - x̄₂) / √(s₁²/n₁ + s₂²/n₂)</div>
+<div class="formula"><span class="label">配对t</span>t = d̄ / (s_d/√n)，d为每对数据之差</div>
+<h4>实例</h4>
+<p>改善后抽25件：均值20.05、标准差0.12、目标20.00 → t=(20.05-20.00)/(0.12/√25)=2.08，df=24，p≈0.048&lt;0.05，均值显著偏离目标，需要调整。</p>
+</div>
+
+<h3>五、ANOVA方差分析</h3>
+<div class="card">
+<h4>5.1 原理</h4>
+<p>比较3组及以上均值：把总变异分解为组间变异（处理引起）+组内变异（随机误差），用F值判断组间差异是否显著。</p>
+<div class="formula"><span class="label">F值</span>F = MS组间 / MS组内 = [SS组间/(k-1)] / [SS组内/(N-k)]</div>
+<h4>5.2 事后比较</h4>
+<table>
+<tr><th>方法</th><th>用途</th></tr>
+<tr><td>Tukey HSD</td><td>所有组两两比较（最常用）</td></tr>
+<tr><td>Dunnett</td><td>各组只与对照组比，功效更高</td></tr>
+<tr><td>Bonferroni</td><td>比较次数少时用，偏保守</td></tr>
+</table>
+<div class="highlight"><strong>注意：</strong>ANOVA显著只说明"至少有两组不同"，具体哪两组要看事后比较；多组反复做t检验会放大第一类错误。</div>
+</div>
+
+<h3>六、卡方检验</h3>
+<div class="card">
+<div class="formula"><span class="label">统计量</span>χ² = Σ (观测频数O - 期望频数E)² / E</div>
+<table>
+<tr><th>类型</th><th>用途</th><th>自由度</th></tr>
+<tr><td>拟合优度检验</td><td>实际分布 vs 理论分布</td><td>类别数-1</td></tr>
+<tr><td>独立性检验</td><td>两个分类变量是否相关</td><td>(行-1)×(列-1)</td></tr>
+</table>
+<p>使用条件：每个单元格期望频数E≥5，否则合并类别或改用Fisher精确检验。</p>
+</div>
+</div>
+
+<!-- ========== 回归与相关分析 ========== -->
+<div class="section" id="regression">
+<h2>📈 回归与相关分析</h2>
+
+<h3>一、相关分析</h3>
+<div class="card">
+<div class="formula"><span class="label">Pearson相关系数</span>r = Σ(xᵢ-x̄)(yᵢ-ȳ) / √[Σ(xᵢ-x̄)² · Σ(yᵢ-ȳ)²]</div>
+<table>
+<tr><th>|r|范围</th><th>线性相关强度</th></tr>
+<tr><td>0.0 ~ 0.3</td><td>弱相关</td></tr>
+<tr><td>0.3 ~ 0.7</td><td>中等相关</td></tr>
+<tr><td>0.7 ~ 1.0</td><td>强相关</td></tr>
+</table>
+<div class="highlight"><strong>三大纪律：</strong>①相关≠因果（冰淇淋销量与溺水人数同涨，真凶是夏天）；②r只度量线性关系，先画散布图再看r；③异常值会严重扭曲r，先剔除或分层处理。</div>
+</div>
+
+<h3>二、一元线性回归</h3>
+<div class="card">
+<div class="formula"><span class="label">模型</span>y = a + bx（最小二乘法：残差平方和最小）</div>
+<div class="formula"><span class="label">斜率</span>b = Σ(xᵢ-x̄)(yᵢ-ȳ) / Σ(xᵢ-x̄)²</div>
+<div class="formula"><span class="label">截距</span>a = ȳ - b·x̄</div>
+<div class="formula"><span class="label">决定系数</span>R² = SSR/SST（模型解释的变异比例；R²=0.85 → 自变量解释了85%的变异）</div>
+<p>回归显著性：对斜率b做t检验（H₀: b=0），或对整体做F检验，p&lt;0.05说明回归关系显著。</p>
+</div>
+
+<h3>三、残差分析（模型体检）</h3>
+<div class="card">
+<table>
+<tr><th>残差图形态</th><th>诊断结论</th><th>处理方法</th></tr>
+<tr><td>随机散布、无规律</td><td>模型合适 ✅</td><td>-</td></tr>
+<tr><td>喇叭口/漏斗形</td><td>异方差</td><td>对y做log/√变换</td></tr>
+<tr><td>弯曲趋势</td><td>缺高次项（非线性）</td><td>加x²项或响应面法</td></tr>
+<tr><td>随时间规律变化</td><td>自相关</td><td>检查过程稳定性/Durbin-Watson</td></tr>
+</table>
+</div>
+
+<h3>四、多元回归</h3>
+<div class="card">
+<div class="formula"><span class="label">模型</span>y = b₀ + b₁x₁ + b₂x₂ + … + bₖxₖ</div>
+<h4>多重共线性诊断</h4>
+<div class="formula"><span class="label">VIF方差膨胀因子</span>VIF = 1/(1-Rⱼ²)；VIF &gt; 10 → 严重共线性</div>
+<p>处理方法：删除高VIF变量、逐步回归、主成分回归、岭回归。</p>
+<h4>模型评价指标</h4>
+<table>
+<tr><th>指标</th><th>含义</th><th>要求</th></tr>
+<tr><td>调整R²</td><td>解释变异比例（惩罚变量个数）</td><td>越高越好</td></tr>
+<tr><td>残差标准误S</td><td>预测精度</td><td>越小越好</td></tr>
+<tr><td>各系数p值</td><td>变量显著性</td><td>&lt; 0.05</td></tr>
+</table>
+<div class="highlight"><strong>实务提醒：</strong>回归用于预测看R²和S，用于解释看系数p值；变量不是越多越好，遵循"少而精"，且一定要结合业务意义筛选。</div>
+</div>
+</div>
+
+<!-- ========== 抽样与样本量 ========== -->
+<div class="section" id="sampling">
+<h2>🎯 抽样与样本量</h2>
+
+<h3>一、抽样方法</h3>
+<div class="card">
+<table>
+<tr><th>方法</th><th>做法</th><th>适用场景</th></tr>
+<tr><td>简单随机抽样</td><td>每个个体等概率被抽中</td><td>总体均匀时</td></tr>
+<tr><td>分层抽样</td><td>先分组（班次/机台）再各组随机抽</td><td>组间差异明显（最推荐）</td></tr>
+<tr><td>系统抽样</td><td>每隔k个抽1个</td><td>流水线连续生产</td></tr>
+<tr><td>整群抽样</td><td>随机抽几批，整批检查</td><td>批内均匀、运输成本高</td></tr>
+</table>
+</div>
+
+<h3>二、中心极限定理与置信区间</h3>
+<div class="card">
+<div class="highlight"><strong>中心极限定理（CLT）：</strong>无论总体服从什么分布，当n≥30时，样本均值的抽样分布近似正态分布 N(μ, σ/√n)。这是所有均值推断的理论基石。</div>
+<div class="formula"><span class="label">均值的95%置信区间</span>x̄ ± 1.96 × (s/√n)</div>
+<p>例：n=36，x̄=50.2，s=3 → CI = 50.2 ± 1.96×(3/6) = [49.2, 51.2]，有95%把握总体均值在此区间内。</p>
+</div>
+
+<h3>三、样本量计算</h3>
+<div class="card">
+<h4>估计均值所需样本量</h4>
+<div class="formula"><span class="label">公式</span>n = (Z·σ/E)²，E为允许误差</div>
+<p>例：σ=2.5，希望误差E≤0.5（95%置信）：n=(1.96×2.5/0.5)²≈96件。</p>
+<h4>估计不良率所需样本量</h4>
+<div class="formula"><span class="label">公式</span>n = Z²·p(1-p)/E²</div>
+<p>例：预估p=5%，误差±2%：n=1.96²×0.05×0.95/0.02²≈451件。</p>
+<div class="highlight"><strong>实务要点：</strong>①σ未知先做预试验（试抽20~30件估计）；②p未知时取p=0.5最保守（n最大）；③样本量翻4倍，误差才减半（误差∝1/√n），成本效率递减。</div>
+</div>
+</div>
+
 <div class="section" id="capability">
 <h2>⚙️ 过程能力分析</h2>
 
@@ -1261,6 +1430,39 @@ Why1 → 保险丝断了 → Why2 → 轴承过热 → Why3 → 润滑不足 →
 </div>
 
 <!-- ========== 公式手册 ========== -->
+<!-- ========== 8D问题解决法 ========== -->
+<div class="section" id="8d">
+<h2>🧭 8D问题解决法</h2>
+<p>汽车行业（福特首创）的标准质量问题解决框架，客户投诉与重大质量事故报告的标配格式，与DMAIC互补。</p>
+
+<div class="card">
+<table>
+<tr><th>步骤</th><th>名称</th><th>核心任务</th><th>常用工具</th></tr>
+<tr><td>D1</td><td>组建团队</td><td>跨部门5-7人，指定组长与冠军</td><td>团队章程</td></tr>
+<tr><td>D2</td><td>描述问题</td><td>5W2H量化描述（何物/何处/何时/多少）</td><td>5W2H、Is/Is-Not分析</td></tr>
+<tr><td>D3</td><td>临时围堵</td><td>隔离可疑品，保护客户（24-48h内完成）</td><td>全检、追溯筛选</td></tr>
+<tr><td>D4</td><td>根因分析</td><td>找发生根因+流出根因（为什么没拦住）</td><td>5Why、鱼骨图、DOE验证</td></tr>
+<tr><td>D5</td><td>永久对策</td><td>针对根因制定对策，评估风险与成本</td><td>防错设计、SOP修订</td></tr>
+<tr><td>D6</td><td>实施验证</td><td>执行对策，用数据验证有效</td><td>前后对比、Cpk复测</td></tr>
+<tr><td>D7</td><td>预防再发</td><td>更新FMEA/控制计划/标准，水平展开</td><td>体系文件更新</td></tr>
+<tr><td>D8</td><td>团队认可</td><td>总结经验，表彰团队</td><td>经验库归档</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h4>8D与DMAIC对应关系</h4>
+<table>
+<tr><th>8D</th><th>DMAIC</th><th>说明</th></tr>
+<tr><td>D1-D2</td><td>Define</td><td>定义问题与团队</td></tr>
+<tr><td>D3</td><td>-</td><td>8D特有：临时围堵措施（先保护客户再找根因）</td></tr>
+<tr><td>D4</td><td>Measure + Analyze</td><td>数据收集 + 根因分析</td></tr>
+<tr><td>D5-D6</td><td>Improve</td><td>对策制定与效果验证</td></tr>
+<tr><td>D7</td><td>Control</td><td>标准化、防再发、水平展开</td></tr>
+</table>
+<div class="highlight"><strong>核心口诀：</strong>D4要问两次根因——"为什么会发生？"和"为什么流出到客户？"；D7水平展开（举一反三推广到类似产品/工序）是多数团队最容易漏掉的步骤。</div>
+</div>
+</div>
+
 <div class="section" id="formulas">
 <h2>📋 公式手册</h2>
 
@@ -1351,11 +1553,14 @@ Why1 → 保险丝断了 → Why2 → 轴承过热 → Why3 → 润滑不足 →
 <table>
 <tr><th>缩写</th><th>英文全称</th><th>中文</th><th>简要说明</th></tr>
 <tr><td>ANOVA</td><td>Analysis of Variance</td><td>方差分析</td><td>比较多组均值差异的统计方法</td></tr>
+<tr><td>AQL</td><td>Acceptable Quality Limit</td><td>可接受质量限</td><td>抽样检验中认为可接受的批质量上限</td></tr>
 <tr><td>BB</td><td>Black Belt</td><td>黑带</td><td>六西格玛高级专家，全职领导项目</td></tr>
 <tr><td>CCD</td><td>Central Composite Design</td><td>中心复合设计</td><td>响应面法常用试验设计</td></tr>
 <tr><td>CE Matrix</td><td>Cause and Effect Matrix</td><td>因果矩阵</td><td>筛选关键输入变量的工具</td></tr>
+<tr><td>CI</td><td>Confidence Interval</td><td>置信区间</td><td>以给定概率包含总体参数的区间</td></tr>
 <tr><td>CL</td><td>Center Line</td><td>中心线</td><td>控制图中心参考线</td></tr>
 <tr><td>CLT</td><td>Central Limit Theorem</td><td>中心极限定理</td><td>样本均值趋近正态分布的定理</td></tr>
+<tr><td>Cohen's d</td><td>Standardized Effect Size</td><td>标准化效应量</td><td>均值差异以标准差为单位的大小，0.8为大</td></tr>
 <tr><td>Cp</td><td>Process Capability Index</td><td>过程能力指数</td><td>衡量潜在过程能力</td></tr>
 <tr><td>Cpk</td><td>Process Capability Index</td><td>实际过程能力指数</td><td>考虑中心偏移的过程能力</td></tr>
 <tr><td>CTQ</td><td>Critical to Quality</td><td>关键质量特性</td><td>客户最关心的质量指标</td></tr>
@@ -1367,6 +1572,7 @@ Why1 → 保险丝断了 → Why2 → 轴承过热 → Why3 → 润滑不足 →
 <tr><td>DPO</td><td>Defects Per Opportunity</td><td>每机会缺陷数</td><td>DPMO/1,000,000</td></tr>
 <tr><td>DPU</td><td>Defects Per Unit</td><td>每单位缺陷数</td><td>缺陷总数/产品数</td></tr>
 <tr><td>EV</td><td>Equipment Variation</td><td>设备变异</td><td>MSA中的重复性</td></tr>
+<tr><td>Fisher</td><td>Fisher Exact Test</td><td>Fisher精确检验</td><td>期望频数<5时替代卡方的精确方法</td></tr>
 <tr><td>FMEA</td><td>Failure Mode and Effects Analysis</td><td>失效模式与效应分析</td><td>风险分析工具</td></tr>
 <tr><td>GB</td><td>Green Belt</td><td>绿带</td><td>六西格玛中级，兼职做项目</td></tr>
 <tr><td>GR&R</td><td>Gage Repeatability & Reproducibility</td><td>量具重复性和再现性</td><td>MSA核心方法</td></tr>
@@ -1378,23 +1584,32 @@ Why1 → 保险丝断了 → Why2 → 轴承过热 → Why3 → 润滑不足 →
 <tr><td>LSL</td><td>Lower Specification Limit</td><td>规格下限</td><td>客户要求的最低值</td></tr>
 <tr><td>MBB</td><td>Master Black Belt</td><td>黑带大师</td><td>六西格玛最高级别</td></tr>
 <tr><td>MSA</td><td>Measurement System Analysis</td><td>测量系统分析</td><td>评估测量系统可靠性</td></tr>
+<tr><td>MSE</td><td>Mean Squared Error</td><td>均方误差</td><td>ANOVA中平方和除以自由度的方差估计</td></tr>
 <tr><td>NDC</td><td>Number of Distinct Categories</td><td>区分度</td><td>MSA中测量系统区分能力</td></tr>
+<tr><td>OC曲线</td><td>Operating Characteristic Curve</td><td>抽检特性曲线</td><td>批接受概率与批质量的关系曲线</td></tr>
 <tr><td>OEE</td><td>Overall Equipment Effectiveness</td><td>设备综合效率</td><td>可用率×性能率×质量率</td></tr>
 <tr><td>OFAT</td><td>One Factor At a Time</td><td>一次一因子法</td><td>效率低于DOE的传统方法</td></tr>
 <tr><td>Pareto</td><td>—</td><td>帕累托图</td><td>80/20法则可视化工具</td></tr>
 <tr><td>PM</td><td>Preventive Maintenance</td><td>预防性维护</td><td>定期维护防故障</td></tr>
 <tr><td>Poka-Yoke</td><td>Mistake Proofing</td><td>防错</td><td>使错误不可能发生的装置</td></tr>
+<tr><td>Power</td><td>Power of Test</td><td>检验功效</td><td>1-β，差异真实存在时被检出的概率</td></tr>
 <tr><td>PPM</td><td>Parts Per Million</td><td>百万分之</td><td>缺陷率单位</td></tr>
 <tr><td>RPN</td><td>Risk Priority Number</td><td>风险优先数</td><td>FMEA中S×O×D</td></tr>
 <tr><td>RSM</td><td>Response Surface Methodology</td><td>响应面方法</td><td>DOE优化方法</td></tr>
+<tr><td>RSM</td><td>Response Surface Methodology</td><td>响应面法</td><td>含曲率的最优化试验设计方法</td></tr>
 <tr><td>SIPOC</td><td>Supplier-Input-Process-Output-Customer</td><td>高阶流程图</td><td>过程概览工具</td></tr>
 <tr><td>SMED</td><td>Single Minute Exchange of Die</td><td>快速换模</td><td>10分钟内完成换型</td></tr>
 <tr><td>SNR</td><td>Signal-to-Noise Ratio</td><td>信噪比</td><td>田口方法中的稳健性指标</td></tr>
+<tr><td>SNR</td><td>Signal-to-Noise Ratio</td><td>信噪比</td><td>田口方法核心指标，望目/望大/望小</td></tr>
 <tr><td>SPC</td><td>Statistical Process Control</td><td>统计过程控制</td><td>用控制图监控过程</td></tr>
+<tr><td>SS</td><td>Sum of Squares</td><td>平方和</td><td>ANOVA中变异的度量（组间/组内/总）</td></tr>
 <tr><td>SST</td><td>Sum of Squares Total</td><td>总平方和</td><td>ANOVA中的总变异</td></tr>
+<tr><td>Tukey</td><td>Tukey HSD</td><td>事后多重比较</td><td>ANOVA显著后的两两比较方法</td></tr>
 <tr><td>USL</td><td>Upper Specification Limit</td><td>规格上限</td><td>客户要求的最高值</td></tr>
+<tr><td>VIF</td><td>Variance Inflation Factor</td><td>方差膨胀因子</td><td>共线性诊断，VIF>10为严重</td></tr>
 <tr><td>VOC</td><td>Voice of Customer</td><td>客户之声</td><td>收集客户需求的方法</td></tr>
 <tr><td>VSM</td><td>Value Stream Mapping</td><td>价值流图</td><td>可视化流程分析工具</td></tr>
+<tr><td>Welch t</td><td>Welch's t-test</td><td>Welch t检验</td><td>方差不齐时的双样本t检验</td></tr>
 <tr><td>YB</td><td>Yellow Belt</td><td>黄带</td><td>六西格玛入门级</td></tr>
 <tr><td>5S</td><td>Sort-Set-Shine-Standardize-Sustain</td><td>整理-整顿-清扫-清洁-素养</td><td>工作场所管理基础</td></tr>
 <tr><td>5 Why</td><td>—</td><td>5个为什么</td><td>根因分析工具</td></tr>
@@ -1404,7 +1619,7 @@ Why1 → 保险丝断了 → Why2 → 轴承过热 → Why3 → 润滑不足 →
 
 <!-- ========== 绿带题库 ========== -->
 <div class="section" id="quiz-green">
-<h2>🟢 绿带题库（30题）</h2>
+<h2>🟢 绿带题库（50题）</h2>
 <p style="color:var(--dim)">点击选项查看答案</p>
 
 <div class="quiz-q"><div class="q-text"><span class="q-num">Q1.</span>六西格玛的缺陷率目标是多少DPMO？</div>
@@ -1676,11 +1891,172 @@ Why1 → 保险丝断了 → Why2 → 轴承过热 → Why3 → 润滑不足 →
 <li data-correct="false">D. 1年以上</li>
 </ul>
 <div class="quiz-answer"><span class="ans-label">答案：C</span> 六西格玛项目通常4-6个月完成。Define(2-4周)→Measure(4-6周)→Analyze(4-6周)→Improve(6-8周)→Control(4-6周)。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q31.</span>配对t检验适用于什么场景？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,50)">
+<li data-correct="false">A. 两组完全独立的样本</li>
+<li data-correct="true">B. 同一对象处理前后的比较</li>
+<li data-correct="false">C. 三组及以上均值比较</li>
+<li data-correct="false">D. 两个比例的比较</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 配对设计（同一对象前后/同一批次两台仪器）消除了对象间差异，比独立双样本更灵敏。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q32.</span>Mann-Whitney U检验是哪种方法的非参数替代？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,51)">
+<li data-correct="false">A. 单样本t检验</li>
+<li data-correct="false">B. 配对t检验</li>
+<li data-correct="true">C. 独立双样本t检验</li>
+<li data-correct="false">D. ANOVA</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：C</span> Mann-Whitney U基于秩次比较两组独立样本，不要求数据正态，是双样本t的非参数版本。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q33.</span>ANOVA的原假设H₀是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,52)">
+<li data-correct="false">A. 所有组均值全不相等</li>
+<li data-correct="true">B. 所有组均值相等</li>
+<li data-correct="false">C. 至少两组均值不等</li>
+<li data-correct="false">D. 所有组方差为零</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> ANOVA的H₀：各组均值全部相等；拒绝后才说明至少有一组不同，需事后比较定位。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q34.</span>卡方独立性检验中2×3列联表的自由度是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,53)">
+<li data-correct="false">A. 6</li>
+<li data-correct="false">B. 5</li>
+<li data-correct="true">C. 2</li>
+<li data-correct="false">D. 1</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：C</span> df=(行-1)×(列-1)=(2-1)×(3-1)=2。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q35.</span>检验功效（Power）的含义是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,54)">
+<li data-correct="false">A. H₀为真时正确保留的概率</li>
+<li data-correct="true">B. H₀为假时正确拒绝的概率</li>
+<li data-correct="false">C. 犯第一类错误的概率</li>
+<li data-correct="false">D. 犯第二类错误的概率</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> Power=1-β，表示差异真实存在时能把它检测出来的概率，六西格玛项目通常要求≥0.80。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q36.</span>相关系数r=-0.85说明两变量之间是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,55)">
+<li data-correct="false">A. 强正相关</li>
+<li data-correct="false">B. 弱正相关</li>
+<li data-correct="true">C. 强负相关</li>
+<li data-correct="false">D. 不相关</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：C</span> 符号表示方向（负相关：x增大y减小），|r|=0.85属于强相关。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q37.</span>R²=0.72的正确解读是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,56)">
+<li data-correct="false">A. 模型预测准确率为72%</li>
+<li data-correct="true">B. 自变量解释了因变量72%的变异</li>
+<li data-correct="false">C. 72%的数据在回归线上</li>
+<li data-correct="false">D. 回归系数为0.72</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> R²（决定系数）=SSR/SST，表示回归模型解释的总变异比例，不是预测准确率。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q38.</span>残差图呈'喇叭口'（漏斗形）说明存在什么问题？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,57)">
+<li data-correct="false">A. 存在异常值</li>
+<li data-correct="true">B. 异方差</li>
+<li data-correct="false">C. 非线性关系</li>
+<li data-correct="false">D. 自相关</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 残差随预测值增大而发散，说明方差不等（异方差），可对y做log/√变换稳定方差。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q39.</span>样本量从100增加到400，均值的标准误变为原来的？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,58)">
+<li data-correct="false">A. 1/4</li>
+<li data-correct="true">B. 1/2</li>
+<li data-correct="false">C. 不变</li>
+<li data-correct="false">D. 2倍</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 标准误=s/√n，n扩大4倍则√n扩大2倍，标准误缩小为1/2。误差∝1/√n。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q40.</span>样本量公式n=(Z·σ/E)²中的E表示？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,59)">
+<li data-correct="false">A. 总体标准差</li>
+<li data-correct="true">B. 允许误差</li>
+<li data-correct="false">C. 置信水平</li>
+<li data-correct="false">D. 期望值</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> E是可接受的估计误差（精度要求），E越小所需样本量按平方倍增加。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q41.</span>8D中D3'临时围堵措施'的主要目的是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,60)">
+<li data-correct="false">A. 彻底消除根因</li>
+<li data-correct="true">B. 保护客户不再收到可疑品</li>
+<li data-correct="false">C. 降低调查成本</li>
+<li data-correct="false">D. 表彰团队</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 围堵是应急动作：先隔离/全检/冻结，防止问题继续流出，根因消除靠D5永久对策。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q42.</span>8D报告的D4根因分析通常要求找出几类根因？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,61)">
+<li data-correct="false">A. 1类：发生根因</li>
+<li data-correct="true">B. 2类：发生根因+流出根因</li>
+<li data-correct="false">C. 3类：发生+流出+体系根因</li>
+<li data-correct="false">D. 不需要找根因</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 发生根因（为什么产生）+流出根因（为什么检测系统没拦住），两类都要有对策。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q43.</span>分层抽样相比简单随机抽样的优势是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,62)">
+<li data-correct="false">A. 速度更快</li>
+<li data-correct="true">B. 保证各子群体代表性、降低抽样误差</li>
+<li data-correct="false">C. 不需要随机数</li>
+<li data-correct="false">D. 所需样本更少</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 先按班次/机台/供应商分层再抽样，确保每层都被代表，特别适合组间差异明显的总体。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q44.</span>95%置信区间[49.2, 51.2]的正确理解是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,63)">
+<li data-correct="false">A. 95%的数据落在这个区间</li>
+<li data-correct="true">B. 有95%的把握总体均值在这个区间内</li>
+<li data-correct="false">C. 样本均值有95%概率正确</li>
+<li data-correct="false">D. 总体均值以95%概率变动</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 置信区间针对总体参数（均值）而非个体数据；严格表述是「重复抽样构造的区间中95%会覆盖真值」。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q45.</span>什么情况下应使用Fisher精确检验替代卡方检验？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,64)">
+<li data-correct="false">A. 样本量大于1000</li>
+<li data-correct="true">B. 单元格期望频数小于5</li>
+<li data-correct="false">C. 自由度大于10</li>
+<li data-correct="false">D. 数据为连续型</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 卡方检验是近似方法，要求每个单元格期望频数E≥5；不满足时合并类别或用Fisher精确检验。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q46.</span>回归分析中，对斜率b做t检验的原假设是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,65)">
+<li data-correct="true">A. b=0</li>
+<li data-correct="false">B. b=1</li>
+<li data-correct="false">C. b>0</li>
+<li data-correct="false">D. R²=0</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：A</span> H₀:b=0表示x对y无线性影响；拒绝H₀说明回归关系显著。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q47.</span>Tukey HSD用于什么场景？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,66)">
+<li data-correct="false">A. 方差齐性检验</li>
+<li data-correct="true">B. ANOVA显著后的多组两两比较</li>
+<li data-correct="false">C. 正态性检验</li>
+<li data-correct="false">D. 样本量计算</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> ANOVA整体显著后，用Tukey HSD做事后两两比较，控制整体第一类错误。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q48.</span>中心极限定理告诉我们，当n≥30时？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,67)">
+<li data-correct="false">A. 总体变为正态分布</li>
+<li data-correct="true">B. 样本均值的分布近似正态</li>
+<li data-correct="false">C. 数据没有变异</li>
+<li data-correct="false">D. 标准差等于0</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> CLT说的是样本均值（统计量）的分布趋于正态 N(μ, σ/√n)，不是原始数据变正态。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q49.</span>下列哪个属于'未充分利用人才'的浪费？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,68)">
+<li data-correct="false">A. 库存积压</li>
+<li data-correct="true">B. 让资深员工只做简单重复工作</li>
+<li data-correct="false">C. 等待物料到货</li>
+<li data-correct="false">D. 过度包装</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 八大浪费中的人才浪费：技能与岗位不匹配、不采纳一线改善建议，是隐性最大的浪费。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q50.</span>六西格玛项目验证改善效果的正确做法是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,69)">
+<li data-correct="false">A. 改善后随便抽检一次即可</li>
+<li data-correct="true">B. 改善前后用相同方法收集数据并做统计对比</li>
+<li data-correct="false">C. 凭现场感觉判断</li>
+<li data-correct="false">D. 只看改善当天数据</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 正确评价=同口径数据+足够样本+假设检验（或置信区间）对比，避免被普通波动迷惑。</div></div>
+
 </div>
 
 <!-- ========== 黑带题库 ========== -->
 <div class="section" id="quiz-black">
-<h2>⚫ 黑带题库（20题）</h2>
+<h2>⚫ 黑带题库（40题）</h2>
 <p style="color:var(--dim)">黑带级别需要更深入的统计学理解和综合应用能力</p>
 
 <div class="quiz-q"><div class="q-text"><span class="q-num">Q1.</span>2³全因子设计加3个中心点，共需要多少次试验（重复1次）？</div>
@@ -1862,6 +2238,167 @@ Why1 → 保险丝断了 → Why2 → 轴承过热 → Why3 → 润滑不足 →
 <li data-correct="false">D. 未来可能的收益</li>
 </ul>
 <div class="quiz-answer"><span class="ans-label">答案：B</span> 硬节省=可直接量化的财务收益（减少报废、降低成本）。软节省=难以直接量化的收益（客户满意度、品牌形象、员工士气）。六西格玛项目主要核算硬节省。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q21.</span>双样本t检验之前，应先进行什么检验？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,70)">
+<li data-correct="true">A. 正态性检验和方差齐性检验</li>
+<li data-correct="false">B. 卡方检验</li>
+<li data-correct="false">C. 回归分析</li>
+<li data-correct="false">D. Tukey检验</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：A</span> 参数检验前提：正态性（Anderson-Darling）+方差齐性（Levene/Bartlett），前提不满足用Welch t或非参数。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q22.</span>Welch's t检验适用于什么情况？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,71)">
+<li data-correct="false">A. 两组方差齐次</li>
+<li data-correct="true">B. 两组方差不齐</li>
+<li data-correct="false">C. 配对数据</li>
+<li data-correct="false">D. 比例比较</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> Welch t不合并方差、分别用各组方差，是方差不齐时双样本比较的稳健选择（Minitab默认输出）。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q23.</span>α=0.05而真实差异极小时，不断增大样本量会导致？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,72)">
+<li data-correct="true">A. 更容易拒绝H₀，即使差异无实际意义</li>
+<li data-correct="false">B. 更难拒绝H₀</li>
+<li data-correct="false">C. 第二类错误增大</li>
+<li data-correct="false">D. 毫无影响</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：A</span> 大样本下微小差异也会'统计显著'，务必同时报告效应量（Cohen's d）判断实际意义。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q24.</span>5组均值两两做t检验共10次（每次α=0.05），整体第一类错误率约为？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,73)">
+<li data-correct="false">A. 5%</li>
+<li data-correct="false">B. 10%</li>
+<li data-correct="true">C. 40%</li>
+<li data-correct="false">D. 95%</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：C</span> 整体α=1-(0.95)¹⁰≈40%，这就是多重比较问题，应改用ANOVA+Tukey。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q25.</span>一元线性回归中R²与相关系数r的关系是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,74)">
+<li data-correct="false">A. R²=r</li>
+<li data-correct="true">B. R²=r²</li>
+<li data-correct="false">C. R²=√r</li>
+<li data-correct="false">D. 两者无关</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 一元回归中R²=r²（r取绝对值）。r=0.9则R²=0.81。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q26.</span>回归预测中的'外推风险'指什么？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,75)">
+<li data-correct="false">A. 样本量不足</li>
+<li data-correct="true">B. 在自变量观测范围之外预测，可靠性急剧下降</li>
+<li data-correct="false">C. 残差不正态</li>
+<li data-correct="false">D. 多重共线性</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 回归关系只在观测数据范围内可信，超出范围的预测没有数据支撑，可能完全错误。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q27.</span>岭回归（Ridge Regression）的主要作用是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,76)">
+<li data-correct="false">A. 提高R²</li>
+<li data-correct="true">B. 处理多重共线性的有偏估计方法</li>
+<li data-correct="false">C. 自动剔除异常值</li>
+<li data-correct="false">D. 拟合非线性关系</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 岭回归给系数加L2惩罚项，牺牲少量偏差换取方差大幅下降，适合共线性严重的数据。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q28.</span>逐步回归（Stepwise）的主要风险是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,77)">
+<li data-correct="false">A. 计算太慢</li>
+<li data-correct="true">B. 纯数据驱动，可能选入巧合变量而忽略业务逻辑</li>
+<li data-correct="false">C. 要求样本量太大</li>
+<li data-correct="false">D. 不能处理共线性</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 变量筛选必须结合专业知识；纯统计筛选在样本变化时结果不稳定。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q29.</span>抽样检验中AQL的含义是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,78)">
+<li data-correct="true">A. 可接受质量限</li>
+<li data-correct="false">B. 平均质量水平</li>
+<li data-correct="false">C. 批最大允许不合格数</li>
+<li data-correct="false">D. 出厂质量水平</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：A</span> AQL是供需双方约定的、认为可接受的批质量上限（用不合格率表示），是抽检方案的核心参数。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q30.</span>OC曲线（抽检特性曲线）描述的是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,79)">
+<li data-correct="false">A. 成本与质量的关系</li>
+<li data-correct="true">B. 批接受概率与批质量（不合格率）的关系</li>
+<li data-correct="false">C. 控制限与规格限的关系</li>
+<li data-correct="false">D. 功效与样本量的关系</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> OC曲线展示：给定抽样方案下，不同质量水平的批被接受的机会，是评价抽检方案鉴别力的工具。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q31.</span>二次抽样方案的主要优点是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,80)">
+<li data-correct="false">A. 等于全检</li>
+<li data-correct="true">B. 第一次结果可疑时才抽第二样本，平均检验量更少</li>
+<li data-correct="false">C. 绝对不会误判</li>
+<li data-correct="false">D. 不需要AQL</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 质量明显好或差的批一次判定，可疑批才加抽，平均总检验量低于一次抽样。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q32.</span>估计比例p时若完全未知，样本量计算通常取p=？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,81)">
+<li data-correct="false">A. 0.01</li>
+<li data-correct="false">B. 0.25</li>
+<li data-correct="true">C. 0.5</li>
+<li data-correct="false">D. 0.99</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：C</span> p=0.5时p(1-p)最大，算出的n最大（最保守），保证任何真实p都够用。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q33.</span>8D与DMAIC最大的差异点是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,82)">
+<li data-correct="false">A. 8D需要跨部门团队</li>
+<li data-correct="true">B. 8D强调D3临时围堵措施</li>
+<li data-correct="false">C. DMAIC有控制阶段</li>
+<li data-correct="false">D. 8D只用于设计阶段</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> D3围堵（先保护客户）是8D作为客诉响应工具的鲜明特色；DMAIC通常不强制临时措施。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q34.</span>FMEA与8D的正确关系是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,83)">
+<li data-correct="false">A. 互不相干</li>
+<li data-correct="true">B. 8D的D7预防阶段应回头更新FMEA</li>
+<li data-correct="false">C. FMEA可以取代8D</li>
+<li data-correct="false">D. 两者都是检验方法</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 问题关闭的标志之一：把新失效模式/新原因补进FMEA并调整探测度评分，防止再发。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q35.</span>Box-Cox变换的主要目的是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,84)">
+<li data-correct="false">A. 让均值变大</li>
+<li data-correct="true">B. 把非正态数据变换为接近正态</li>
+<li data-correct="false">C. 自动剔除异常值</li>
+<li data-correct="false">D. 减少样本需求</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 很多统计方法要求正态性，Box-Cox通过幂变换（λ）让数据接近正态，λ=0即对数变换。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q36.</span>统计显著性与实际显著性的关系，正确说法是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,85)">
+<li data-correct="false">A. 统计显著则必然实际显著</li>
+<li data-correct="true">B. 统计显著只说明差异不像偶然，是否重要要看效应量</li>
+<li data-correct="false">C. 两者完全等价</li>
+<li data-correct="false">D. 实际显著必然统计显著</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 判断实际意义看效应量（Cohen's d等）和业务影响，p值只回答'像不像碰巧'。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q37.</span>Cohen's d=0.8通常解释为？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,86)">
+<li data-correct="false">A. 小效应</li>
+<li data-correct="false">B. 中等效应</li>
+<li data-correct="true">C. 大效应</li>
+<li data-correct="false">D. 无效应</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：C</span> 常用标准：0.2小、0.5中、0.8大。效应量是功效分析和结果解读的关键。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q38.</span>95%置信区间[49.2,51.2]与检验H₀:μ=50（α=0.05）的关系？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,87)">
+<li data-correct="true">A. 50在区间内→不能拒绝H₀</li>
+<li data-correct="false">B. 50在区间内→拒绝H₀</li>
+<li data-correct="false">C. 区间与检验无关</li>
+<li data-correct="false">D. 必须算p值才能判断</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：A</span> 双侧检验与置信区间等价：参数假设值落在区间内则不能拒绝，落在区间外则拒绝。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q39.</span>测量系统不合格（%GR&R>30%）时直接做假设检验，会导致？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,88)">
+<li data-correct="false">A. 功效自动提高</li>
+<li data-correct="true">B. 测量噪声混入数据，可能掩盖真实差异或产生假显著</li>
+<li data-correct="false">C. 结果更准确</li>
+<li data-correct="false">D. α自动变小</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：B</span> 垃圾进垃圾出：先做MSA确保测量系统可靠，再收集数据做检验，这是Measure阶段的标准顺序。</div></div>
+<div class="quiz-q"><div class="q-text"><span class="q-num">Q40.</span>精益六西格玛DMAIC各阶段与工具的配对，错误的是？</div>
+<ul class="quiz-options" onclick="checkQuiz(event,89)">
+<li data-correct="false">A. D阶段：VOC/CTQ</li>
+<li data-correct="false">B. M阶段：MSA/基线数据</li>
+<li data-correct="false">C. A阶段：假设检验/回归</li>
+<li data-correct="true">D. I阶段：控制图</li>
+</ul>
+<div class="quiz-answer"><span class="ans-label">答案：D</span> 控制图是Control阶段的工具（监控过程保持成果）；Improve阶段常用DOE、防错、试点验证。</div></div>
+
 </div>
 
 </div><!-- end main -->
