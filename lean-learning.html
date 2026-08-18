@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>精益学习工作台</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0f1525;--card:#1a2138;--card-hover:#222b48;
+  --border:#2a3556;--text:#e2e8f0;--text-dim:#94a3b8;
+  --accent:#38bdf8;--accent2:#818cf8;--warm:#fbbf24;
+  --green:#34d399;--red:#f87171;--pink:#f472b6;
+  --tag-bg:#1e293b;
+}
+body{font-family:'Segoe UI','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+
+/* Header */
+.header{background:linear-gradient(135deg,#0f1525,#1a2138);border-bottom:1px solid var(--border);padding:16px 20px;position:sticky;top:0;z-index:100}
+.header-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:12px}
+.header-title{font-size:20px;font-weight:700;display:flex;align-items:center;gap:8px}
+.header-title .icon{font-size:26px}
+.header-date{font-size:13px;color:var(--text-dim)}
+.search-wrap{position:relative;flex:1;min-width:200px;max-width:500px}
+.search-wrap input{width:100%;padding:10px 14px 10px 38px;background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;outline:none;transition:border .2s}
+.search-wrap input:focus{border-color:var(--accent)}
+.search-wrap .si{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-dim);font-size:16px}
+
+/* Nav */
+.nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:4px}
+.nav-btn{padding:7px 16px;background:var(--card);border:1px solid var(--border);border-radius:20px;color:var(--text-dim);font-size:13px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.nav-btn:hover{color:var(--text);border-color:var(--accent)}
+.nav-btn.active{background:var(--accent);color:#0f1525;border-color:var(--accent);font-weight:600}
+
+/* Daily Learn */
+.daily-box{background:linear-gradient(135deg,#1a2138,#222b48);border:1px solid var(--accent);border-radius:12px;padding:16px 20px;margin-bottom:16px;position:relative;overflow:hidden}
+.daily-box::before{content:'';position:absolute;top:-20px;right:-20px;width:120px;height:120px;background:radial-gradient(circle,rgba(56,189,248,.1),transparent);border-radius:50%}
+.daily-label{font-size:12px;color:var(--warm);font-weight:600;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.daily-title{font-size:17px;font-weight:700;margin-bottom:6px;color:var(--accent)}
+.daily-content{font-size:14px;color:var(--text-dim);line-height:1.7}
+.daily-content b{color:var(--text)}
+.daily-formula{background:rgba(56,189,248,.08);border-left:3px solid var(--accent);padding:8px 12px;margin-top:8px;border-radius:0 6px 6px 0;font-family:'Courier New',monospace;font-size:14px;color:var(--accent)}
+.daily-nav{display:flex;gap:8px;margin-top:10px}
+.daily-nav button{padding:4px 12px;background:var(--tag-bg);border:1px solid var(--border);border-radius:6px;color:var(--text-dim);font-size:12px;cursor:pointer;transition:all .2s}
+.daily-nav button:hover{color:var(--accent);border-color:var(--accent)}
+
+/* Content */
+.content{max-width:1100px;margin:0 auto;padding:0 16px 40px}
+.section-title{font-size:16px;font-weight:700;margin:20px 0 12px;display:flex;align-items:center;gap:8px;color:var(--accent2)}
+.section-title .count{font-size:12px;color:var(--text-dim);font-weight:400;background:var(--tag-bg);padding:2px 8px;border-radius:10px}
+
+/* Cards Grid */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;transition:all .2s;cursor:pointer}
+.card:hover{background:var(--card-hover);border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
+.card-abbr{font-size:18px;font-weight:700;color:var(--accent)}
+.card-full{font-size:12px;color:var(--text-dim);font-style:italic}
+.card-tag{font-size:11px;padding:2px 8px;border-radius:10px;white-space:nowrap}
+.tag-设备{background:rgba(52,211,153,.15);color:var(--green)}
+.tag-精益{background:rgba(129,140,248,.15);color:var(--accent2)}
+.tag-物流{background:rgba(129,140,248,.15);color:var(--accent2)}
+.tag-质量{background:rgba(251,191,36,.15);color:var(--warm)}
+.tag-生产{background:rgba(56,189,248,.15);color:var(--accent)}
+.tag-方法{background:rgba(244,114,182,.15);color:var(--pink)}
+.tag-通用{background:rgba(148,163,184,.15);color:var(--text-dim)}
+.tag-管理{background:rgba(129,140,248,.15);color:var(--accent2)}
+.tag-沟通{background:rgba(251,191,36,.15);color:var(--warm)}
+.tag-思维{background:rgba(52,211,153,.15);color:var(--green)}
+.tag-时间{background:rgba(56,189,248,.15);color:var(--accent)}
+.card-cn{font-size:14px;font-weight:600;margin-bottom:4px}
+.card-desc{font-size:13px;color:var(--text-dim);line-height:1.6}
+.card-formula{background:rgba(56,189,248,.06);border-left:3px solid var(--accent2);padding:6px 10px;margin-top:8px;border-radius:0 6px 6px 0;font-family:'Courier New',monospace;font-size:13px;color:var(--accent2)}
+.card-example{font-size:12px;color:var(--green);margin-top:4px}
+
+/* Theory Cards */
+.theory-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;transition:all .2s}
+.theory-card:hover{background:var(--card-hover);border-color:var(--accent2)}
+.theory-card h3{font-size:15px;color:var(--accent2);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.theory-card .t-desc{font-size:13px;color:var(--text-dim);margin-bottom:8px}
+.theory-card ul{list-style:none;padding-left:0}
+.theory-card li{font-size:13px;color:var(--text);padding:3px 0 3px 16px;position:relative}
+.theory-card li::before{content:'▸';position:absolute;left:0;color:var(--accent)}
+
+/* Soft Skill Cards */
+.soft-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;transition:all .2s}
+.soft-card:hover{background:var(--card-hover);border-color:var(--warm)}
+.soft-card h3{font-size:15px;color:var(--warm);margin-bottom:8px}
+.soft-card .s-desc{font-size:13px;color:var(--text-dim);margin-bottom:8px}
+.soft-tips{display:flex;flex-wrap:wrap;gap:6px}
+.soft-tip{font-size:12px;background:var(--tag-bg);border:1px solid var(--border);padding:3px 10px;border-radius:6px;color:var(--text-dim)}
+
+/* No Result */
+.no-result{text-align:center;padding:40px;color:var(--text-dim);font-size:15px}
+
+/* Responsive */
+@media(max-width:680px){
+  .card-grid{grid-template-columns:1fr}
+  .header-title{font-size:17px}
+  .daily-title{font-size:15px}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="header-title"><span class="icon">🚀</span>精益学习工作台</div>
+    <div class="search-wrap">
+      <span class="si">🔍</span>
+      <input type="search" id="searchBox" placeholder="搜索术语、公式、方法…">
+    </div>
+    <div class="header-date" id="todayDate"></div>
+  </div>
+  <div class="nav" id="navBar">
+    <button class="nav-btn active" data-cat="all">📚 全部</button>
+    <button class="nav-btn" data-cat="essential">🧭 精益必学</button>
+    <button class="nav-btn" data-cat="abbr">🔤 精益术语库</button>
+    <button class="nav-btn" data-cat="formula">📐 公式手册</button>
+    <button class="nav-btn" data-cat="theory">🎓 基础理论</button>
+    <button class="nav-btn" data-cat="soft">🚀 推行实战</button>
+  </div>
+</div>
+
+<div class="content">
+  <div class="daily-box" id="dailyBox"></div>
+  <div id="mainContent"></div>
+</div>
+
+<script>
+// ============ 知识库 ============
+const ABBR = [
+  {"abbr": "TPS", "full": "Toyota Production System", "cn": "丰田生产方式", "cat": "精益", "desc": "精益的源头体系：两大支柱JIT准时化+自働化，地基是标准化与持续改善。", "formula": "无", "example": "看板拉动+安灯停线+标准作业三件套"},
+  {"abbr": "JIT", "full": "Just In Time", "cn": "准时化生产", "cat": "精益", "desc": "需要的时候、按需要的量、生产/供应需要的东西，消除过量与等待。", "formula": "无", "example": "客户日需400件→产线按节拍日产400件，不做多余"},
+  {"abbr": "Jidoka", "full": "自働化（日语）", "cn": "带人字旁的自动化", "cat": "精益", "desc": "设备/流程具备发现异常即停的智慧，品质在工序内造就。", "formula": "无", "example": "传感器检测缺件→自动停机→安灯呼叫"},
+  {"abbr": "Kanban", "full": "看板（日语）", "cn": "拉动信号", "cat": "精益", "desc": "以卡片/容器/电子信号传递取货与生产指令的拉动工具。", "formula": "看板数 N = 日需求×补充周期×(1+安全系数) ÷ 容器容量", "example": "D=100,L=0.5天,α=0.2,C=50→N=1.2→取2块"},
+  {"abbr": "Heijunka", "full": "平准化（日语）", "cn": "均衡化生产", "cat": "精益", "desc": "在品种和数量两个维度削峰填谷，以稳定节奏应对不均衡需求。", "formula": "无", "example": "A6/B4/C2排成ABCABA×2循环"},
+  {"abbr": "SMED", "full": "Single Minute Exchange of Die", "cn": "快速换模", "cat": "方法", "desc": "将换模压缩到个位数分钟：区分内外作业→外移→内转外→压缩内部。", "formula": "换模时间 = 内部作业时间（停机部分）", "example": "40min→8min：预热外移+双人并行"},
+  {"abbr": "QCO", "full": "Quick Changeover", "cn": "快速切换", "cat": "方法", "desc": "SMED的扩展：不仅模具，还包括产品换型、工装调整、配方切换。", "formula": "无", "example": "注塑换色时间从60min降至15min"},
+  {"abbr": "Poka-Yoke", "full": "防错法（日语）", "cn": "防呆防错", "cat": "质量", "desc": "通过设计让错误无法发生或立即被发现，五个层级：消除→替代→控制→预防→探测。", "formula": "无", "example": "USB防反插、缺件不停机、重量检测剔除"},
+  {"abbr": "Andon", "full": "安灯（日语）", "cn": "异常呼叫系统", "cat": "设备", "desc": "现场异常可视化与呼叫支援系统，红黄绿三色，全员有停线权。", "formula": "无", "example": "黄灯2分钟无人响应→自动转红灯停线"},
+  {"abbr": "Gemba", "full": "现场（日语）", "cn": "现场现物", "cat": "管理", "desc": "三现主义：到现场、看现物、认现实。管理决策必须源于现场事实。", "formula": "无", "example": "每日班组长现场巡视30分钟（Gemba Walk）"},
+  {"abbr": "Genchi Genbutsu", "full": "现地现物（日语）", "cn": "亲临现场看实物", "cat": "管理", "desc": "丰田领导力核心：不依赖汇报做判断，亲自到问题发生地看实物。", "formula": "无", "example": "新车测试工程师亲自开坏路体验异响"},
+  {"abbr": "Muda", "full": "浪费（日语）", "cn": "八大浪费", "cat": "精益", "desc": "不增值活动。DOWNTIME记忆：缺陷/过量/等待/人才/搬运/库存/动作/过度加工。", "formula": "增值比 = 增值时间 ÷ 前置期", "example": "传统企业增值比常低于5%"},
+  {"abbr": "Mura", "full": "不均（日语）", "cn": "波动/不均衡", "cat": "精益", "desc": "负荷与节奏的忽高忽低，是Muda和Muri的共同来源，均衡化治理。", "formula": "无", "example": "月初闲死月末忙死的生产排程"},
+  {"abbr": "Muri", "full": "过载（日语）", "cn": "超负荷", "cat": "精益", "desc": "对人/设备的过度苛求，引发故障、质量与安全问题。3M治理顺序：先Mura后Muri。", "formula": "无", "example": "设备24h连轴转→故障率飙升"},
+  {"abbr": "Kaizen", "full": "改善（日语）", "cn": "持续改善", "cat": "管理", "desc": "全员参与、小步快跑的渐进式改进，与革新Kaikaku互补。", "formula": "无", "example": "每人每月1条改善提案，采纳率公示"},
+  {"abbr": "Kaikaku", "full": "革新（日语）", "cn": " radical改善/突破性变革", "cat": "管理", "desc": "大投入、结构性变革（如整线重布局），与Kaizen小步快跑互补。", "formula": "无", "example": "全厂布局重构、ERP切换"},
+  {"abbr": "Hoshin Kanri", "full": "方针展开（日语）", "cn": "方针管理", "cat": "管理", "desc": "公司级方针逐级展开为可执行目标与对策，上下对齐（Catchball）。", "formula": "无", "example": "公司降本20%→部门课题→班组指标"},
+  {"abbr": "Yokoten", "full": "横展开（日语）", "cn": "水平展开", "cat": "管理", "desc": "把一处改善成果复制推广到相似工序/产线/工厂。", "formula": "无", "example": "A线换模改善复制到B/C线"},
+  {"abbr": "Nemawashi", "full": "根回（日语）", "cn": "事前共识沟通", "cat": "管理", "desc": "重大决策前逐层私下沟通达成共识，会议只做确认。", "formula": "无", "example": "改革方案先与班长/主管一对一沟通再上会"},
+  {"abbr": "Hansei", "full": "反省（日语）", "cn": "复盘反思", "cat": "管理", "desc": "不论成败都复盘：哪里做错了、如何不再犯，是改善文化的一部分。", "formula": "无", "example": "项目结束48小时内复盘会"},
+  {"abbr": "Obeya", "full": "大房间（日语）", "cn": "大部屋/作战室", "cat": "管理", "desc": "跨职能团队在同一可视化房间集中办公，进度问题一目了然。", "formula": "无", "example": "新车开发大部屋：设计+工艺+采购同室办公"},
+  {"abbr": "5S", "full": "Seiri-Seiton-Seiso-Seiketsu-Shitsuke", "cn": "整理整顿清扫清洁素养", "cat": "精益", "desc": "现场管理五步法：从留弃决断到养成习惯，一切改善的地基。", "formula": "无", "example": "整顿标准：30秒内找到任何工具"},
+  {"abbr": "VSM", "full": "Value Stream Mapping", "cn": "价值流图", "cat": "精益", "desc": "从接单到交付全流程物流+信息流的可视化，精益改善总地图。", "formula": "增值比%CVA = 增值时间÷前置期×100%", "example": "LT20天、增值2小时→%CVA=0.4%"},
+  {"abbr": "VSD", "full": "Value Stream Design", "cn": "价值流设计（未来图）", "cn2": "", "cat": "精益", "desc": "基于现状图设计的理想状态图，是改善实施计划的源头。", "formula": "无", "example": "未来图：拉动替代推动、Cell替代离岛布局"},
+  {"abbr": "OEE", "full": "Overall Equipment Effectiveness", "cn": "设备综合效率", "cat": "设备", "desc": "TPM核心指标，三大率乘积，世界级≥85%。", "formula": "OEE = 时间稼动率 × 性能稼动率 × 良品率", "example": "87.5%×92%×98.9%≈79.7%"},
+  {"abbr": "TPM", "full": "Total Productive Maintenance", "cn": "全员生产维护", "cat": "设备", "desc": "操作工+维修+工程师全员分工维护，自主保全七步是核心活动。", "formula": "无", "example": "操作工日点检10项+维修月保"},
+  {"abbr": "TT", "full": "Takt Time", "cn": "节拍时间", "cat": "生产", "desc": "客户需求决定的生产节奏，产线设计的基准音。", "formula": "TT = 可用工作时间 ÷ 客户需求量", "example": "450min÷450件=1min/件"},
+  {"abbr": "CT", "full": "Cycle Time", "cn": "周期时间", "cat": "生产", "desc": "完成一个循环的实际时间，理想状态CT≤TT。", "formula": "无", "example": "瓶颈工序CT=1.2min决定整线产出"},
+  {"abbr": "PT", "full": "Process Time", "cn": "加工时间", "cat": "生产", "desc": "各工序增值加工时间之和，通常只占前置期百分之几。", "formula": "LT = PT + 等待 + 搬运 + 库存", "example": "PT合计45min，LT却长达12天"},
+  {"abbr": "LT", "full": "Lead Time", "cn": "前置期/交付周期", "cat": "生产", "desc": "从投料到产出的总时间，压缩等待比压缩加工更有效。", "formula": "无", "example": "利特尔法则：WIP减半→LT约减半"},
+  {"abbr": "WIP", "full": "Work In Process", "cn": "在制品", "cat": "生产", "desc": "工序间的半成品，过多WIP掩盖问题、拉长交期。", "formula": "WIP = 吞吐率 × 流转时间（利特尔法则）", "example": "10件/h×3h=30件"},
+  {"abbr": "EPEI", "full": "Every Part Every Interval", "cn": "循环生产间隔", "cat": "生产", "desc": "每种产品的生产循环周期，换模越快EPEI越短、响应越快。", "formula": "EPEI = 总换模时间 ÷ 每日可用换模时间", "example": "换模总需80min，日可用40min→EPEI=2天"},
+  {"abbr": "FIFO", "full": "First In First Out", "cn": "先进先出", "cat": "物流", "desc": "按入库顺序出库，物理保证（流利条/单向通道）防呆滞过期。", "formula": "无", "example": "流利式货架自动实现先进先出"},
+  {"abbr": "LIFO", "full": "Last In First Out", "cn": "后进先出", "cat": "物流", "desc": "后入库先出库，仅限特定场景（如粉末原料防板结），制造业慎用。", "formula": "无", "example": "沙堆式存取"},
+  {"abbr": "FPY", "full": "First Pass Yield", "cn": "一次合格率", "cat": "质量", "desc": "首次通过即合格的比例，不含返工，比最终合格率更真实。", "formula": "FPY = 一次合格数 ÷ 投入数", "example": "投入1000一次合格950→FPY=95%"},
+  {"abbr": "RTY", "full": "Rolled Throughput Yield", "cn": "滚动直通率", "cat": "质量", "desc": "各工序FPY连乘，暴露全流程累计损失。", "formula": "RTY = FPY₁×FPY₂×…×FPYₙ", "example": "三工序各98%→RTY=94.1%"},
+  {"abbr": "DTD", "full": "Dock to Dock", "cn": "入出库总周期", "cat": "精益", "desc": "原料入库到成品出库的总时间，衡量全流程流速。", "formula": "DTD = 原料库存天数 + 生产周期 + 成品库存天数", "example": "3天+2天+5天=10天"},
+  {"abbr": "Supermarket", "full": "超市（精益用语）", "cn": "定置定量缓存区", "cat": "物流", "desc": "连续流做不了的衔接点：MAX/MIN管控的缓存，取走即触发补货。", "formula": "无", "example": "机加与装配之间设两小时超市"},
+  {"abbr": "Dual-Bin", "full": "双箱系统", "cn": "双料盒补货", "cat": "物流", "desc": "一箱用完挂板切换二箱，补回一箱——最低成本的定量拉动。", "formula": "无", "example": "螺丝双盒：空盒即触发仓库补货"},
+  {"abbr": "Mizusumashi", "full": "水蜘蛛（日语）", "cn": "巡回配送工", "cat": "物流", "desc": "按固定循环路线向线边补料并带回空箱看板的专职配送角色。", "formula": "循环时间 = 路线总耗时 + 补货动作时间", "example": "每30分钟一圈，配送20个工位"},
+  {"abbr": "Milk Run", "full": "循环取货", "cn": "牛奶式巡回取货", "cat": "物流", "desc": "一辆车固定路线巡回多个供应商取货，小批量多频次替代整车满载。", "formula": "无", "example": "每2h巡回3家供应商各取小批量"},
+  {"abbr": "Chaku-Chaku", "full": "着着（日语）", "cn": "接力式生产线", "cat": "生产", "desc": "操作工在设备间接力装卸工件，设备自动完成后呼叫下工人，人只做装卸。", "formula": "无", "example": "一人照看6台机床的接力单元"},
+  {"abbr": "Karakuri", "full": "机关装置（日语）", "cn": "低成本自动化装置", "cat": "设备", "desc": "利用重力/杠杆/凸轮等纯机械原理的省力装置，不用电不编程。", "formula": "无", "example": "重力滑道自动送料到工位"},
+  {"abbr": "Sensei", "full": "老师（日语）", "cn": "外部精益导师", "cat": "管理", "desc": "有丰富实战经验的精益教练，通过现场指导而非课堂传授。", "formula": "无", "example": "改善周外聘Sensei现场带教"},
+  {"abbr": "CIP", "full": "Continuous Improvement Process", "cn": "持续改善流程", "cat": "管理", "desc": "制度化日常改善机制：提案-评审-实施-发布-奖励闭环。", "formula": "无", "example": "月度改善发表会+积分奖励"},
+  {"abbr": "Kaizen Event", "full": "改善周/改善大会战", "cn": "集中式改善活动", "cat": "管理", "desc": "3-5天集中突破：培训→现状→设计→实施→发布一气呵成。", "formula": "无", "example": "周一学SMED周五换模40→10min"},
+  {"abbr": "Water Spider", "full": "水蜘蛛（英语）", "cn": "物料巡回配送员", "cat": "物流", "desc": "Mizusumashi的英文说法，水蜘蛛在水中灵巧不停歇，喻配送员循环不息。", "formula": "无", "example": "定时不定量配送线边物料"},
+  {"abbr": "Yamazumi", "full": "山积图（日语）", "cn": "工时堆积图", "cat": "方法", "desc": "把各工位作业时间堆叠成山状条形图，直观展示线平衡与瓶颈。", "formula": "平衡率 = Σ工序时间 ÷(瓶颈CT×工位数)", "example": "山积图上瓶颈工位一目了然"},
+  {"abbr": "C/O", "full": "Changeover", "cn": "换型/切换", "cat": "方法", "desc": "从生产A产品切换到B产品的全部作业，SMED的作用对象。", "formula": "切换时间 = 内部作业 + 剩余外部影响", "example": "C/O时间从45min降至9min"},
+  {"abbr": "Takt Image", "full": "节拍意象", "cn": "节拍节奏感", "cat": "生产", "desc": "让产线以节拍为基准律动的管理意象：进度板按节拍显示应达位置。", "formula": "无", "example": "每小时进度格：目标10件，落后即亮黄"}];
+
+const FORMULA = [
+  {"name": "节拍时间TT", "cat": "生产", "formula": "TT = 可用工作时间 ÷ 客户需求量", "desc": "可用时间需扣除计划停机（休息/保养/早会）。节拍是客户需求'心跳'，产线一切节奏的基准。", "example": "480min-30min休息=450min，日需450件→TT=1min/件"},
+  {"name": "理论最少工位数", "cat": "生产", "formula": "最少工位数 = Σ各工序时间 ÷ TT（向上取整）", "desc": "线平衡设计第一步：先算理论值，再考虑实际分割损失确定实际工位数。", "example": "ΣCT=330s，TT=60s→330÷60=5.5→6个工位"},
+  {"name": "人员需求（节拍法）", "cat": "生产", "formula": "人员数 = ΣCT ÷ TT", "desc": "按节拍反推的人力需求，结合出勤率与直接作业率放大。", "example": "ΣCT=3.6min，TT=1min→3.6人→配4人（含替补浮动）"},
+  {"name": "线平衡率", "cat": "方法", "formula": "平衡率 = Σ各工序时间 ÷（瓶颈CT × 工位数）× 100%", "desc": "衡量工位时间均衡度；瓶颈决定产出，其余工位与瓶颈的差即等待浪费。≥85%为良。", "example": "5工位30/35/28/40/32s→165÷(40×5)=82.5%"},
+  {"name": "平衡损失率", "cat": "方法", "formula": "损失率 = 1 - 平衡率", "desc": "平衡的镜像指标，即因不均衡造成的等待浪费占比。", "example": "平衡率82.5%→损失率17.5%"},
+  {"name": "增值比%CVA", "cat": "精益", "formula": "%CVA = Σ增值时间 ÷ 前置期LT × 100%", "desc": "VSM核心指标，反映真正为客户创造价值的时间占比，传统企业常低于5%。", "example": "增值2h，LT=20天(4800h)→%CVA≈0.04%"},
+  {"name": "利特尔法则", "cat": "生产", "formula": "WIP = 吞吐率TH × 流转时间CT", "desc": "产出率不变时，降WIP即缩短流转时间——单件流理论的数学基石。三变量知二求一。", "example": "10件/h×3h=30件；WIP降到15件→流转降到1.5h"},
+  {"name": "看板数量", "cat": "精益", "formula": "N = 日需求D × 补充周期L × (1+安全系数α) ÷ 容器容量C", "desc": "向上取整。降库存=减看板：每减一块看板做一次稳定性测试。", "example": "D=100,L=0.5天,α=0.2,C=50→1.2→取2块"},
+  {"name": "OEE设备综合效率", "cat": "设备", "formula": "OEE = 时间稼动率 × 性能稼动率 × 良品率", "desc": "时间稼动率=(负荷-停机)÷负荷；性能率=理论节拍×产量÷运行时间；良品率=合格÷总产。世界级≥85%。", "example": "87.5%×92%×98.9%≈79.7%（良好水平）"},
+  {"name": "安全库存SS", "cat": "物流", "formula": "SS = Z × σd × √L", "desc": "Z为服务水平系数（95%→1.65，99%→2.33）；σd需求标准差；L补货周期。先降波动再降库存。", "example": "σd=20件/天，L=4天，95%服务→SS=1.65×20×2=66件"},
+  {"name": "再订货点ROP", "cat": "物流", "formula": "ROP = 日均需求 × 补货周期L + SS", "desc": "库存降到ROP即触发补货；定量订货制的核心参数。", "example": "日均50件×4天+66件=266件触发补货"},
+  {"name": "EOQ经济订货批量", "cat": "物流", "formula": "EOQ = √(2DS ÷ H)", "desc": "D年需求、S单次订货成本、H单件年持有成本。订货成本越低、持有成本越高，批量应越小。", "example": "D=12000，S=300，H=6→EOQ=√(2×12000×300÷6)=1095件"},
+  {"name": "经济生产批量EPQ", "cat": "生产", "formula": "EPQ = √(2DS ÷ H)，S=单次换模成本", "desc": "精益视角：与其算最优批量，不如降低S（SMED）让EPQ自然变小。", "example": "换模成本减半→EPQ降约29%（√2关系）"},
+  {"name": "EPEI循环间隔", "cat": "生产", "formula": "EPEI = 总换模时间 ÷ 每日可用换模时间", "desc": "品种切换的循环周期，是均衡化的关键参数：换模越快循环越短、响应越快。", "example": "8种产品总换模80min，日可用40min→EPEI=2天"},
+  {"name": "库存周转率与天数", "cat": "管理", "formula": "周转率 = 出库成本 ÷ 平均库存；天数 = 365 ÷ 周转率", "desc": "衡量资金占用效率；改善方向：降分子（精益流）与降分母（降库存）同时做。", "example": "年出库1200万，平均库存200万→周转6次/年，约61天"},
+  {"name": "前置期LT构成", "cat": "精益", "formula": "LT = ΣPT + Σ等待 + Σ搬运 + Σ库存停留", "desc": "等待占大头：压缩排队/等待比压缩加工时间见效快得多。", "example": "PT=45min，LT=12天→99.7%时间在等"},
+  {"name": "改善收益计算", "cat": "管理", "formula": "年收益 = (改善前单位成本-改善后单位成本) × 年产量", "desc": "换模提效、WIP降低的资金释放、场地节省需折算成金额让管理层看见。", "example": "单件成本降0.5元×年100万件=年收益50万"},
+  {"name": "直通率RTY", "cat": "质量", "formula": "RTY = FPY₁ × FPY₂ × … × FPYₙ", "desc": "全流程一次合格率连乘，比终端合格率更能暴露工序损失。", "example": "三工序98%×97%×99%=94.1%"}];
+
+const THEORY = [
+  {"name": "丰田生产方式TPS体系", "desc": "精益的源头：一套以'消除浪费、持续改善'为核心的完整经营体系。", "points": ["两大支柱：JIT（流动性）+自働化（质量内建）", "地基：标准化·5S·稳定化·全员改善", "两大支柱的辩证：JIT追求极限流动会暴露一切问题，Jidoka保证暴露时不流出不良", "TPS三个'零'：零库存、零缺陷、零故障", "TPS的本质不是工具而是'让问题可见'的管理系统"]},
+  {"name": "浪费理论：3M模型", "desc": "Muda浪费、Mura不均、Muri过载互为因果，精益治本从Mura入手。", "points": ["Muda：八大浪费（DOWNTIME），看得见", "Mura：负荷与节奏的波动，藏在排程里", "Muri：人机过载，引发故障与安全事故", "因果链：Mura波动→Muri过载→Muda浪费", "治理顺序：先均衡化治Mura→再减载治Muri→浪费自然露头", "水面与岩石：库存是水面，问题是礁石——降水位才能见礁石"]},
+  {"name": "利特尔法则与流动力学", "desc": "1961年Little提出的排队论基本定律，是精益流动的数学基础。", "points": ["WIP = 吞吐率TH × 流转时间CT", "三个推论：①产出不变时降WIP即缩短LT ②WIP不变时提产出也缩LT ③LT由WIP决定而非由忙碌程度决定", "反直觉：产线'人人忙碌'不等于产出高——WIP高时大家都在做，但都做得慢", "WIP控制的实践：定量拉动、CONWIP（定WIP拉动）、看板上限", "应用：交付承诺=当前WIP÷吞吐率+新订单处理时间"]},
+  {"name": "变动性传播与排队论", "desc": "工厂的等待主要来自变动性（Variability）：到达变动×加工变动=排队放大。", "points": [" Kingman公式近似：等待时间∝(ca²+cs²)×利用率/(1-利用率)", "利用率越接近100%，等待时间指数级爆炸（不是线性）", "两个变动源：到达不均（插单/批量投料）与加工不稳（故障/不良）", "对策三选一：降变动（均衡化）、增缓冲（库存/时间/产能三选）、降利用率（留弹性）", "启示：满负荷排产=用100%产能换来无尽加班与延误"]},
+  {"name": "约束理论TOC", "desc": "Goldratt提出：系统产出由瓶颈决定，聚焦瓶颈改善事半功倍。", "points": ["聚焦五步：识别瓶颈→挖尽瓶颈→迁就瓶颈→提升瓶颈→循环（瓶颈转移）", "瓶颈一小时=全厂一小时：瓶颈工序绝不停机、只做增值", "DBR排产：鼓(瓶颈节奏)-缓冲(瓶颈保护)-绳(投料节奏)", "TOC vs 精益：TOC聚焦瓶颈局部突破；精益追求全系统流动，两者可结合", "与IE关系：瓶颈识别→线平衡→产能提升的标准路径"]},
+  {"name": "批量与提前期理论", "desc": "批量每减半，在制品约减半、提前期约减半——小批量是流动的第一杠杆。", "points": ["批量减半→排队等待减半→LT约减半（利特尔法则）", "批量与换模的矛盾：传统靠大批量摊薄换模，精益靠SMED压换模", "连续流的极限：批量=1（单件流）", "转运批量与加工批量可分离：整批做完不必整批转运", "实践节奏：批量逐月减半，问题逐个暴露逐个解决"]},
+  {"name": "改善哲学Kaizen", "desc": "东方渐进改善哲学：小步快跑、全员参与、复利累积。", "points": ["Kaizen vs Kaikaku：渐进积累 vs 结构变革，健康组织两者兼备", "改善十条精神：扔掉固有观念/不找借口先试/问题即宝藏/不花大钱靠智慧……", "PDCA改善循环 + SDCA维持循环交替上升", "改善的起点：三现主义（现场现物现实）", "复利效应：每天进步1%，一年≈37倍", "文化标志：员工暴露问题的数量上升而非下降"]},
+  {"name": "精益供应链", "desc": "把精益从厂内延伸到供应链：供应商共赢而非压价博弈。", "points": ["循环取货Milk Run：小批量多频次巡回取货替代整车满载", "供应商看板：外协看板直通供应商，信息透明", "就近布局与产业集群：运输也是浪费", "牛鞭效应治理：共享真实需求信息（POS数据直连）", "双赢机制：帮供应商降本，收益分成而非单向压价"]},
+  {"name": "精益办公与服务", "desc": "事务流程同样存在大量等待与审批浪费，精益原理通用。", "points": ["办公八大浪费：审批等待/重复录入/报表没人看/邮件抄送泛滥/会议冗长……", "价值流图同样适用：订单处理流、招聘流、报销流", "一次性做对（First Time Through）替代返工循环", "审批分级授权：低风险事项自动通过，聚焦高风险", "批量处理是大敌：报销/审批随到随办替代每周集中处理"]},
+  {"name": "精益与六西格玛融合", "desc": "Lean Six Sigma：精益管'快与省'，六西格玛管'稳与准'，互补成对。", "points": ["精益强项：流速、库存、成本、交付（时间维度）", "六西格玛强项：变异、质量、数据驱动（统计维度）", "融合逻辑：先精益理顺流程，再六西格玛稳定过程", "DMAIC中嵌入精益工具：A阶段用VSM找浪费，I阶段用SMED/防错", "人才体系：绿带学工具，黑带带项目，冠军管方向"]},
+  {"name": "日常管理体系Daily Management", "desc": "让改善成果固化为日常节奏：班组级标准日常工作循环。", "points": ["层级会议：班组10分钟晨会→车间周会→工厂月会", "SQDCP看板：安全/质量/交付/成本/人员五维日跟踪", "异常升级机制：班组长30分钟未解决→升主管→升经理", "领导者标准作业：各级管理者每日现场时间有标准", "A3报告：一页纸问题解决，现场对话的工具", "效果：改善不靠运动靠日常，绩效不靠月底靠每天"]}];
+
+const SOFT = [
+  {"name": "精益诊断与切入点", "desc": "推行精益第一步不是上工具，而是摸清家底选对突破口。", "tips": ["诊断四看：看现场（5S水平）看数据（OEE/LT/良率）看流程（VSM草图）看文化（问题暴露度）", "切入点三优先：瓶颈工序优先/客户投诉热点优先/管理层有痛点的优先", "算清改善潜力：增值比、OEE水平、库存周转与行业标杆的差距", "选试点线：产品单一流程完整、班长有意愿、改善空间可见", "避开雷区：不要从最难的车间开刀，失败会杀死整个变革"]},
+  {"name": "VSM实施路线", "desc": "价值流图是推行精益的总路线图，八步法落地。", "tips": ["①选产品族：共线生产的代表产品（占产量60-80%的主力）", "②现场实测：沿物流逆行画，数据现场实测不抄报表", "③数据框采集：CT/换模/批量/人数/合格率/班次", "④标注库存天数与信息流", "⑤计算LT与%CVA，识别浪费热点", "⑥设计未来图：连续流哪里做、超市哪里设、瓶颈怎么破", "⑦差距分析转化为改善项目清单（负责人+目标+时间）", "⑧季度重绘VSM对比进步"]},
+  {"name": "三年推行路线图", "desc": "精益转型没有速成，三年三阶段是稳健节奏。", "tips": ["第1年打地基：5S+标准作业+数据基础+1条试点线见效", "第2年建流动：VSM全面铺开+Cell改造+SMED+看板试点", "第3年成体系：全厂拉动+均衡化+TPM+日常管理固化", "每阶段设置可展示的里程碑（模范线/样板区）", "人才配套：第一年培养5名种子改善员，第三年覆盖所有班组长", "预算节奏：先小投入快见效（信心），再中投入建体系"]},
+  {"name": "变革管理与阻力化解", "desc": "精益转型70%的失败源于人而非技术。", "tips": ["高层站台：一把手每月至少参加一次改善活动", "利益前置回答：'效率提升了我会不会被裁？'——书面承诺转岗不裁人", "先易后难树标杆：让第一批参与者获得荣誉与实惠", "Nemawashi事前沟通：方案上会前先与关键人物一对一共识", "反对者变盟友：请最有意见的人当改善小组长", "持续造势：改善发表会/看板/内刊/参观标杆工厂"]},
+  {"name": "改善周组织法", "desc": "5天集中突破一个主题，是见效最快的改善形式。", "tips": ["选题：换模时间/线平衡/某工位效率——边界清晰可量化", "周一培训主题工具，周二现场实测找浪费", "周三设计改善方案（ECRS+布局），周四动手实施", "周五验证效果+发布+标准化安排", "改善周铁律：周四必须动手改，宁可粗糙不许只出PPT", "后续30/60/90天跟踪机制，防止回潮"]},
+  {"name": "精益人才梯队", "desc": "精益是'人做出来的'体系，人才密度决定精益深度。", "tips": ["三层角色：精益推进办（专职）/部门改善员（兼职）/全员提案", "培养路径：改善周学员→改善组长→内部讲师→内部Sensei", "课时设计：70%现场实践+20%带教+10%课堂", "认证激励：改善员星级认证与薪酬/晋升挂钩", "外脑使用：初期请外部顾问带2-3个标杆项目，重在Transfer"]},
+  {"name": "精益成熟度评估", "desc": "定期评估防止'听起来都在做、实际原地踏步'。", "tips": ["五级成熟度：无意识→工具试点→流程改善→体系集成→文化内化", "评估维度：5S/流动/拉动/质量内建/标准化/人才/文化", "评估方式：现场走查打分+数据验证（OEE/%CVA/周转率）", "每半年一次，结果用于调整路线图优先级", "警惕评估形式化：数据必须有现场证据支撑"]},
+  {"name": "精益与KPI结合", "desc": "精益不落地成KPI，就会沦为课外活动。", "tips": ["厂级：前置期LT/库存周转/OEE/直通率RTY", "车间级：线平衡率/换模时间/在制品上限/5S得分", "班组级：日产出达成/异常响应时长/改善提案件数", "KPI三原则：少而关键（每级≤5个）、可现场计算、每日可见", "避免陷阱：不要用'改善项目数量'当核心KPI（会制造垃圾项目）"]},
+  {"name": "精益常见失败原因", "desc": "前人踩过的坑，绕行比填坑便宜。", "tips": ["把精益当裁员工具→一线集体抵制", "只学工具不建文化→工具形式化", "高层缺席只授权下属→推不动跨部门", "没有标准就上拉动→超市混乱看板失灵", "贪大求全同时全面铺开→资源稀释全线失败", "只做改善不维持（无SDCA）→三个月回潮", "数据基础缺失→无法验证效果失去信任"]},
+  {"name": "精益工具选择速查", "desc": "按问题类型快速匹配工具，避免'手里拿锤子看啥都是钉子'。", "tips": ["交期长→VSM找等待+批量减半+看板控制WIP", "库存高→拉动系统+SMED降批量+安全库存重算", "效率低→线平衡分析+山积图+动作经济原则", "换模慢→SMED四步法", "质量差→防错+自働化+5Why根因分析", "设备差→TPM自主保全+OEE六大损失分析", "现场乱→5S+目视化+定置管理", "波动大→均衡化+看板+缓冲策略"]}];
+
+// ============ 精益必学 ============
+const ESSENTIAL = [
+  {"name": "精益概论：起源与本质", "desc": "精益=用最少的资源创造最大的客户价值，本质是'消除一切不增值活动'的经营活动体系。", "points": ["1950s 丰田英二/大野耐一参观福特后另辟蹊径：多品种、小批量、低成本", "1950-1980 丰田生产方式TPS在日本成型并支撑丰田崛起", "1990 MIT《改变世界的机器》首次命名'精益生产Lean Production'", "1996《精益思想》五大原则问世，精益从汽车业扩展到全行业", "精益不是裁员工具：少人化≠裁人，释放的人力转向更高价值工作", "一句口诀：精益=把'客户愿意付钱的动作'保留并加速，其余全部消除"]},
+  {"name": "精益屋：TPS完整体系", "desc": "以'两大支柱+地基'构成的房子比喻TPS：屋顶是目标，支柱是方法，地基是日常功底。", "points": ["屋顶：最佳质量·最低成本·最短交期·最安全·高士气", "支柱一 JIT准时化：需要的时候、按需要的量、生产需要的东西", "支柱二 自働化Jidoka：异常自动停线，绝不让不良流到下工序", "地基：标准化·5S·稳定化·全员改善（地基不牢支柱必倒）", "中心思想：JIT追求'快'（流动），Jidoka追求'稳'（质量），快而不稳必翻车", "推行顺序：先地基（5S/标准）→再稳定（自働化）→后流动（JIT）"]},
+  {"name": "精益思想五大原则", "desc": "《精益思想》给出的实施路径，按顺序回答五个问题，是所有精益活动的总纲。", "points": ["①定义价值Value：客户愿意为什么付钱？（站在客户视角，不是工厂视角）", "②识别价值流Value Stream：从接单到交付逐环节判定增值/非增值", "③流动Flow：让产品不停留、不等待、不迂回地连续流动", "④拉动Pull：由真实需求拉动生产，而非预测推动", "⑤尽善尽美Perfection：改善无终点，一轮一轮循环下去", "关键提醒：多数企业死在第3步——只画了价值流图却没有让物料真正流动起来"]},
+  {"name": "八大浪费深度解析（DOWNTIME）", "desc": "浪费=消耗资源却不创造客户价值的活动。传统企业增值时间占比通常低于5%。", "points": ["D缺陷Defects：不良返工——对策：防错+工序内质量", "O过量生产Overproduction：做得太多/太早——最恶劣浪费，引发并掩盖其余七种", "W等待Waiting：人等机/机等料/等人决策——对策：线平衡+水蜘蛛", "N人才未用Non-utilized Talent：技能错配、建议无人听——隐性最大浪费", "T搬运Transportation：物料不必要移动——对策：布局优化就近生产", "I库存Inventory：多余原材/在制/成品——对策：拉动+小批量", "M动作Motion：弯腰转身找工具——对策：工位设计+定置", "E过度加工Extra-processing：超出客户要求——对策：标准明确+按需加工", "找浪费三问：客户付钱吗？不做行不行？能少做/合并做吗？（不增值→消除）", "ECRS四原则：取消E→合并C→重排R→简化S，取消永远第一"]},
+  {"name": "价值流图VSM实战", "desc": "从接单到交付全流程的'CT片'，一张图同时看清物流、信息流与库存，是精益改善总地图。", "points": ["三种活动：增值VA（客户付钱）/必要非增值NNVA（当前必须）/纯浪费NVA（立即消除）", "核心图标：□工序框（含CT/人数/换模）、△库存三角、⇢物料流、⚡电子信息流、ㄟ手工信息流、⬒超市", "关键指标：PT加工时间之和 / LT前置期 / %CVA增值比（传统企业常<5%）", "绘制七步：选产品族→现场实测画现状→记录数据框→标注库存天数→识别改善点→画未来图→转实施计划", "现状图必须实测：抄来的数据画不出真实的问题", "未来图三问：哪里能连续流？哪里必须超市拉动？哪里是瓶颈需改善？", "LT=PT+等待+搬运+库存停留，等待往往占90%以上——压缩等待远比加速加工见效"]},
+  {"name": "流动：单件流与Cell设计", "desc": "流动是精益的核心追求：产品像水一样不停留地流过各工序。", "points": ["单件流四大收益：前置期最短/问题立即暴露/在制品最少/场地最省", "U型Cell优点：进出同侧、弹性人数（少人化）、相邻互助、走动最短", "线平衡率=Σ各工序时间÷(瓶颈CT×工序数)，≥85%为良", "改善方向：瓶颈加人/自动化/拆分工步；轻工序并工序或兼换料", "多能工矩阵（Star Chart）：每工序至少2人会、每人至少3道相邻工序", "务实路径：做不到一步单件流就先'小批量流'，批量逐月减半", "爬坡期允许缓冲，但缓冲量要目视化并逐月下调"]},
+  {"name": "拉动：看板系统运行规则", "desc": "拉动=下工序用掉才补，上工序只补被取走的量。看板是拉动的执行语言。", "points": ["推动vs拉动：计划触发vs消耗触发；信息流方向：中央下达vs相邻传递", "看板种类：取货看板（后→前取料）/生产看板（按量补产）/信号看板（批量触发）/外协看板（供应商）", "六规则：不见看板不搬运不生产/看板随实物/只补被取走量/均衡取用/小批多频/异常停线", "看板数N=日需求D×补充周期L×(1+安全系数α)÷容器容量C，向上取整", "超市：定置定量的工序间缓存，MAX/MIN管控，取走即挂板补充", "双箱系统：一箱用完切二箱并挂板补一箱——最低成本拉动", "看板的调节哲学：要降库存就减一块看板，让问题自动浮出水面"]},
+  {"name": "自働化：停线文化与防错", "desc": "自働化的'働'带人字旁：赋予机器和流程发现异常就停的智慧，品质在工序内造就。", "points": ["核心理念：停机优先——宁停产不产不良；人机分离——人不做监工", "安灯Andon：🟢正常/🟡需支援/🔴停线；任何员工都有权拉停", "停线文化：停线不是失败，隐瞒问题才是——一线发现速度=企业响应速度", "防错五层级（高→低）：消除→替代→控制→预防→探测", "防错常用原理：阻断装不上/固定导向唯一方向/互锁顺序/传感报警（重量计数视觉）", "异常处理快反：停→叫→等→处置→复→析（5分钟内响应机制）", "质量观对比：大批量生产'允许不良末端拦'vs精益'零缺陷工序内造'"]},
+  {"name": "均衡化：混流排产", "desc": "把不均衡的订单用稳定的节奏生产，消除产量与品种两个维度的波动。", "points": ["为什么均衡：不均衡经层层放大成牛鞭效应（末端±10%→上游±50%）", "产量均衡：月需求摊到每天，消灭旬末/月末冲刺", "品种均衡：不同型号交替混流，而不是A做完再做B", "EPEI=每种产品的循环间隔=总换模时间÷每日可用换模时间，越短越精益", "混流排产口诀：大数量均匀撒、小数量间隔插、最小批成倍补", "示例：A×6 B×4 C×2 → 排成ABCABA重复两轮，任何时段三品种都有产出", "均衡化是拉动的前提：取用量忽多忽少，看板系统必然瘫痪"]},
+  {"name": "标准作业与标准化体系", "desc": "标准作业=以人的动作为中心、当前最经济高效且唯一的工作方法。没有标准就没有改善。", "points": ["三要素：节拍时间TT/作业顺序/标准手持（流程内最小在制品）", "TT vs CT：TT=客户要求的节奏，CT=实际周期；CT≈TT为理想", "三票：工序能力表（设备家底）/标准作业组合票（人机配合）/标准作业票（布局路线）", "标准三属性：最好的当前方法/唯一的执行依据/改善的对象", "SDCA维持循环+PDCA改善循环交替：爬新台阶→站稳→再爬", "标准修订流程：改善验证→旧版回收→新版发布注明生效日期→培训→稽核", "常见误区：把'检验规程'当'标准作业'；写完标准就锁进柜子"]},
+  {"name": "SMED快速换模四步法", "desc": "把换模时间压缩到个位数分钟的方法，是小批量经济的钥匙：换模快，批量才能小。", "points": ["内部作业=停机才能做（拆装模具对位）；外部作业=开机可做（预热备料备工具）", "关键洞察：约50%换模内容其实可移到停机前完成，只是从未区分过", "四步法：①录像实测并区分内/外部 ②外部移到停机前后 ③内部转外部（预组装快换接头） ④压缩内部（并行+标准化）", "常用技巧：快换夹具/螺栓统一规格一把扳手/双工位回转台/首件参数预设/换模专车", "连锁红利：换模↓→批量↓→库存↓→前置期↓→响应客户↑", "目标阶梯：1h→30min→10min（SMED达成）→3min→一步到位One-Touch", "换模收益计算：换模时间减半→同等产能下允许批量减半→在制品约减半"]},
+  {"name": "5S与目视化管理", "desc": "5S是一切改善的地基：先有一个'正常/异常一眼可辨'的现场，其他工具才能落地。", "points": ["整理Seiri：要与不要坚决留弃——红牌作战给物品'申诉机会'", "整顿Seiton：定点定容定量——标准是30秒内找到并取用任何物品", "清扫Seiso：清扫即点检——油污下面藏着漏点与松动", "清洁Seiketsu：把前3S制度化标准化——上墙定考核", "素养Shitsuke：无人监督也保持——最终目的", "目视化三层次：识别（是什么）→异常（对不对：仪表绿区/MIN-MAX线/形迹板）→预警（趋势：安灯/进度板）", "一分钟法则：任何人1分钟内判断现场正常/异常，异常要'跳出来'而非靠记忆比对"]},
+  {"name": "TPM全员生产维护与OEE", "desc": "TPM把设备维护从'维修部门的事'变成'全员的事'，追求零故障零不良零事故。", "points": ["OEE=时间稼动率×性能稼动率×良品率，世界级≥85%", "六大损失：故障停机/换模调整/空转短暂停/速度下降/工程不良/启动损失", "时间稼动率=(负荷时间-停机时间)÷负荷时间；性能率=理论节拍×产量÷运行时间", "自主保全七步：初期清扫→污染源对策→基准制定→总点检→自主点检→标准化→彻底自主管理", "分工原则：操作工保'基本条件'（清洁紧固润滑），维修做'专业技术'", "PM分析：对重复故障问5Why直至设计层面，制定永久对策", "浴盆曲线：新设备磨合期故障率高→稳定期→老化期回升，保养策略分阶段"]},
+  {"name": "精益推行路径与常见误区", "desc": "精益是一场经营变革，不是一场运动。推行顺序错了，投入再多也白费。", "points": ["第一年打地基：5S+标准作业+基础数据（工时/OEE/良率）+试点线", "第二年建流动：VSM现状/未来图+Cell改造+SMED+看板试点", "第三年成体系：全厂拉动+均衡化+TPM+日常管理体系", "切入点选择：瓶颈工序/质量问题大户/交期痛点——先啃有共识的硬骨头", "改善周Kaizen Event：周一培训→周二现状→周三设计→周四实施→周五发布", "五大误区：①把精益当裁员工具 ②只学工具不建文化 ③高层不参与 ④没有标准就搞拉动 ⑤追求一步到位", "成功的标志：员工主动暴露问题的数量在上升（而不是指标一时的漂亮）"]}];
+
+// ============ 每日一学 ============
+const DAILY = [
+  {"title": "精益的本质一句话", "content": "<b>用最少的资源创造最大的客户价值</b>。所有工具（看板/5S/SMED）都只是手段，判断标准只有一条：这个活动客户愿意付钱吗？", "formula": "精益 = 消除浪费 + 尊重员工"},
+  {"title": "精益屋两大支柱", "content": "<b>JIT</b>追求快（需要的时候按需要的量生产），<b>自働化</b>追求稳（异常即停不流出不良）。快而不稳必翻车，稳而不快是浪费——两者缺一不可。", "formula": "TPS = JIT（快） + Jidoka（稳）"},
+  {"title": "过量生产是万恶之源", "content": "八大浪费中<b>过量生产</b>最恶劣：它引发并掩盖其余七种浪费。做得太多太早→占用资金、掩盖质量问题、掩盖产能问题，让一切问题'看起来还好'。", "formula": "过量生产 → 掩盖一切问题"},
+  {"title": "库存是水面，问题是礁石", "content": "库存像水面：水位高时，设备故障、质量差、换模慢这些礁石全被淹没。降库存=降水位，逼出问题逐个消灭——这才是降库存的正确姿势。", "formula": "降库存 → 暴露问题 → 解决问题"},
+  {"title": "利特尔法则", "content": "<b>WIP = 吞吐率 × 流转时间</b>。产出不变时，在制品减半则前置期减半。这就是单件流和小批量的数学依据，也是'少即是快'的原理。", "formula": "WIP = TH × CT"},
+  {"title": "节拍是客户的心跳", "content": "<b>TT=可用时间÷需求量</b>。节拍不是产线自己定的，是客户需求算出来的。产线所有节奏（CT/配送/排班）都应向节拍对齐，快了是浪费，慢了是失信。", "formula": "TT = 可用时间 ÷ 需求量"},
+  {"title": "CT、TT、瓶颈的关系", "content": "<b>CT</b>是实际周期，<b>TT</b>是客户节奏。整线产能由瓶颈工序CT决定：瓶颈CT>TT产能不足；非瓶颈再快也不增产，只会堆WIP。改善产能=改善瓶颈。", "formula": "产能 = 可用时间 ÷ 瓶颈CT"},
+  {"title": "换模时间与批量", "content": "换模成本通过批量摊薄：换模减半→经济批量约降29%（√2关系）→库存与前置期随之下降。<b>SMED是精益的关键杠杆</b>：治本降换模，而不是治标加批量。", "formula": "EPQ = √(2DS/H)"},
+  {"title": "SMED的第一刀", "content": "SMED不是买快换设备，第一刀是<b>区分内部作业（停机才能做）与外部作业（开机可做）</b>。实测发现：约50%的换模内容本可以在开机时完成。", "formula": "内部时间↓ = 换模时间↓"},
+  {"title": "看板的本质", "desc": "", "content": "看板不是卡片，是<b>授权与约束</b>：没有看板不许生产不许搬运（约束过量），有看板必须立即响应（授权自主）。看板上限封住了WIP的天花板。", "formula": "看板数 N = D×L×(1+α) ÷ C"},
+  {"title": "降库存的正确方法", "content": "直接把安全库存参数调小是自杀式降库存。正确姿势：<b>先减一块看板→暴露问题→解决问题→再减一块</b>。库存是能力的镜子，不是调出来的数字。", "formula": "减看板 → 暴露 → 解决 → 再减"},
+  {"title": "均衡化：拉动的地基", "content": "取用量忽多忽少，看板系统必然瘫痪（上游被迫备大量安全库存）。<b>没有均衡化就没有真正的拉动</b>——这是多数企业拉动失败的第一原因。", "formula": "均衡 = 产量均衡 + 品种均衡"},
+  {"title": "混流排产口诀", "content": "A×6 B×4 C×2怎么排？<b>大数量均匀撒、小数量间隔插</b>：ABCABA循环两轮。任何一小段时间内各品种都有产出，上游负荷平稳。", "formula": "ABCABA × 2"},
+  {"title": "单件流的收益", "content": "单件流四大收益：<b>前置期最短、问题立即暴露、在制品最少、场地最省</b>。做不到一步到位？先'小批量流'，批量逐月减半——批量是流动改革的刻度尺。", "formula": "批量↓ → LT↓ → 问题早暴露"},
+  {"title": "U型线为什么流行", "content": "进出口同侧→一人可覆盖首尾工序；人员可进可退→需求波动时弹性增减人（少人化）；相邻工序背靠背→异常互相支援。U型是弹性与协作的最佳布局。", "formula": "U型线 = 弹性人数 + 互助协作"},
+  {"title": "山积图看平衡", "content": "把各工位时间堆成'山'，<b>最高的山就是瓶颈</b>，平整山头=线平衡改善：高峰拆分/削峰填谷/合并矮峰。平衡率=Σ工序时间÷(瓶颈×工位数)。", "formula": "平衡率 ≥ 85% 为良"},
+  {"title": "安灯不是报警器", "content": "安灯的本质是<b>授权文化</b>：任何一线员工都有权停线。停线损失是看得见的小钱，流出不良和掩盖问题是看不见的大钱。", "formula": "一线发现速度 = 企业响应速度"},
+  {"title": "防错五层级", "content": "防错从高到低：<b>消除→替代→控制→预防→探测</b>。最高明是让错误不可能发生（消除），最低级是靠人眼检查（探测）。设计阶段多想一分钟，产线少流一年汗。", "formula": "消除 > 替代 > 控制 > 预防 > 探测"},
+  {"title": "OEE三乘数", "content": "OEE=<b>时间稼动率×性能稼动率×良品率</b>。分别对应：设备转不转（故障/换模）、转得快不快（速度/小停机）、转出的是不是好的（不良）。世界级≥85%。", "formula": "OEE = 可用率 × 性能率 × 良品率"},
+  {"title": "TPM的分工哲学", "content": "自主保全不是让操作工替代维修：操作工负责<b>保持基本条件</b>（清洁/紧固/润滑），维修聚焦<b>专业技术</b>（精度/大修/改造）。各归其位，设备才稳。", "formula": "操作工保基本，维修做技术"},
+  {"title": "标准是改善的起跑线", "content": "没有标准就没有改善——你无法改善一个'每人做法都不同'的工序。<b>标准三属性</b>：最好的当前方法、唯一的执行依据、改善的对象。今天的最好，就是明天的普通。", "formula": "SDCA 维持 + PDCA 改善 = 螺旋上升"},
+  {"title": "5S的终局是素养", "content": "5S不是大扫除：整理练<b>决断力</b>，整顿练<b>规则意识</b>，清扫练<b>发现问题</b>的眼睛。前4S是手段，素养才是目的——无人监督也保持。", "formula": "整顿标准：30秒找到任何物品"},
+  {"title": "水蜘蛛的使命", "content": "水蜘蛛按固定循环（如30分钟/圈）配送物料：让操作工<b>100%时间增值</b>不离开工位。它不是搬运工，是拉动系统在厂内物流的执行者。", "formula": "水蜘蛛周期 = 路线耗时 + 补货动作"},
+  {"title": "安全库存怎么定", "content": "<b>SS=Z×σd×√L</b>：波动越大、补货越慢，安全库存越高。降库存的正道是先降σd（均衡化）和L（快换/近供），而不是直接砍参数。", "formula": "SS = Z × σd × √L"},
+  {"title": "3M因果链", "content": "<b>Mura不均→Muri过载→Muda浪费</b>：排程波动逼设备连轴转，过载引发故障不良，最终全是浪费。治理顺序：先均衡化（治Mura），再减载（治Muri），浪费自然露头。", "formula": "先治 Mura，再治 Muri"},
+  {"title": "三现主义", "content": "到<b>现场</b>、看<b>现物</b>、认<b>现实</b>数据。办公室里听汇报做的判断是猜；不到现场的管理都是隔靴搔痒。改善从Gemba Walk开始。", "formula": "现场 + 现物 + 现实"},
+  {"title": "牛鞭效应", "content": "末端需求波动10%，层层放大后上游变成50%——原因：批量订货+信息延迟+各自加安全库存。解药：均衡化+小批量高频补货+需求信息共享。", "formula": "波动放大 ∝ 批量 × 层级"},
+  {"title": "改善周铁律", "content": "改善周（5天）最关键的不是方案，而是<b>周四必须动手改</b>：宁可粗糙落地，不许完美PPT。改善是干出来的，不是画出来的。", "formula": "周一学→周二测→周三设计→周四干→周五发布"},
+  {"title": "精益成功的标志", "content": "怎么判断精益做对了？不是看板多漂亮，而是：<b>员工主动暴露问题的数量在上升</b>。问题暴露速度=企业改善速度。怕暴露问题的组织，问题只会越来越大。", "formula": "暴露问题 ↑ = 组织健康 ↑"}];
+
+// ============ 渲染 ============
+const catNames = {essential:"精益必学",abbr:"精益术语库",formula:"公式手册",theory:"基础理论",soft:"推行实战"};
+let currentCat = 'all';
+let searchTerm = '';
+
+function renderAbbr(list){
+  return list.map(a=>`
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="card-abbr">${a.abbr}</div>
+          <div class="card-full">${a.full}</div>
+        </div>
+        <span class="card-tag tag-${a.cat}">${a.cat}</span>
+      </div>
+      <div class="card-cn">${a.cn}</div>
+      <div class="card-desc">${a.desc}</div>
+      ${a.formula!=="无"?`<div class="card-formula">${a.formula}</div>`:''}
+      ${a.example?`<div class="card-example">💡 ${a.example}</div>`:''}
+    </div>
+  `).join('');
+}
+
+function renderFormula(list){
+  return list.map(f=>`
+    <div class="card">
+      <div class="card-head">
+        <div class="card-abbr" style="font-size:15px">${f.name}</div>
+        <span class="card-tag tag-${f.cat}">${f.cat}</span>
+      </div>
+      <div class="card-formula">${f.formula}</div>
+      <div class="card-desc">${f.desc}</div>
+      <div class="card-example">💡 ${f.example}</div>
+    </div>
+  `).join('');
+}
+
+function renderTheory(list){
+  return list.map(t=>`
+    <div class="theory-card">
+      <h3>🎓 ${t.name}</h3>
+      <div class="t-desc">${t.desc}</div>
+      <ul>${t.points.map(p=>`<li>${p}</li>`).join('')}</ul>
+    </div>
+  `).join('');
+}
+
+function renderEssential(list){
+  return list.map(t=>`
+    <div class="theory-card">
+      <h3>🧭 ${t.name}</h3>
+      <div class="t-desc">${t.desc}</div>
+      <ul>${t.points.map(p=>`<li>${p}</li>`).join('')}</ul>
+    </div>
+  `).join('');
+}
+
+function renderSoft(list){
+  return list.map(s=>`
+    <div class="soft-card">
+      <h3>🚀 ${s.name}</h3>
+      <div class="s-desc">${s.desc}</div>
+      <div class="soft-tips">${s.tips.map(t=>`<span class="soft-tip">${t}</span>`).join('')}</div>
+    </div>
+  `).join('');
+}
+
+function filterData(){
+  const s = searchTerm.toLowerCase();
+  const match = (text)=> !s || text.toLowerCase().includes(s);
+  let html = '';
+  
+  const showEssential = currentCat==='all'||currentCat==='essential';
+  const showAbbr = currentCat==='all'||currentCat==='abbr';
+  const showFormula = currentCat==='all'||currentCat==='formula';
+  const showTheory = currentCat==='all'||currentCat==='theory';
+  const showSoft = currentCat==='all'||currentCat==='soft';
+
+  if(showEssential){
+    const list = ESSENTIAL.filter(t=>match(t.name)||match(t.desc)||t.points.some(p=>match(p)));
+    if(list.length){
+      html += `<div class="section-title">🧭 精益必学 <span class="count">${list.length}条</span></div>`;
+      html += `<div class="card-grid" style="grid-template-columns:repeat(auto-fill,minmax(380px,1fr))">${renderEssential(list)}</div>`;
+    }
+  }
+  if(showAbbr){
+    const list = ABBR.filter(a=>match(a.abbr)||match(a.full)||match(a.cn)||match(a.desc)||match(a.cat));
+    if(list.length){
+      html += `<div class="section-title">🔤 精益术语库 <span class="count">${list.length}条</span></div>`;
+      html += `<div class="card-grid">${renderAbbr(list)}</div>`;
+    }
+  }
+  if(showFormula){
+    const list = FORMULA.filter(f=>match(f.name)||match(f.formula)||match(f.desc)||match(f.cat));
+    if(list.length){
+      html += `<div class="section-title">📐 公式手册 <span class="count">${list.length}条</span></div>`;
+      html += `<div class="card-grid">${renderFormula(list)}</div>`;
+    }
+  }
+  if(showTheory){
+    const list = THEORY.filter(t=>match(t.name)||match(t.desc)||t.points.some(p=>match(p)));
+    if(list.length){
+      html += `<div class="section-title">🎓 基础理论 <span class="count">${list.length}条</span></div>`;
+      html += `<div class="card-grid" style="grid-template-columns:repeat(auto-fill,minmax(380px,1fr))">${renderTheory(list)}</div>`;
+    }
+  }
+  if(showSoft){
+    const list = SOFT.filter(s=>match(s.name)||match(s.desc)||s.tips.some(t=>match(t)));
+    if(list.length){
+      html += `<div class="section-title">🚀 推行实战 <span class="count">${list.length}条</span></div>`;
+      html += `<div class="card-grid" style="grid-template-columns:repeat(auto-fill,minmax(380px,1fr))">${renderSoft(list)}</div>`;
+    }
+  }
+  if(!html) html = '<div class="no-result">😕 没有找到匹配的内容，试试其他关键词？</div>';
+  document.getElementById('mainContent').innerHTML = html;
+}
+
+// 每日一学
+let dailyIdx = 0;
+function getDailyIdx(){
+  const start = new Date(2024,0,1);
+  const today = new Date();
+  const days = Math.floor((today-start)/(86400000));
+  return days % DAILY.length;
+}
+function renderDaily(idx){
+  const d = DAILY[idx];
+  document.getElementById('dailyBox').innerHTML = `
+    <div class="daily-label">📖 每日一学 · 第${idx+1}期 / 共${DAILY.length}期</div>
+    <div class="daily-title">${d.title}</div>
+    <div class="daily-content">${d.content}</div>
+    ${d.formula?`<div class="daily-formula">${d.formula}</div>`:''}
+    <div class="daily-nav">
+      <button onclick="dailyNav(-1)">◀ 上一期</button>
+      <button onclick="dailyNav(1)">下一期 ▶</button>
+      <button onclick="dailyNav(0)">🔄 今日推荐</button>
+    </div>
+  `;
+}
+function dailyNav(dir){
+  if(dir===0) dailyIdx = getDailyIdx();
+  else dailyIdx = (dailyIdx + dir + DAILY.length) % DAILY.length;
+  renderDaily(dailyIdx);
+  document.getElementById('dailyBox').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+// 日期
+function showDate(){
+  const d = new Date();
+  const w = ['日','一','二','三','四','五','六'][d.getDay()];
+  document.getElementById('todayDate').textContent = 
+    `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日 星期${w}`;
+}
+
+// 事件绑定
+document.querySelectorAll('.nav-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    currentCat = btn.dataset.cat;
+    filterData();
+  });
+});
+document.getElementById('searchBox').addEventListener('input',e=>{
+  searchTerm = e.target.value.trim();
+  filterData();
+});
+
+// 初始化
+showDate();
+dailyIdx = getDailyIdx();
+renderDaily(dailyIdx);
+filterData();
+</script>
+</body>
+</html>
