@@ -117,6 +117,8 @@ body{font-family:'Segoe UI','Microsoft YaHei',sans-serif;background:var(--bg);co
     <button class="nav-btn" data-cat="abbr">🔤 IE缩写库</button>
     <button class="nav-btn" data-cat="formula">📐 公式手册</button>
     <button class="nav-btn" data-cat="theory">🎓 基础理论</button>
+    <button class="nav-btn" data-cat="job">💼 招聘技能地图</button>
+    <button class="nav-btn" data-cat="digital">🖥️ 数字化技能</button>
     <button class="nav-btn" data-cat="soft">🤝 软技能</button>
   </div>
 </div>
@@ -279,8 +281,14 @@ const DAILY = [
   {title:"IE降本三抓手",content:"①提效率：标准工时改善、线平衡 → 摊薄<b>人工成本</b>；②降不良：提升FPY → 省<b>材料+返工成本</b>；③提稼动：减少停机换型 → 摊薄<b>折旧能耗</b>。所有改善最终换算成金额才有说服力。",formula:"收益 = Δ单位成本 × 年产量"},
 ];
 
+// ============ 招聘技能地图 ============
+const JOB = [{"name": "标准工时与工时定额", "desc": "IE岗招聘出现频率最高的要求，几乎所有IE岗位第一条就写它。", "points": ["核心能力：能用秒表法/工作抽样/预定动作时间法（MOD、GSD）制定标准工时", "必须会算：标准工时 = 观测时间 × 评比系数 × (1+宽放率)", "必须会做：工时定额体系搭建、工时异常分析、工时数据库维护", "面试常问：评比系数怎么定？宽放率给多少？异常值怎么剔除？", "进阶：多品种小批量场景下的工时估算（MOD法/GSD法）"]}, {"name": "线平衡与产能规划", "desc": "生产改善类IE岗的核心考核项，直接决定降本成果。", "points": ["线平衡率 = Σ各工站作业时间 ÷ (瓶颈工站时间 × 工站数) × 100%", "改善手法：ECRS重排工站、拆分工序、增加并行工站、培训多能工", "产能规划：需求产能 → 节拍时间 → 工站数 → 人员配置的三级推算", "面试常问：瓶颈工站怎么找？平衡率多少算合格（一般目标≥85%）？", "配套工具：山积图（Yamazumi）、标准作业组合票"]}, {"name": "工厂Layout与设施规划", "desc": "规划类IE岗必备，新厂建设、产线搬迁、扩产项目都会用到。", "points": ["方法论：SLP法（系统布置设计）— 物流关系 + 非物流关系 → 面积相关图", "关键指标：物流强度、搬运距离、物流成本、面积利用率", "布局形式选择：产品原则（流水线）、工艺原则（机群式）、成组原则（单元线）", "软件工具：AutoCAD画布局图（招聘高频要求）、Visio画流程图", "面试常问：为什么物流要短？如何评估新旧布局优劣？"]}, {"name": "精益生产推进能力", "desc": "80%以上IE/精益岗要求，制造业招聘的通用硬通货。", "points": ["必须掌握：七大浪费识别、5S与目视化、VSM价值流图、看板拉动、SMED快速换型", "改善工具：Kaizen持续改善、PDCA、A3报告、改善提案制度", "体系认知：TPS丰田生产方式（JIT + 自働化）两大支柱", "面试常问：举一个你主导的精益改善案例，投入产出是多少？", "注意：招聘要求常写'能独立推进精益项目'，说明要会项目管理不只是用工具"]}, {"name": "成本分析与降本核算", "desc": "中高级IE岗分水岭，会算钱的IE比只会改流程的IE值钱。", "points": ["制造成本结构：材料 + 人工 + 制造费用（折旧/能耗/维修）+ 管理摊销", "降本三抓手：提效率摊薄人工、降不良省材料返工、提稼动摊薄折旧能耗", "关键指标：UPPH（人均产出）、单位产品工时、单位成本、材料利用率", "必须能算：改善收益 = 单位成本降低额 × 年产量（换成金额才有说服力）", "面试常问：你做过的改善一年省多少钱？怎么算出来的？"]}, {"name": "人员定额与人力优化", "desc": "人力评估类岗位核心职责，也是PMC/IE交叉岗的重点。", "points": ["人员需求 = 日总标准工时 ÷ (人均可用工时 × 出勤率 × 直接作业率)", "多能工率、出勤率、直接作业率是三个关键调整系数，都<1会放大需求人数", "优化方向：合并工站、消除等待、设备替代、作业简化（ECRS人机分析）", "人机作业分析：找出机器等待与人员等待，重新分配作业提高人机利用率", "面试常问：某产线要减3人，你怎么做？减完后效率会掉吗？"]}, {"name": "IE软件与工具清单", "desc": "招聘JD里明确列出的软件要求，是简历筛选的硬门槛。", "points": ["Excel：数据透视表、VLOOKUP/XLOOKUP、SUMIFS、图表、宏/VBA（招聘最高频，几乎必写'精通Excel'）", "SQL：多表关联查询、聚合分组、窗口函数（明显上升趋势，会SQL的IE明显吃香）", "数据库：SQL Server / Oracle 基本操作、数据表结构与字段理解", "AutoCAD：工厂布局图、产线平面图、设备摆放图绘制（60%以上岗位要求）", "BI工具：Power BI / Tableau 做数据看板（加分项，数字化岗位必写）", "其他：Visio流程图、Minitab统计分析、仿真软件（FlexSim/Arena，规划岗加分）"]}, {"name": "六西格玛与质量工具", "desc": "质量改善方向IE岗的要求，中高级职位普遍作为加分项甚至必需项。", "points": ["DMAIC五阶段：定义→测量→分析→改善→控制", "统计工具：SPC控制图、CPK过程能力、MSA测量系统分析、假设检验、回归分析", "风险工具：FMEA失效模式分析、RPN风险优先数", "证书体系：中国质量协会六西格玛黄带/绿带/黑带（招聘常写'绿带优先'）", "面试常问：CPK和PPK区别？CPK多少算合格（一般≥1.33）？"]}, {"name": "数字化与智能制造", "desc": "当前IE招聘增长最快的要求，传统IE转型数字化的关键门槛。", "points": ["系统认知：ERP（资源计划）、MES（制造执行）、WMS（仓储管理）、APS（高级排程）", "IE在其中的角色：提供标准工时/工艺路线/产能参数等基础数据，参与系统实施与上线", "数据能力：能从数据库取数做分析（SQL）、能用BI做可视化看板", "新兴方向：OEE数据自动采集、设备联网、数字孪生、仿真排产", "招聘趋势：'具备ERP/MES/WMS数字化制造实施经验'已从加分项变为数字化IE岗的必要条件"]}, {"name": "行业差异与岗位画像", "desc": "不同行业的IE要求差异很大，投简历前必须按行业调整技能重点。", "points": ["电子/通信：强调线平衡、标准工时、自动化、MES；深圳/苏州岗位密集", "汽车/汽配：强调精益体系、VSM、IATF16949、六西格玛；要求最规范", "服装/纺织：强调GSD动作分析、吊挂线、工序拆分；工时精度要求极高", "食品/快消：强调产能规划、人员定额、OEE、成本核算；节奏快", "化工/材料/塑胶：强调工艺工时、设备稼动、安全环保、能耗分析", "通用规律：企业规模越大越要求体系化（六西格玛/精益体系），越小越要求一人多能（IE+PMC+数据分析）"]}, {"name": "IE面试高频考点", "desc": "招聘市场上反复出现的面试问题，准备时按此清单自检。", "points": ["基础题：标准工时怎么定？宽放率包含哪些？评比系数怎么给？", "分析题：线平衡率怎么算？瓶颈怎么改善？给你一条线你怎么下手？", "案例题：讲一个你主导的改善项目（背景-措施-成果-收益金额）", "工具题：VSM怎么画？七大浪费有哪些？ECRS怎么用？", "数据题：Excel函数问题、SQL查数据、给你一组数据让你分析异常", "情景题：车间主任不配合改善怎么办？改善后员工抵触怎么办？", "进化题：你了解MES吗？IE怎么和数字化结合？"]}];
+
+// ============ 数字化技能 ============
+const DIGITAL = [{"name": "SQL取数：IE的数据基本功", "desc": "从数据库直接取数分析，摆脱'等人给Excel'的被动局面。", "points": ["基本结构：SELECT 字段 FROM 表 WHERE 条件 GROUP BY 分组 ORDER BY 排序", "IE常用：按岗位/班次/日期分组统计工时、绩效、任务量", "多表关联：JOIN 关联任务表与人员表，拿到'某人的某任务工时'", "聚合函数：SUM/COUNT/AVG/MAX/MIN 做汇总，配合 GROUP BY 做分层统计", "实战价值：任务有效性、工时异常、绩效明细这类分析，SQL一次取全比手工拼表快10倍"]}, {"name": "Excel高阶：数据透视与函数", "desc": "招聘JD最高频要求，'精通Excel'是IE简历的默认门槛。", "points": ["数据透视表：拖拽出多维交叉分析（岗位×月份×指标），是IE看板最快的做法", "查找函数：VLOOKUP/XLOOKUP 跨表匹配、INDEX+MATCH 反向查找", "条件汇总：SUMIFS/COUNTIFS/AVERAGEIFS 多条件统计", "文本清洗：TRIM/SUBSTITUTE/TEXTSPLIT 处理脏数据（从系统导出的数据必备）", "自动化：Power Query 合并多表、录制宏/VBA 做重复性批量处理"]}, {"name": "MES制造执行系统", "desc": "车间级数字化系统，IE是MES落地的核心参与者。", "points": ["功能模块：工单管理、工序报工、质量追溯、设备状态、人员绩效、看板展示", "IE角色：把标准工时、工艺路线、产能参数等基础数据'喂'给系统", "IE价值点：MES自动采集的报工数据 = 真实工时来源，替代人工秒表测量", "常见问题：报工不真实（提前/延后扫码）、0工时任务（只扫码不作业）、数据与现场不符", "落地关键：数据准确性校验机制 + 异常任务剔除规则（如ISVALID判定）"]}, {"name": "ERP与WMS系统认知", "desc": "企业资源与仓储管理系统的IE视角理解。", "points": ["ERP核心模块：销售、采购、库存、生产、财务；MRP运算生成采购与生产计划", "WMS核心功能：库位管理、入库上架、拣货出库、库存盘点、RFID/条码", "IE切入点：库位布局优化、拣货路径优化、库存周转率分析、库龄分析", "关键数据：库存周转率 = 销货成本 ÷ 平均库存；库龄分布反映呆滞风险", "数字化趋势：WMS与AGV/立库集成，IE负责物流路径与产能匹配测算"]}, {"name": "数据看板与BI可视化", "desc": "把分析结果做成可复用的看板，是IE数据能力的展示窗口。", "points": ["看板类型：管理可视化类（多维度图表+筛选联动）、数据审查类（汇总卡+明细表+翻页）", "工具选择：Excel透视表（轻量）、Power BI（主流）、自研HTML看板（灵活无授权）", "设计原则：指标卡放总量不放计数、筛选器级联联动、坐标轴随筛选自适应", "数据源：数据库直连 / 定时导出CSV / API取数", "交付价值：让管理者自己查数，把IE从'做报表'中解放出来做改善"]}, {"name": "OEE与设备数据化", "desc": "设备效率的数字化采集与分析，TPM与数字化结合点。", "points": ["OEE = 可用率 × 性能率 × 良品率，世界级标准≥85%", "数据来源：设备PLC采集 / MES报工 / 人工记录（三种精度递减）", "IE分析：按设备/班次/产品做OEE分层，找损失最大的前几项（帕累托）", "停机分析：停机原因归类、停机时长并集计算（避免重叠时段重复计数）", "改善闭环：帕累托找主要损失 → 针对性改善 → 复测OEE验证效果"]}, {"name": "APS高级排程与产能仿真", "desc": "计划排程数字化，PMC方向IE的高阶技能。", "points": ["APS解决的问题：有限产能约束下的最优排产（人工排程无法兼顾多约束）", "输入要素：订单交期、工艺路线、设备产能、模具/换型时间、人员班次", "关键约束：瓶颈资源（CCR）、换型时间（SMED成果直接影响排程质量）", "IE贡献：提供准确的产能参数与换型矩阵，是APS能算准的前提", "仿真工具：FlexSim / Arena 做产线产能验证，规划新线时预演"]}, {"name": "数字化IE转型路径", "desc": "传统IE如何升级为数字化IE，招聘市场的新要求。", "points": ["第一步：Excel精通 → 能独立完成复杂数据分析与看板", "第二步：学会SQL → 能自己从数据库取数，不再依赖IT", "第三步：理解系统 → 参与MES/ERP/WMS实施，懂数据从哪来", "第四步：做可视化 → 用BI或HTML搭建可复用看板，沉淀分析能力", "第五步：数据驱动改善 → 用系统数据替代人工测量，做实时OEE/工时监控", "招聘信号：'具备数字化制造实施经验'已从加分项变为数字化IE岗的必要条件"]}];
+
 // ============ 渲染 ============
-const catNames = {essential:"IE必学",abbr:"IE缩写库",formula:"公式手册",theory:"基础理论",soft:"软技能"};
+const catNames = {essential:"IE必学",abbr:"IE缩写库",formula:"公式手册",theory:"基础理论",soft:"软技能",job:"招聘技能地图",digital:"数字化技能"};
 let currentCat = 'all';
 let searchTerm = '';
 
@@ -356,6 +364,8 @@ function filterData(){
   const showFormula = currentCat==='all'||currentCat==='formula';
   const showTheory = currentCat==='all'||currentCat==='theory';
   const showSoft = currentCat==='all'||currentCat==='soft';
+  const showJob = currentCat==='all'||currentCat==='job';
+  const showDigital = currentCat==='all'||currentCat==='digital';
 
   if(showEssential){
     const list = ESSENTIAL.filter(t=>match(t.name)||match(t.desc)||t.points.some(p=>match(p)));
@@ -383,6 +393,20 @@ function filterData(){
     if(list.length){
       html += `<div class="section-title">🎓 基础理论 <span class="count">${list.length}条</span></div>`;
       html += `<div class="card-grid" style="grid-template-columns:repeat(auto-fill,minmax(380px,1fr))">${renderTheory(list)}</div>`;
+    }
+  }
+  if(showJob){
+    const list = JOB.filter(t=>match(t.name)||match(t.desc)||t.points.some(p=>match(p)));
+    if(list.length){
+      html += `<div class="section-title">💼 招聘技能地图 <span class="count">${list.length}条</span></div>`;
+      html += `<div class="card-grid" style="grid-template-columns:repeat(auto-fill,minmax(380px,1fr))">${renderEssential(list)}</div>`;
+    }
+  }
+  if(showDigital){
+    const list = DIGITAL.filter(t=>match(t.name)||match(t.desc)||t.points.some(p=>match(p)));
+    if(list.length){
+      html += `<div class="section-title">🖥️ 数字化技能 <span class="count">${list.length}条</span></div>`;
+      html += `<div class="card-grid" style="grid-template-columns:repeat(auto-fill,minmax(380px,1fr))">${renderEssential(list)}</div>`;
     }
   }
   if(showSoft){
